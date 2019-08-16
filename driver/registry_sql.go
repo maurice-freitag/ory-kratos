@@ -1,145 +1,203 @@
 package driver
 
 import (
-	"context"
+	"fmt"
+	"os"
 	"strings"
+	"testing"
 	"time"
 
-	"github.com/ory/hydra/hsm"
-
-	"github.com/gobuffalo/pop/v6"
-
-	"github.com/ory/hydra/oauth2/trust"
-	"github.com/ory/x/errorsx"
-
-	"github.com/luna-duclos/instrumentedsql"
-	"github.com/luna-duclos/instrumentedsql/opentracing"
-
-	"github.com/ory/x/resilience"
-
-	_ "github.com/jackc/pgx/v4/stdlib"
-
-	"github.com/ory/hydra/persistence/sql"
-
 	"github.com/jmoiron/sqlx"
+	"github.com/pkg/errors"
+	migrate "github.com/rubenv/sql-migrate"
+
+	"github.com/ory/x/logrusx"
 
 	"github.com/ory/x/dbal"
 	"github.com/ory/x/sqlcon"
+	"github.com/ory/x/urlx"
 
-	"github.com/ory/hydra/client"
-	"github.com/ory/hydra/consent"
-	"github.com/ory/hydra/jwk"
-	"github.com/ory/hydra/x"
+	"github.com/olekukonko/tablewriter"
+
+	"github.com/ory/hive/identity"
+	"github.com/ory/hive/selfservice"
+	"github.com/ory/hive/selfservice/oidc"
+	"github.com/ory/hive/selfservice/password"
+	"github.com/ory/hive/session"
 )
-
-type RegistrySQL struct {
-	*RegistryBase
-	db                *sqlx.DB
-	defaultKeyManager jwk.Manager
-}
 
 var _ Registry = new(RegistrySQL)
 
+var Migrations = map[string]*dbal.PackrMigrationSource{}
+
+var requestManagerFactories = map[identity.CredentialsType]func() selfservice.RequestMethodConfig{
+	identity.CredentialsTypeOIDC: func() selfservice.RequestMethodConfig {
+		return oidc.NewRequestMethodConfig()
+	},
+	identity.CredentialsTypePassword: func() selfservice.RequestMethodConfig {
+		return password.NewRequestMethodConfig()
+	},
+}
+
 func init() {
-	dbal.RegisterDriver(func() dbal.Driver {
-		return NewRegistrySQL()
-	})
+	l := logrusx.New()
+	Migrations[dbal.DriverPostgreSQL] = dbal.NewMustPackerMigrationSource(l, AssetNames(), Asset, []string{"../contrib/sql/migrations/postgres/"}, true)
+
+	dbal.RegisterDriver(NewRegistrySQL())
+}
+
+type RegistrySQL struct {
+	*RegistryAbstract
+
+	identityPool              identity.Pool
+	sessionManager            session.Manager
+	selfserviceRequestManager selfservice.RequestManager
+
+	db *sqlx.DB
 }
 
 func NewRegistrySQL() *RegistrySQL {
-	r := &RegistrySQL{
-		RegistryBase: new(RegistryBase),
-	}
-	r.RegistryBase.with(r)
+	r := &RegistrySQL{RegistryAbstract: new(RegistryAbstract)}
+	r.RegistryAbstract.with(r)
 	return r
 }
 
-func (m *RegistrySQL) Init(ctx context.Context) error {
-	if m.persister == nil {
-		var opts []instrumentedsql.Opt
-		if m.Tracer(ctx).IsLoaded() {
-			opts = []instrumentedsql.Opt{
-				instrumentedsql.WithTracer(opentracing.NewTracer(true)),
-			}
-		}
+func (m *RegistrySQL) WithDB(db *sqlx.DB) Registry {
+	m.db = db
+	return m
+}
 
-		// new db connection
-		pool, idlePool, connMaxLifetime, connMaxIdleTime, cleanedDSN := sqlcon.ParseConnectionOptions(m.l, m.C.DSN())
-		c, err := pop.NewConnection(&pop.ConnectionDetails{
-			URL:                       sqlcon.FinalizeDSN(m.l, cleanedDSN),
-			IdlePool:                  idlePool,
-			ConnMaxLifetime:           connMaxLifetime,
-			ConnMaxIdleTime:           connMaxIdleTime,
-			Pool:                      pool,
-			UseInstrumentedDriver:     m.Tracer(ctx).IsLoaded(),
-			InstrumentedDriverOptions: opts,
-		})
-		if err != nil {
-			return errorsx.WithStack(err)
-		}
-		if err := resilience.Retry(m.l, 5*time.Second, 5*time.Minute, c.Open); err != nil {
-			return errorsx.WithStack(err)
-		}
-		m.persister, err = sql.NewPersister(ctx, c, m, m.C, m.l)
-		if err != nil {
-			return err
-		}
+func (m *RegistrySQL) CanHandle(dsn string) bool {
+	s := dbal.Canonicalize(urlx.ParseOrFatal(m.l, dsn).Scheme)
+	return s == dbal.DriverPostgreSQL
+}
 
-		if m.C.HsmEnabled() {
-			hardwareKeyManager := hsm.NewKeyManager(m.HsmContext())
-			m.defaultKeyManager = jwk.NewManagerStrategy(hardwareKeyManager, m.persister)
-		} else {
-			m.defaultKeyManager = m.persister
-		}
+func (m *RegistrySQL) Ping() error {
+	return m.DB().Ping()
+}
 
-		// if dsn is memory we have to run the migrations on every start
-		// use case - such as
-		// - just in memory
-		// - shared connection
-		// - shared but unique in the same process
-		// see: https://sqlite.org/inmemorydb.html
-		if dbal.IsMemorySQLite(m.C.DSN()) {
-			m.Logger().Print("Hydra is running migrations on every startup as DSN is memory.\n")
-			m.Logger().Print("This means your data is lost when Hydra terminates.\n")
-			if err := m.persister.MigrateUp(context.Background()); err != nil {
-				return err
+func (m *RegistrySQL) IdentityPool() identity.Pool {
+	if m.identityPool == nil {
+		m.identityPool = identity.NewPoolSQL(m.c, m, m.DB())
+	}
+	return m.identityPool
+}
+
+func (m *RegistrySQL) SessionManager() session.Manager {
+	if m.sessionManager == nil {
+		m.sessionManager = session.NewManagerSQL(m.c, m, m.DB())
+	}
+	return m.sessionManager
+}
+
+func (m *RegistrySQL) Init() error {
+	if m.db != nil {
+		return nil
+	}
+
+	var options []sqlcon.OptionModifier
+	if m.Tracer().IsLoaded() {
+		options = append(options, sqlcon.WithDistributedTracing(), sqlcon.WithOmitArgsFromTraceSpans())
+	}
+
+	connection, err := sqlcon.NewSQLConnection(m.c.DSN(), m.Logger(), options...)
+	if err != nil {
+		return err
+	}
+
+	m.db, err = connection.GetDatabaseRetry(time.Second*5, time.Minute*5)
+	if err != nil {
+		return err
+	}
+
+	return err
+}
+
+func (m *RegistrySQL) DB() *sqlx.DB {
+	if m.db == nil {
+		if err := m.Init(); err != nil {
+			m.Logger().WithError(err).Fatalf("Unable to initialize database.")
+		}
+	}
+
+	return m.db
+}
+
+func (m *RegistrySQL) RegistrationRequestManager() selfservice.RegistrationRequestManager {
+	if m.selfserviceRequestManager == nil {
+		m.selfserviceRequestManager = selfservice.NewRequestManagerSQL(
+			m.DB(),
+			requestManagerFactories,
+		)
+	}
+	return m.selfserviceRequestManager
+}
+
+func (m *RegistrySQL) LoginRequestManager() selfservice.LoginRequestManager {
+	if m.selfserviceRequestManager == nil {
+		m.selfserviceRequestManager = selfservice.NewRequestManagerSQL(
+			m.DB(),
+			requestManagerFactories,
+		)
+	}
+	return m.selfserviceRequestManager
+}
+
+func (m *RegistrySQL) CreateSchemas(dbName string) (int, error) {
+	m.Logger().Debugf("Applying %s SQL migrations...", dbName)
+
+	migrate.SetTable("hive_migration")
+	total, err := migrate.Exec(m.DB().DB, dbal.Canonicalize(m.DB().DriverName()), Migrations[dbName], migrate.Up)
+	if err != nil {
+		return 0, errors.Wrapf(err, "Could not migrate sql schema, applied %d migrations", total)
+	}
+
+	m.Logger().Debugf("Applied %d %s SQL migrations", total, dbName)
+	return total, nil
+}
+
+func (m *RegistrySQL) SchemaMigrationPlan(dbName string) (*tablewriter.Table, error) {
+	table := tablewriter.NewWriter(os.Stdout)
+	table.SetBorders(tablewriter.Border{Left: true, Top: false, Right: true, Bottom: false})
+	table.SetCenterSeparator("|")
+	table.SetAutoMergeCells(true)
+	table.SetRowLine(true)
+	table.SetColMinWidth(4, 20)
+	table.SetHeader([]string{"Driver", "ID", "#", "Query"})
+
+	migrate.SetTable("hive_migration")
+	plans, _, err := migrate.PlanMigration(m.DB().DB, dbal.Canonicalize(m.DB().DriverName()), Migrations[dbName], migrate.Up, 0)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, plan := range plans {
+		for k, up := range plan.Up {
+			up = strings.Replace(strings.TrimSpace(up), "\n", "", -1)
+			up = strings.Join(strings.Fields(up), " ")
+			if len(up) > 0 {
+				table.Append([]string{m.db.DriverName(), plan.Id + ".sql", fmt.Sprintf("%d", k), up})
 			}
 		}
 	}
 
-	return nil
+	return table, nil
 }
 
-func (m *RegistrySQL) alwaysCanHandle(dsn string) bool {
-	scheme := strings.Split(dsn, "://")[0]
-	s := dbal.Canonicalize(scheme)
-	return s == dbal.DriverMySQL || s == dbal.DriverPostgreSQL || s == dbal.DriverCockroachDB
-}
-
-func (m *RegistrySQL) Ping() error {
-	return m.Persister().Connection(context.Background()).Open()
-}
-
-func (m *RegistrySQL) ClientManager() client.Manager {
-	return m.Persister()
-}
-
-func (m *RegistrySQL) ConsentManager() consent.Manager {
-	return m.Persister()
-}
-
-func (m *RegistrySQL) OAuth2Storage() x.FositeStorer {
-	return m.Persister()
-}
-
-func (m *RegistrySQL) KeyManager() jwk.Manager {
-	return m.defaultKeyManager
-}
-
-func (m *RegistrySQL) SoftwareKeyManager() jwk.Manager {
-	return m.Persister()
-}
-
-func (m *RegistrySQL) GrantManager() trust.GrantManager {
-	return m.Persister()
+func SQLPurgeTestDatabase(t *testing.T, db *sqlx.DB) {
+	for _, query := range []string{
+		"DROP TABLE IF EXISTS hive_migration",
+		"DROP TABLE IF EXISTS self_service_request",
+		"DROP TABLE IF EXISTS identity_credential_identifier",
+		"DROP TABLE IF EXISTS identity_credential",
+		"DROP TABLE IF EXISTS session",
+		"DROP TABLE IF EXISTS identity",
+		"DROP TYPE IF EXISTS credentials_type",
+		"DROP TYPE IF EXISTS self_service_request_type",
+	} {
+		_, err := db.Exec(query)
+		if err != nil {
+			t.Logf("Unable to clean up table %s: %s", query, err)
+		}
+	}
 }
