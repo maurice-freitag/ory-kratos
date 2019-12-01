@@ -2,95 +2,137 @@ package sql_test
 
 import (
 	"context"
+	"fmt"
+	"os"
+	"path/filepath"
+	"strings"
+	"sync"
 	"testing"
 
-	"github.com/pkg/errors"
+	"github.com/gobuffalo/pop"
+	"github.com/gobuffalo/pop/logging"
+	"github.com/google/uuid"
 
-	"github.com/pborman/uuid"
+	"github.com/ory/x/sqlcon/dockertest"
 
-	"github.com/ory/hydra/oauth2/trust"
-
-	"github.com/stretchr/testify/assert"
+	// "github.com/ory/x/sqlcon/dockertest"
 	"github.com/stretchr/testify/require"
 
-	"github.com/ory/hydra/internal/testhelpers"
-
-	"github.com/ory/hydra/jwk"
-
-	"github.com/ory/hydra/client"
-	"github.com/ory/hydra/consent"
-	"github.com/ory/hydra/driver"
-	"github.com/ory/hydra/internal"
+	"github.com/ory/kratos/identity"
+	"github.com/ory/kratos/internal"
+	"github.com/ory/kratos/selfservice/flow/login"
+	"github.com/ory/kratos/selfservice/flow/profile"
+	"github.com/ory/kratos/selfservice/flow/registration"
+	"github.com/ory/kratos/session"
 )
 
-func TestManagers(t *testing.T) {
-	registries := map[string]driver.Registry{
-		"memory": internal.NewRegistryMemory(t, internal.NewConfigurationWithDefaults()),
-	}
+// Workaround for https://github.com/gobuffalo/pop/pull/481
+var sqlite = fmt.Sprintf("sqlite3://%s.sqlite?_fk=true&mode=rwc", filepath.Join(os.TempDir(), uuid.New().String()))
 
-	if !testing.Short() {
-		registries["postgres"], registries["mysql"], registries["cockroach"], _ = internal.ConnectDatabases(t)
-	}
+func init() {
+	internal.RegisterFakes()
+	// pop.Debug = true
+}
 
-	for k, m := range registries {
+// nolint:staticcheck
+func TestMain(m *testing.M) {
+	atexit := dockertest.NewOnExit()
+	atexit.Add(func() {
+		_ = os.Remove(strings.TrimPrefix(sqlite, "sqlite://"))
+		dockertest.KillAllTestDatabases()
+	})
+	atexit.Exit(m.Run())
+}
 
-		t.Run("package=client/manager="+k, func(t *testing.T) {
-			t.Run("case=create-get-update-delete", client.TestHelperCreateGetUpdateDeleteClient(k, m.ClientManager()))
+func pl(t *testing.T) func(lvl logging.Level, s string, args ...interface{}) {
+	return func(lvl logging.Level, s string, args ...interface{}) {
+		if pop.Debug == false {
+			return
+		}
 
-			t.Run("case=autogenerate-key", client.TestHelperClientAutoGenerateKey(k, m.ClientManager()))
-
-			t.Run("case=auth-client", client.TestHelperClientAuthenticate(k, m.ClientManager()))
-
-			t.Run("case=update-two-clients", client.TestHelperUpdateTwoClients(k, m.ClientManager()))
-		})
-
-		t.Run("package=consent/manager="+k, consent.ManagerTests(m.ConsentManager(), m.ClientManager(), m.OAuth2Storage()))
-
-		t.Run("package=consent/janitor="+k, testhelpers.JanitorTests(m.Config(), m.ConsentManager(), m.ClientManager(), m.OAuth2Storage()))
-
-		t.Run("package=jwk/manager="+k, func(t *testing.T) {
-			keyGenerators := new(driver.RegistryBase).KeyGenerators()
-			assert.Equalf(t, 6, len(keyGenerators), "Test for key generator is not implemented")
-
-			for _, tc := range []struct {
-				keyGenerator jwk.KeyGenerator
-				alg          string
-				skip         bool
-			}{
-				{keyGenerator: keyGenerators["RS256"], alg: "RS256", skip: false},
-				{keyGenerator: keyGenerators["ES256"], alg: "ES256", skip: false},
-				{keyGenerator: keyGenerators["ES512"], alg: "ES512", skip: false},
-				{keyGenerator: keyGenerators["HS256"], alg: "HS256", skip: true},
-				{keyGenerator: keyGenerators["HS512"], alg: "HS512", skip: true},
-				{keyGenerator: keyGenerators["EdDSA"], alg: "EdDSA", skip: m.Config().HsmEnabled()},
-			} {
-				t.Run("key_generator="+tc.alg, func(t *testing.T) {
-					if tc.skip {
-						t.Skipf("Skipping test. Not applicable for alg: %s", tc.alg)
+		if lvl == logging.SQL {
+			if len(args) > 0 {
+				xargs := make([]string, len(args))
+				for i, a := range args {
+					switch a.(type) {
+					case string:
+						xargs[i] = fmt.Sprintf("%q", a)
+					default:
+						xargs[i] = fmt.Sprintf("%v", a)
 					}
-					if m.Config().HsmEnabled() {
-						t.Run("TestManagerGenerateAndPersistKeySet", jwk.TestHelperManagerGenerateAndPersistKeySet(m.KeyManager(), tc.alg))
-					} else {
-						kid := uuid.New()
-						ks, err := tc.keyGenerator.Generate(kid, "sig")
-						require.NoError(t, err)
-						t.Run("TestManagerKey", jwk.TestHelperManagerKey(m.KeyManager(), tc.alg, ks, kid))
-						t.Run("TestManagerKeySet", jwk.TestHelperManagerKeySet(m.KeyManager(), tc.alg, ks, kid))
-						t.Run("TestManagerGenerateAndPersistKeySet", jwk.TestHelperManagerGenerateAndPersistKeySet(m.KeyManager(), tc.alg))
-					}
-				})
+				}
+				s = fmt.Sprintf("%s - %s | %s", lvl, s, xargs)
+			} else {
+				s = fmt.Sprintf("%s - %s", lvl, s)
 			}
+		} else {
+			s = fmt.Sprintf(s, args...)
+			s = fmt.Sprintf("%s - %s", lvl, s)
+		}
+		t.Log(s)
+	}
+}
 
-			t.Run("TestManagerGenerateAndPersistKeySetWithUnsupportedKeyGenerator", func(t *testing.T) {
-				_, err := m.KeyManager().GenerateAndPersistKeySet(context.TODO(), "foo", "bar", "UNKNOWN", "sig")
-				require.Error(t, err)
-				assert.IsType(t, errors.WithStack(jwk.ErrUnsupportedKeyAlgorithm), err)
+func TestPersister(t *testing.T) {
+	conns := map[string]string{
+		"sqlite": sqlite,
+	}
+
+	var l sync.Mutex
+	if !testing.Short() {
+		funcs := map[string]func(t *testing.T) string{
+			"mysql":    dockertest.RunTestMySQL,
+			"postgres": dockertest.RunTestPostgreSQL,
+			// "cockroach": dockertest.RunTestCockroachDB, // pending: https://github.com/gobuffalo/fizz/pull/69
+		}
+
+		var wg sync.WaitGroup
+		wg.Add(len(funcs))
+
+		for k, f := range funcs {
+			go func(s string, f func(t *testing.T) string) {
+				defer wg.Done()
+				db := f(t)
+				l.Lock()
+				conns[s] = db
+				l.Unlock()
+			}(k, f)
+		}
+
+		wg.Wait()
+	}
+
+	for name, dsn := range conns {
+		t.Run("database="+name, func(t *testing.T) {
+			_, reg := internal.NewRegistryDefaultWithDSN(t, dsn)
+			p := reg.Persister()
+
+			// pop.SetLogger(pl(t))
+			require.NoError(t, p.MigrationStatus(context.Background()))
+			require.NoError(t, p.MigrateUp(context.Background()))
+
+			t.Run("contract=identity.TestPool", func(t *testing.T) {
+				pop.SetLogger(pl(t))
+				identity.TestPool(p)(t)
+			})
+			t.Run("contract=registration.TestRequestPersister", func(t *testing.T) {
+				pop.SetLogger(pl(t))
+				registration.TestRequestPersister(p)(t)
+			})
+			t.Run("contract=login.TestRequestPersister", func(t *testing.T) {
+				pop.SetLogger(pl(t))
+				login.TestRequestPersister(p)(t)
+			})
+			t.Run("contract=profile.TestRequestPersister", func(t *testing.T) {
+				pop.SetLogger(pl(t))
+				profile.TestRequestPersister(p)(t)
+			})
+			t.Run("contract=session.TestRequestPersister", func(t *testing.T) {
+				pop.SetLogger(pl(t))
+				session.TestPersister(p)(t)
 			})
 		})
-
-		t.Run("package=grant/trust/manager="+k, func(t *testing.T) {
-			t.Run("case=create-get-delete", trust.TestHelperGrantManagerCreateGetDeleteGrant(m.GrantManager()))
-			t.Run("case=errors", trust.TestHelperGrantManagerErrors(m.GrantManager()))
-		})
+		t.Logf("DSN: %s", dsn)
 	}
+
 }

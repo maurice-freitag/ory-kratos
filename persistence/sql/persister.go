@@ -2,138 +2,75 @@ package sql
 
 import (
 	"context"
-	"database/sql"
+	"time"
 
-	"github.com/gobuffalo/pop/v6"
-
-	"github.com/gobuffalo/x/randx"
+	"github.com/cenkalti/backoff"
+	"github.com/gobuffalo/packr"
+	"github.com/gobuffalo/pop"
 	"github.com/pkg/errors"
 
-	"github.com/ory/fosite"
-	"github.com/ory/fosite/storage"
-	"github.com/ory/hydra/driver/config"
-	"github.com/ory/hydra/jwk"
-	"github.com/ory/hydra/persistence"
-	"github.com/ory/hydra/x"
-	"github.com/ory/x/errorsx"
-	"github.com/ory/x/logrusx"
-	"github.com/ory/x/popx"
+	"github.com/ory/kratos/driver/configuration"
+	"github.com/ory/kratos/identity"
+	"github.com/ory/kratos/persistence"
+	"github.com/ory/kratos/x"
 )
 
 var _ persistence.Persister = new(Persister)
-var _ storage.Transactional = new(Persister)
-
-const transactionContextKey transactionContextType = "transactionConnection"
-
-var (
-	ErrTransactionOpen   = errors.New("There is already a transaction in this context.")
-	ErrNoTransactionOpen = errors.New("There is no transaction in this context.")
-)
+var migrations = packr.NewBox("../../contrib/sql/migrations")
 
 type (
+	persisterDependencies interface {
+		identity.ValidationProvider
+		x.LoggingProvider
+	}
 	Persister struct {
-		conn   *pop.Connection
-		mb     *popx.MigrationBox
-		r      Dependencies
-		config *config.Provider
-		l      *logrusx.Logger
+		c  *pop.Connection
+		mb pop.MigrationBox
+		r  persisterDependencies
+		cf configuration.Provider
 	}
-	Dependencies interface {
-		ClientHasher() fosite.Hasher
-		KeyCipher() *jwk.AEAD
-		KeyGenerators() map[string]jwk.KeyGenerator
-		x.RegistryLogger
-		x.TracingProvider
-	}
-	transactionContextType string
 )
 
-func (p *Persister) BeginTX(ctx context.Context) (context.Context, error) {
-	_, ok := ctx.Value(transactionContextKey).(*pop.Connection)
-	if ok {
-		return ctx, errorsx.WithStack(ErrTransactionOpen)
-	}
+func RetryConnect(dsn string) (c *pop.Connection, err error) {
+	bc := backoff.NewExponentialBackOff()
+	bc.MaxElapsedTime = time.Minute * 5
+	bc.Reset()
 
-	tx, err := p.conn.Store.TransactionContextOptions(ctx, &sql.TxOptions{
-		Isolation: sql.LevelRepeatableRead,
-		ReadOnly:  false,
-	})
-	c := &pop.Connection{
-		TX:      tx,
-		Store:   tx,
-		ID:      randx.String(30),
-		Dialect: p.conn.Dialect,
-	}
-	return context.WithValue(ctx, transactionContextKey, c), err
+	return c, backoff.Retry(func() (err error) {
+		c, err = pop.Connect(dsn)
+		return errors.WithStack(err)
+	}, bc)
 }
 
-func (p *Persister) Commit(ctx context.Context) error {
-	c, ok := ctx.Value(transactionContextKey).(*pop.Connection)
-	if !ok || c.TX == nil {
-		return errorsx.WithStack(ErrNoTransactionOpen)
-	}
-
-	return errorsx.WithStack(c.TX.Commit())
-}
-
-func (p *Persister) Rollback(ctx context.Context) error {
-	c, ok := ctx.Value(transactionContextKey).(*pop.Connection)
-	if !ok || c.TX == nil {
-		return errorsx.WithStack(ErrNoTransactionOpen)
-	}
-
-	return errorsx.WithStack(c.TX.Rollback())
-}
-
-func NewPersister(ctx context.Context, c *pop.Connection, r Dependencies, config *config.Provider, l *logrusx.Logger) (*Persister, error) {
-	mb, err := popx.NewMigrationBox(migrations, popx.NewMigrator(c, r.Logger(), r.Tracer(ctx), 0))
+func NewPersister(r persisterDependencies, conf configuration.Provider, c *pop.Connection) (*Persister, error) {
+	m, err := pop.NewMigrationBox(migrations, c)
 	if err != nil {
-		return nil, errorsx.WithStack(err)
+		return nil, errors.WithStack(err)
 	}
 
-	return &Persister{
-		conn:   c,
-		mb:     mb,
-		r:      r,
-		config: config,
-		l:      l,
-	}, nil
+	return &Persister{c: c, mb: m, cf: conf, r: r}, nil
 }
 
-func (p *Persister) Connection(ctx context.Context) *pop.Connection {
-	if c, ok := ctx.Value(transactionContextKey).(*pop.Connection); ok {
-		return c.WithContext(ctx)
-	}
-	return p.conn.WithContext(ctx)
+func (p *Persister) MigrationStatus(c context.Context) error {
+	return errors.WithStack(p.mb.Status())
 }
 
-func (p *Persister) transaction(ctx context.Context, f func(ctx context.Context, c *pop.Connection) error) error {
-	isNested := true
-	c, ok := ctx.Value(transactionContextKey).(*pop.Connection)
-	if !ok {
-		isNested = false
+func (p *Persister) MigrateDown(c context.Context, steps int) error {
+	return errors.WithStack(p.mb.Down(steps))
+}
 
-		var err error
-		c, err = p.conn.WithContext(ctx).NewTransaction()
+func (p *Persister) MigrateUp(c context.Context) error {
+	return errors.WithStack(p.mb.Up())
+}
 
-		if err != nil {
-			return errorsx.WithStack(err)
-		}
+func (p *Persister) Close(c context.Context) error {
+	return errors.WithStack(p.c.Close())
+}
+
+func (p *Persister) Ping(c context.Context) error {
+	type pinger interface {
+		Ping() error
 	}
 
-	if err := f(context.WithValue(ctx, transactionContextKey, c), c); err != nil {
-		if !isNested {
-			if err := c.TX.Rollback(); err != nil {
-				return errorsx.WithStack(err)
-			}
-		}
-		return err
-	}
-
-	// commit if there is no wrapping transaction
-	if !isNested {
-		return errorsx.WithStack(c.TX.Commit())
-	}
-
-	return nil
+	return errors.WithStack(p.c.Store.(pinger).Ping())
 }
