@@ -1,64 +1,99 @@
 ###########################################################################
 #######             FOR DEMONSTRATION PURPOSES ONLY                 #######
 ###########################################################################
-#                                                                         #
-# If you have not yet read the tutorial, do so now:                       #
-#  https://www.ory.sh/docs/hydra/5min-tutorial                            #
-#                                                                         #
-# This set up is only for demonstration purposes. The login               #
-# endpoint can only be used if you follow the steps in the tutorial.      #
-#                                                                         #
-###########################################################################
+
 version: '3.7'
+
 services:
-  hydra:
-    image: oryd/hydra:v1.11.0
-    ports:
-      - "4444:4444" # Public port
-      - "4445:4445" # Admin port
-      - "5555:5555" # Port for hydra token user
-    command: serve -c /etc/config/hydra/hydra.yml all --dangerous-force-http
-    volumes:
-      - type: volume
-        source: hydra-sqlite
-        target: /var/lib/sqlite
-        read_only: false
-      - type: bind
-        source: ./contrib/quickstart/5-min
-        target: /etc/config/hydra
+
+  kratos-migrate:
+    build:
+      context: .
+      dockerfile: Dockerfile-build
     environment:
       - DSN=sqlite:///var/lib/sqlite/db.sqlite?_fk=true
-    restart: unless-stopped
-    depends_on:
-      - hydra-migrate
-    networks:
-      - intranet
-  hydra-migrate:
-    image: oryd/hydra:v1.11.0
-    environment:
-      - DSN=sqlite:///var/lib/sqlite/db.sqlite?_fk=true
-    command: migrate -c /etc/config/hydra/hydra.yml sql -e --yes
     volumes:
-      - type: volume
-        source: hydra-sqlite
-        target: /var/lib/sqlite
+      -
+        type: volume
+        source: kratos-sqlite
+        target: /var/lib/sqlite/
         read_only: false
-      - type: bind
-        source: ./contrib/quickstart/5-min
-        target: /etc/config/hydra
+      -
+        type: bind
+        source: ./contrib/quickstart/kratos/email-password
+        target: /etc/config/kratos
+
+    command:
+      -c /etc/config/kratos/.kratos.yml migrate sql -e --yes
     restart: on-failure
     networks:
       - intranet
-  consent:
-    environment:
-      - HYDRA_ADMIN_URL=http://hydra:4445
-    image: oryd/hydra-login-consent-node:v1.11.0
+
+  kratos-selfservice-ui-node:
+    image: oryd/kratos-selfservice-ui-node:v0.0.25-alpha.1
     ports:
-      - "3000:3000"
-    restart: unless-stopped
+      - "4435:4435"
+    environment:
+      - PORT=4435
+      - KRATOS_PUBLIC_URL=http://kratos:4433/
+      - KRATOS_BROWSER_URL=http://127.0.0.1:4455/.ory/kratos/public
+      - JWKS_URL=http://oathkeeper:4456/.well-known/jwks.json
     networks:
       - intranet
+
+  oathkeeper:
+    image: oryd/oathkeeper:v0.35.0-alpha.1
+    ports:
+      - "4455:4455"
+      - "4456:4456"
+    command:
+      serve proxy -c "/etc/config/oathkeeper/.oathkeeper.yml"
+    environment:
+      - LOG_LEVEL=debug
+    restart: on-failure
+    networks:
+      - intranet
+    volumes:
+      -
+        type: bind
+        source: ./contrib/quickstart/oathkeeper
+        target: /etc/config/oathkeeper
+
+  kratos:
+    depends_on:
+      - kratos-migrate
+      - kratos-selfservice-ui-node
+    build:
+      context: .
+      dockerfile: Dockerfile-build
+    ports:
+      - "4433:4433" # public
+      - "4434:4434" # admin
+    restart: unless-stopped
+    environment:
+      - DSN=sqlite:///var/lib/sqlite/db.sqlite?_fk=true
+    command:
+      serve -c /etc/config/kratos/.kratos.yml --dev
+    volumes:
+      - kratos-sqlite:/var/lib/sqlite/
+      -
+        type: bind
+        source: ./contrib/quickstart/kratos/email-password
+        target: /etc/config/kratos
+    networks:
+      - intranet
+
+  mailhog:
+    image: mailhog/mailhog:v1.0.0
+    ports:
+      - "8025:4436"
+    networks:
+      - intranet
+
 networks:
   intranet:
+
 volumes:
-  hydra-sqlite:
+  kratos-sqlite:
+  kratos-config:
+  oathkeeper-config:
