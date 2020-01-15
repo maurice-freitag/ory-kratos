@@ -6,98 +6,65 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	"context"
+	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/go-openapi/errors"
-	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 )
 
-// LoginRequest Contains information on an ongoing login request.
-//
+// LoginRequest LoginRequest login request
 // swagger:model loginRequest
 type LoginRequest struct {
 
-	// ID is the identifier ("login challenge") of the login request. It is used to
-	// identify the session.
-	// Required: true
-	Challenge *string `json:"challenge"`
+	// active
+	Active CredentialsType `json:"active,omitempty"`
 
-	// client
-	// Required: true
-	Client *OAuth2Client `json:"client"`
+	// ExpiresAt is the time (UTC) when the request expires. If the user still wishes to log in,
+	// a new request has to be initiated.
+	// Format: date-time
+	// Format: date-time
+	ExpiresAt strfmt.DateTime `json:"expires_at,omitempty"`
 
-	// oidc context
-	OidcContext *OpenIDConnectContext `json:"oidc_context,omitempty"`
+	// id
+	// Format: uuid4
+	ID UUID `json:"id,omitempty"`
 
-	// RequestURL is the original OAuth 2.0 Authorization URL requested by the OAuth 2.0 client. It is the URL which
-	// initiates the OAuth 2.0 Authorization Code or OAuth 2.0 Implicit flow. This URL is typically not needed, but
-	// might come in handy if you want to deal with additional request parameters.
-	// Required: true
-	RequestURL *string `json:"request_url"`
+	// IssuedAt is the time (UTC) when the request occurred.
+	// Format: date-time
+	// Format: date-time
+	IssuedAt strfmt.DateTime `json:"issued_at,omitempty"`
 
-	// requested access token audience
-	// Required: true
-	RequestedAccessTokenAudience StringSlicePipeDelimiter `json:"requested_access_token_audience"`
+	// Methods contains context for all enabled login methods. If a login request has been
+	// processed, but for example the password is incorrect, this will contain error messages.
+	Methods map[string]LoginRequestMethod `json:"methods,omitempty"`
 
-	// requested scope
-	// Required: true
-	RequestedScope StringSlicePipeDelimiter `json:"requested_scope"`
-
-	// SessionID is the login session ID. If the user-agent reuses a login session (via cookie / remember flag)
-	// this ID will remain the same. If the user-agent did not have an existing authentication session (e.g. remember is false)
-	// this will be a new random value. This value is used as the "sid" parameter in the ID Token and in OIDC Front-/Back-
-	// channel logout. It's value can generally be used to associate consecutive login requests by a certain user.
-	SessionID string `json:"session_id,omitempty"`
-
-	// Skip, if true, implies that the client has requested the same scopes from the same user previously.
-	// If true, you can skip asking the user to grant the requested scopes, and simply forward the user to the redirect URL.
-	//
-	// This feature allows you to update / set session information.
-	// Required: true
-	Skip *bool `json:"skip"`
-
-	// Subject is the user ID of the end-user that authenticated. Now, that end user needs to grant or deny the scope
-	// requested by the OAuth 2.0 client. If this value is set and `skip` is true, you MUST include this subject type
-	// when accepting the login request, or the request will fail.
-	// Required: true
-	Subject *string `json:"subject"`
+	// RequestURL is the initial URL that was requested from ORY Kratos. It can be used
+	// to forward information contained in the URL's path or query for example.
+	RequestURL string `json:"request_url,omitempty"`
 }
 
 // Validate validates this login request
 func (m *LoginRequest) Validate(formats strfmt.Registry) error {
 	var res []error
 
-	if err := m.validateChallenge(formats); err != nil {
+	if err := m.validateActive(formats); err != nil {
 		res = append(res, err)
 	}
 
-	if err := m.validateClient(formats); err != nil {
+	if err := m.validateExpiresAt(formats); err != nil {
 		res = append(res, err)
 	}
 
-	if err := m.validateOidcContext(formats); err != nil {
+	if err := m.validateID(formats); err != nil {
 		res = append(res, err)
 	}
 
-	if err := m.validateRequestURL(formats); err != nil {
+	if err := m.validateIssuedAt(formats); err != nil {
 		res = append(res, err)
 	}
 
-	if err := m.validateRequestedAccessTokenAudience(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.validateRequestedScope(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.validateSkip(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.validateSubject(formats); err != nil {
+	if err := m.validateMethods(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -107,182 +74,81 @@ func (m *LoginRequest) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *LoginRequest) validateChallenge(formats strfmt.Registry) error {
+func (m *LoginRequest) validateActive(formats strfmt.Registry) error {
 
-	if err := validate.Required("challenge", "body", m.Challenge); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *LoginRequest) validateClient(formats strfmt.Registry) error {
-
-	if err := validate.Required("client", "body", m.Client); err != nil {
-		return err
-	}
-
-	if m.Client != nil {
-		if err := m.Client.Validate(formats); err != nil {
-			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("client")
-			}
-			return err
-		}
-	}
-
-	return nil
-}
-
-func (m *LoginRequest) validateOidcContext(formats strfmt.Registry) error {
-	if swag.IsZero(m.OidcContext) { // not required
+	if swag.IsZero(m.Active) { // not required
 		return nil
 	}
 
-	if m.OidcContext != nil {
-		if err := m.OidcContext.Validate(formats); err != nil {
-			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("oidc_context")
-			}
+	if err := m.Active.Validate(formats); err != nil {
+		if ve, ok := err.(*errors.Validation); ok {
+			return ve.ValidateName("active")
+		}
+		return err
+	}
+
+	return nil
+}
+
+func (m *LoginRequest) validateExpiresAt(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.ExpiresAt) { // not required
+		return nil
+	}
+
+	if err := validate.FormatOf("expires_at", "body", "date-time", m.ExpiresAt.String(), formats); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *LoginRequest) validateID(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.ID) { // not required
+		return nil
+	}
+
+	if err := m.ID.Validate(formats); err != nil {
+		if ve, ok := err.(*errors.Validation); ok {
+			return ve.ValidateName("id")
+		}
+		return err
+	}
+
+	return nil
+}
+
+func (m *LoginRequest) validateIssuedAt(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.IssuedAt) { // not required
+		return nil
+	}
+
+	if err := validate.FormatOf("issued_at", "body", "date-time", m.IssuedAt.String(), formats); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *LoginRequest) validateMethods(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.Methods) { // not required
+		return nil
+	}
+
+	for k := range m.Methods {
+
+		if err := validate.Required("methods"+"."+k, "body", m.Methods[k]); err != nil {
 			return err
 		}
-	}
-
-	return nil
-}
-
-func (m *LoginRequest) validateRequestURL(formats strfmt.Registry) error {
-
-	if err := validate.Required("request_url", "body", m.RequestURL); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *LoginRequest) validateRequestedAccessTokenAudience(formats strfmt.Registry) error {
-
-	if err := validate.Required("requested_access_token_audience", "body", m.RequestedAccessTokenAudience); err != nil {
-		return err
-	}
-
-	if err := m.RequestedAccessTokenAudience.Validate(formats); err != nil {
-		if ve, ok := err.(*errors.Validation); ok {
-			return ve.ValidateName("requested_access_token_audience")
-		}
-		return err
-	}
-
-	return nil
-}
-
-func (m *LoginRequest) validateRequestedScope(formats strfmt.Registry) error {
-
-	if err := validate.Required("requested_scope", "body", m.RequestedScope); err != nil {
-		return err
-	}
-
-	if err := m.RequestedScope.Validate(formats); err != nil {
-		if ve, ok := err.(*errors.Validation); ok {
-			return ve.ValidateName("requested_scope")
-		}
-		return err
-	}
-
-	return nil
-}
-
-func (m *LoginRequest) validateSkip(formats strfmt.Registry) error {
-
-	if err := validate.Required("skip", "body", m.Skip); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *LoginRequest) validateSubject(formats strfmt.Registry) error {
-
-	if err := validate.Required("subject", "body", m.Subject); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-// ContextValidate validate this login request based on the context it is used
-func (m *LoginRequest) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
-	var res []error
-
-	if err := m.contextValidateClient(ctx, formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.contextValidateOidcContext(ctx, formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.contextValidateRequestedAccessTokenAudience(ctx, formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.contextValidateRequestedScope(ctx, formats); err != nil {
-		res = append(res, err)
-	}
-
-	if len(res) > 0 {
-		return errors.CompositeValidationError(res...)
-	}
-	return nil
-}
-
-func (m *LoginRequest) contextValidateClient(ctx context.Context, formats strfmt.Registry) error {
-
-	if m.Client != nil {
-		if err := m.Client.ContextValidate(ctx, formats); err != nil {
-			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("client")
+		if val, ok := m.Methods[k]; ok {
+			if err := val.Validate(formats); err != nil {
+				return err
 			}
-			return err
 		}
-	}
 
-	return nil
-}
-
-func (m *LoginRequest) contextValidateOidcContext(ctx context.Context, formats strfmt.Registry) error {
-
-	if m.OidcContext != nil {
-		if err := m.OidcContext.ContextValidate(ctx, formats); err != nil {
-			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("oidc_context")
-			}
-			return err
-		}
-	}
-
-	return nil
-}
-
-func (m *LoginRequest) contextValidateRequestedAccessTokenAudience(ctx context.Context, formats strfmt.Registry) error {
-
-	if err := m.RequestedAccessTokenAudience.ContextValidate(ctx, formats); err != nil {
-		if ve, ok := err.(*errors.Validation); ok {
-			return ve.ValidateName("requested_access_token_audience")
-		}
-		return err
-	}
-
-	return nil
-}
-
-func (m *LoginRequest) contextValidateRequestedScope(ctx context.Context, formats strfmt.Registry) error {
-
-	if err := m.RequestedScope.ContextValidate(ctx, formats); err != nil {
-		if ve, ok := err.(*errors.Validation); ok {
-			return ve.ValidateName("requested_scope")
-		}
-		return err
 	}
 
 	return nil

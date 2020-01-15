@@ -6,66 +6,38 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	"context"
+	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/go-openapi/errors"
-	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 )
 
-// GenericError GenericError GenericError GenericError GenericError GenericError GenericError GenericError generic error
+// GenericError Error response
 //
+// Error responses are sent when an error (e.g. unauthorized, bad request, ...) occurred.
 // swagger:model genericError
 type GenericError struct {
 
-	// The status code
-	// Example: 404
-	Code int64 `json:"code,omitempty"`
-
-	// Debug information
-	//
-	// This field is often not exposed to protect against leaking
-	// sensitive information.
-	// Example: SQL field \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"foo\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\" is not a bool.
-	Debug string `json:"debug,omitempty"`
-
-	// Further error details
-	Details interface{} `json:"details,omitempty"`
-
-	// The error ID
-	//
-	// Useful when trying to identify various errors in application logic.
-	ID string `json:"id,omitempty"`
-
-	// Error message
-	//
-	// The error's message.
-	// Example: The resource could not be found
+	// Name is the error name.
 	// Required: true
-	Message *string `json:"message"`
+	Error *string `json:"error"`
 
-	// A human-readable reason for the error
-	// Example: User with ID 1234 does not exist.
-	Reason string `json:"reason,omitempty"`
+	// Code represents the error status code (404, 403, 401, ...).
+	ErrorCode int64 `json:"error_code,omitempty"`
 
-	// The request ID
-	//
-	// The request ID is often exposed internally in order to trace
-	// errors across service architectures. This is often a UUID.
-	// Example: d7ef54b1-ec15-46e6-bccb-524b82c035e6
-	Request string `json:"request,omitempty"`
+	// Debug contains debug information. This is usually not available and has to be enabled.
+	ErrorDebug string `json:"error_debug,omitempty"`
 
-	// The status description
-	// Example: Not Found
-	Status string `json:"status,omitempty"`
+	// Hint contains further information on the nature of the error.
+	ErrorHint string `json:"error_hint,omitempty"`
 }
 
 // Validate validates this generic error
 func (m *GenericError) Validate(formats strfmt.Registry) error {
 	var res []error
 
-	if err := m.validateMessage(formats); err != nil {
+	if err := m.validateError(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -75,17 +47,12 @@ func (m *GenericError) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *GenericError) validateMessage(formats strfmt.Registry) error {
+func (m *GenericError) validateError(formats strfmt.Registry) error {
 
-	if err := validate.Required("message", "body", m.Message); err != nil {
+	if err := validate.Required("error", "body", m.Error); err != nil {
 		return err
 	}
 
-	return nil
-}
-
-// ContextValidate validates this generic error based on context it is used
-func (m *GenericError) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 
