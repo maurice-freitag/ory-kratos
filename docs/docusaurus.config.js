@@ -36,14 +36,19 @@ const links = [
   },
 ]
 
+let version = ['latest']
+
 if (fs.existsSync('./versions.json')) {
-  const version = require('./versions.json');
+  version = require('./versions.json');
   if (version && version.length > 0) {
     links.push({
       label: version[0],
       position: 'right',
       to: 'versions'
     });
+  }
+  if (version.length === 0) {
+    version = ['latest']
   }
 }
 
@@ -63,9 +68,9 @@ module.exports = {
     algolia: {
       apiKey: '8463c6ece843b377565726bb4ed325b0',
       indexName: 'ory',
-      // algoliaOptions: {
-      //   facetFilters: ['language:LANGUAGE', 'version:VERSION'],
-      // },
+      algoliaOptions: {
+        facetFilters: [`tags:${config.projectSlug}`, 'tags:ecosystem', `version:${version[0]}`],
+      },
     },
     navbar: {
       logo: {
