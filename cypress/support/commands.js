@@ -21,186 +21,204 @@
 // Cypress.Commands.add("dismiss", { prevSubject: 'optional'}, (subject, options) => { ... })
 //
 //
-// -- This is will overwrite an existing command --
+// -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
-import { createClient, prng } from '../helpers'
+import {
+  APP_URL,
+  assertAddress,
+  gen,
+  MAIL_API,
+  parseHtml,
+  pollInterval,
+  privilegedLifespan,
+} from '../helpers'
 
 Cypress.Commands.add(
-  'authCodeFlow',
-  (
-    client,
-    {
-      override: { scope, client_id, client_secret } = {},
-      consent: {
-        accept: acceptConsent = true,
-        skip: skipConsent = false,
-        remember: rememberConsent = false,
-        scope: acceptScope = []
-      } = {},
-      login: {
-        accept: acceptLogin = true,
-        skip: skipLogin = false,
-        remember: rememberLogin = false,
-        username = 'foo@bar.com',
-        password = 'foobar'
-      } = {},
-      prompt = '',
-      createClient: doCreateClient = true
-    } = {},
-    path = 'oauth2'
-  ) => {
-    if (doCreateClient) {
-      createClient(client)
-    }
-
-    cy.visit(
-      `${Cypress.env('client_url')}/${path}/code?client_id=${
-        client_id || client.client_id
-      }&client_secret=${client_secret || client.client_secret}&scope=${(
-        scope || client.scope
-      ).replace(' ', '+')}&prompt=${prompt}`,
-      { failOnStatusCode: false }
-    )
-
-    if (!skipLogin) {
-      cy.get('#email').type(username, { delay: 1 })
-      cy.get('#password').type(password, { delay: 1 })
-
-      if (rememberLogin) {
-        cy.get('#remember').click()
-      }
-
-      if (acceptLogin) {
-        cy.get('#accept').click()
-      } else {
-        cy.get('#reject').click()
-      }
-    }
-
-    if (!skipConsent) {
-      acceptScope.forEach((s) => {
-        cy.get(`#${s}`).click()
-      })
-
-      if (rememberConsent) {
-        cy.get('#remember').click()
-      }
-
-      if (acceptConsent) {
-        cy.get('#accept').click()
-      } else {
-        cy.get('#reject').click()
-      }
-    }
+  'register',
+  ({ email = gen.email(), password = gen.password(), fields = {} } = {}) => {
+    cy.visit(APP_URL + '/auth/registration')
+    cy.get('input[name="traits.email"]').type(email)
+    cy.get('input[name="password"]').type(password)
+    Object.keys(fields).forEach((key) => {
+      const value = fields[key]
+      cy.get(`input[name="${key}"]`).clear().type(value)
+    })
+    cy.get('button[type="submit"]').click()
   }
 )
 
+Cypress.Commands.add('login', ({ email, password, expectSession = true }) => {
+  cy.visit(APP_URL + '/auth/login')
+  cy.get('input[name="identifier"]').clear().type(email)
+  cy.get('input[name="password"]').clear().type(password)
+  cy.get('button[type="submit"]').click()
+  if (expectSession) {
+    cy.session()
+  } else {
+    cy.noSession()
+  }
+})
+
 Cypress.Commands.add(
-  'authCodeFlowBrowser',
-  (
-    client,
-    {
-      consent: {
-        accept: acceptConsent = true,
-        skip: skipConsent = false,
-        remember: rememberConsent = false,
-        scope: acceptScope = []
-      } = {},
-      login: {
-        accept: acceptLogin = true,
-        skip: skipLogin = false,
-        remember: rememberLogin = false,
-        username = 'foo@bar.com',
-        password = 'foobar'
-      } = {},
-      createClient: doCreateClient = true
-    } = {}
-  ) => {
-    if (doCreateClient) {
-      createClient(client)
+  'reauth',
+  ({
+    expect: { email },
+    type: { email: temail, password: tpassword } = {},
+  }) => {
+    cy.url().should('include', '/auth/login')
+    cy.get('input[name="identifier"]').should('have.value', email)
+    if (temail) {
+      cy.get('input[name="identifier"]').clear().type(temail)
     }
-
-    const codeChallenge = 'QeNVR-BHuB6I2d0HycQzp2qUNNKi_-5QoR4fQSifLH0'
-    const codeVerifier =
-      'ZmRrenFxZ3pid3A0T0xqY29falJNUS5lWlY4SDBxS182U21uQkhjZ3UuOXpnd3NOak56d2lLMTVYemNNdHdNdlE5TW03WC1RZUlaM0N5R2FhdGRpNW1oVGhjbzVuRFBD'
-    const state = prng()
-
-    const authURL = new URL(`${Cypress.env('public_url')}/oauth2/auth`)
-    authURL.searchParams.set('response_type', 'code')
-    authURL.searchParams.set('client_id', client.client_id)
-    authURL.searchParams.set('redirect_uri', client.redirect_uris[0])
-    authURL.searchParams.set('scope', client.scope)
-    authURL.searchParams.set('state', state)
-    authURL.searchParams.set('code_challenge', codeChallenge)
-    authURL.searchParams.set('code_challenge_method', 'S256')
-
-    cy.window().then((win) => {
-      return win.open(authURL, '_self')
-    })
-
-    if (!skipLogin) {
-      cy.get('#email').type(username, { delay: 1 })
-      cy.get('#password').type(password, { delay: 1 })
-
-      if (rememberLogin) {
-        cy.get('#remember').click()
-      }
-
-      if (acceptLogin) {
-        cy.get('#accept').click()
-      } else {
-        cy.get('#reject').click()
-      }
+    if (tpassword) {
+      cy.get('input[name="password"]').clear().type(tpassword)
     }
+    cy.get('button[type="submit"]').click()
+  }
+)
 
-    if (!skipConsent) {
-      acceptScope.forEach((s) => {
-        cy.get(`#${s}`).click()
-      })
-
-      if (rememberConsent) {
-        cy.get('#remember').click()
-      }
-
-      if (acceptConsent) {
-        cy.get('#accept').click()
-      } else {
-        cy.get('#reject').click()
-      }
-    }
-
-    return cy.location('search').then((search) => {
-      const callbackParams = new URLSearchParams(search)
-      const code = callbackParams.get('code')
-
-      expect(code).to.not.be.empty
-
-      return cy.request({
-        url: `${Cypress.env('public_url')}/oauth2/token`,
-        method: 'POST',
-        form: true,
-        body: {
-          grant_type: 'authorization_code',
-          client_id: client.client_id,
-          redirect_uri: client.redirect_uris[0],
-          code: code,
-          code_verifier: codeVerifier
+Cypress.Commands.add('deleteMail', ({ atLeast = 0 } = {}) => {
+  let tries = 0
+  let count = 0
+  const req = () =>
+    cy
+      .request('DELETE', `${MAIL_API}/mail`, { pruneCode: 'all' })
+      .then(({ body }) => {
+        count += parseInt(body)
+        if (count < atLeast && tries < 100) {
+          cy.log(
+            `Expected at least ${atLeast} messages but deleteted only ${count} so far (body: ${body})`
+          )
+          tries++
+          cy.wait(pollInterval)
+          return req()
         }
+
+        return Promise.resolve()
       })
+
+  return req()
+})
+
+Cypress.Commands.add('session', () =>
+  cy
+    .request('GET', `${APP_URL}/.ory/kratos/public/sessions/whoami`)
+    .then((response) => {
+      expect(response.body.sid).to.not.be.empty
+      expect(
+        Cypress.moment().isBefore(Cypress.moment(response.body.expires_at))
+      ).to.be.true
+
+      // Add a grace second for MySQL which does not support millisecs.
+      expect(
+        Cypress.moment().isAfter(
+          Cypress.moment(response.body.issued_at).subtract(1, 's')
+        )
+      ).to.be.true
+      expect(
+        Cypress.moment().isAfter(
+          Cypress.moment(response.body.authenticated_at).subtract(1, 's')
+        )
+      ).to.be.true
+      expect(response.body.identity).to.exist
+      return response.body
     })
-  }
 )
 
-Cypress.Commands.add('refreshTokenBrowser', (client, token) =>
-  cy.request({
-    url: `${Cypress.env('public_url')}/oauth2/token`,
-    method: 'POST',
-    form: true,
-    body: {
-      grant_type: 'refresh_token',
-      client_id: client.client_id,
-      refresh_token: token
-    },
-    failOnStatusCode: false
+Cypress.Commands.add('noSession', () =>
+  cy
+    .request({
+      method: 'GET',
+      url: `${APP_URL}/.ory/kratos/public/sessions/whoami`,
+      failOnStatusCode: false,
+    })
+    .then((request) => {
+      expect(request.status).to.eq(401)
+      return request
+    })
+)
+
+Cypress.Commands.add('verifyEmail', ({ expect: { email } = {} } = {}) =>
+  cy.getMail().then((message) => {
+    expect(message.subject.trim()).to.equal('Please verify your email address')
+    expect(message.fromAddress.trim()).to.equal('no-reply@ory.kratos.sh')
+    expect(message.toAddresses).to.have.length(1)
+    expect(message.toAddresses[0].trim()).to.equal(email)
+
+    const link = parseHtml(message.body).querySelector('a')
+    expect(link).to.not.be.null
+    expect(link.href).to.contain(APP_URL)
+
+    cy.visit(link.href)
+    cy.location('pathname').should('not.contain', 'verify')
+    cy.session().should(assertAddress({ isVerified: true, email }))
   })
 )
+
+// Uses the verification email but waits so that it expires
+Cypress.Commands.add(
+  'verifyEmailButExpired',
+  ({ expect: { email } = {} } = {}) =>
+    cy.getMail().then((message) => {
+      expect(message.subject.trim()).to.equal(
+        'Please verify your email address'
+      )
+      expect(message.fromAddress.trim()).to.equal('no-reply@ory.kratos.sh')
+      expect(message.toAddresses).to.have.length(1)
+      expect(message.toAddresses[0].trim()).to.equal(email)
+
+      const link = parseHtml(message.body).querySelector('a')
+      cy.session().should((session) => {
+        assertAddress({ isVerified: false, email: email })(session)
+        cy.wait(
+          Cypress.moment(session.identity.addresses[0].expires_at).diff(
+            Cypress.moment()
+          ) + 100
+        )
+      })
+
+      cy.visit(link.href)
+      cy.location('pathname').should('include', 'verify')
+      cy.location('search').should('not.be.empty', 'request')
+      cy.get('.form-errors .message').should('contain.text', 'code has expired')
+
+      cy.session().should(assertAddress({ isVerified: false, email: email }))
+    })
+)
+
+// Uses the verification email but waits so that it expires
+Cypress.Commands.add('waitForPrivilegedSessionToExpire', () => {
+  cy.session().should((session) => {
+    expect(session.authenticated_at).to.not.be.empty
+    cy.wait(
+      Cypress.moment(session.authenticated_at)
+        .add(privilegedLifespan)
+        .diff(Cypress.moment()) + 100
+    )
+  })
+})
+
+Cypress.Commands.add('getMail', ({ removeMail = true } = {}) => {
+  let tries = 0
+  const req = () =>
+    cy.request(`${MAIL_API}/mail`).then((response) => {
+      expect(response.body).to.have.property('mailItems')
+      const count = response.body.mailItems.length
+      if (count === 0 && tries < 100) {
+        tries++
+        cy.wait(pollInterval)
+        return req()
+      }
+
+      expect(count).to.equal(1)
+      if (removeMail) {
+        return cy
+          .deleteMail({ atLeast: count })
+          .then(() => Promise.resolve(response.body.mailItems[0]))
+      }
+
+      return Promise.resolve(response.body.mailItems[0])
+    })
+
+  return req()
+})

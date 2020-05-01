@@ -1,3 +1,2 @@
 *.log
-*.so
-hydra
+kratos.generated.yml

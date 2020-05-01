@@ -1,100 +1,53 @@
-export const prng = () => {
-  var array = new Uint32Array(2)
-  crypto.getRandomValues(array)
+const email = () =>
+  Math.random().toString(36).substring(7) +
+  '@' +
+  Math.random().toString(36).substring(7)
+const password = () => Math.random().toString(36)
 
-  return `${array[0].toString()}${array[1].toString()}`
+const assertAddress = ({ isVerified, email }) => ({ identity }) => {
+  expect(identity).to.have.property('addresses')
+  expect(identity.addresses).to.have.length(1)
+
+  const address = identity.addresses[0]
+  expect(address.id).to.not.be.empty
+  expect(address.verified).to.equal(isVerified)
+  expect(address.value).to.equal(email)
+
+  if (isVerified) {
+    expect(address.verified_at).to.not.be.null
+  } else {
+    expect(address.verified_at).to.be.null
+  }
 }
 
-const isStatusOk = (res) =>
-  res.ok
-    ? Promise.resolve(res)
-    : Promise.reject(
-        new Error(`Received unexpected status code ${res.statusCode}`)
-      )
+const parseHtml = (html) => new DOMParser().parseFromString(html, 'text/html')
 
-export const findEndUserAuthorization = (subject) =>
-  fetch(
-    Cypress.env('admin_url') +
-      '/oauth2/auth/sessions/consent?subject=' +
-      subject
-  )
-    .then(isStatusOk)
-    .then((res) => res.json())
+module.exports = {
+  APP_URL: (Cypress.env('app_url') || 'http://127.0.0.1:4455').replace(
+    /\/$/,
+    ''
+  ),
+  MAIL_API: (Cypress.env('mail_url') || 'http://127.0.0.1:4437').replace(
+    /\/$/,
+    ''
+  ),
+  website: 'https://www.ory.sh/',
+  parseHtml,
+  gen: {
+    email,
+    password,
+    identity: () => ({ email: email(), password: password() }),
+  },
+  assertAddress,
 
-export const revokeEndUserAuthorization = (subject) =>
-  fetch(
-    Cypress.env('admin_url') +
-      '/oauth2/auth/sessions/consent?subject=' +
-      subject,
-    { method: 'DELETE' }
-  ).then(isStatusOk)
+  // Format is
+  //  http://127.0.0.1:4455/.ory/kratos/public/self-service/browser/flows/verification/email/confirm/OdTRmdMKe0DfF6ScaOFYgWJwoAprTxnA
+  verifyHrefPattern: /^http:.*\/.ory\/kratos\/public\/self-service\/browser\/flows\/verification\/email\/confirm\/([a-zA-Z0-9]+)$/,
 
-export const createClient = (client) =>
-  cy
-    .request('POST', Cypress.env('admin_url') + '/clients', client)
-    .then(({ body }) =>
-      getClient(client.client_id).then((actual) => {
-        if (actual.client_id !== body.client_id) {
-          return Promise.reject(
-            new Error(
-              `Expected client_id's to match: ${actual.client_id} !== ${body.client}`
-            )
-          )
-        }
+  // intervals define how long to wait for something,
+  pollInterval: 100, // how long to wait before retry
 
-        return Promise.resolve(body)
-      })
-    )
-
-export const deleteClients = () =>
-  cy.request(Cypress.env('admin_url') + '/clients').then(({ body = [] }) => {
-    ;(body || []).forEach(({ client_id }) => deleteClient(client_id))
-  })
-
-const deleteClient = (client_id) =>
-  cy.request('DELETE', Cypress.env('admin_url') + '/clients/' + client_id)
-
-const getClient = (id) =>
-  cy
-    .request(Cypress.env('admin_url') + '/clients/' + id)
-    .then(({ body }) => body)
-
-export const createGrant = (grant) =>
-  cy
-    .request(
-      'POST',
-      Cypress.env('admin_url') + '/trust/grants/jwt-bearer/issuers',
-      JSON.stringify(grant)
-    )
-    .then((response) => {
-      const grantID = response.body.id
-      getGrant(grantID).then((actual) => {
-        if (actual.id !== grantID) {
-          return Promise.reject(
-            new Error(`Expected id's to match: ${actual.id} !== ${grantID}`)
-          )
-        }
-        return Promise.resolve(response)
-      })
-    })
-
-export const getGrant = (grantID) =>
-  cy
-    .request(
-      'GET',
-      Cypress.env('admin_url') + '/trust/grants/jwt-bearer/issuers/' + grantID
-    )
-    .then(({ body }) => body)
-
-export const deleteGrants = () =>
-  cy
-    .request(Cypress.env('admin_url') + '/trust/grants/jwt-bearer/issuers')
-    .then(({ body = [] }) => {
-      ;(body || []).forEach(({ id }) => deleteGrant(id))
-    })
-
-const deleteGrant = (id) =>
-  cy.request(
-    'DELETE',
-    Cypress.env('admin_url') + '/trust/grants/jwt-bearer/issuers/' + id
-  )
+  // Adding 1+ second on top because MySQL doesn't do millisecs.
+  verifyLifespan: 5000 + 1050,
+  privilegedLifespan: 5000 + 1050,
+}
