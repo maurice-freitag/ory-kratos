@@ -8,8 +8,7 @@
     "build": "docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
-    "generate:api": "widdershins -u ../.widdershins/templates -e ../.widdershins/config.json ../api.swagger.json -o ../docs/oathkeeper/sdk/api.md",
-    "format": "prettier --write '{docs/**,docs,scripts,static,contrib}/*.{md,json,js,css,html}' || true"
+    "format": "prettier --write '{docs/**,docs,scripts,static,contrib}/*.{md,mdx,json,js,css,html}' || true"
   },
   "dependencies": {
     "@docusaurus/core": "2.0.0-alpha.50",
