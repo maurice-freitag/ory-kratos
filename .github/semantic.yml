@@ -5,6 +5,7 @@ titleAndCommits: false
 types:
   - feat
   - fix
+  - perf
   - revert
   - docs
   - style
