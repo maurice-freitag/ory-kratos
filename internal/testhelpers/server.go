@@ -1,15 +1,31 @@
 package testhelpers
 
 import (
-	"net/http"
-	"net/http/httptest"
 	"testing"
+
+	"github.com/gobuffalo/httptest"
+
+	"github.com/ory/viper"
+
+	"github.com/ory/kratos/driver"
+	"github.com/ory/kratos/driver/configuration"
+	"github.com/ory/kratos/x"
 )
 
-func FlexibleServer(t *testing.T, h *http.HandlerFunc) string {
-	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		(*h)(w, r)
-	}))
-	t.Cleanup(ts.Close)
-	return ts.URL
+func NewKratosServer(t *testing.T, reg driver.Registry) (public, admin *httptest.Server) {
+	rp := x.NewRouterPublic()
+	ra := x.NewRouterAdmin()
+
+	public = httptest.NewServer(rp)
+	admin = httptest.NewServer(ra)
+
+	viper.Set(configuration.ViperKeyURLsSelfPublic, public.URL)
+	viper.Set(configuration.ViperKeyURLsSelfAdmin, admin.URL)
+
+	reg.RegisterRoutes(rp, ra)
+
+	t.Cleanup(public.Close)
+	t.Cleanup(admin.Close)
+
+	return
 }
