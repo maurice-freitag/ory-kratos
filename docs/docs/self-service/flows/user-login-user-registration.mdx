@@ -22,6 +22,131 @@ The login and registration flows documented here are the foundation for the
 [social](user-login-user-registration/openid-connect-social-sign-in-oauth2.mdx)
 sign in and sign up strategies.
 
+## Self-Service User Login and User Registration for Browser Applications
+
+ORY Kratos supports browser applications that run on server-side (e.g. Java,
+NodeJS, PHP) as well as client-side (e.g. JQuery, ReactJS, AngularJS, ...).
+
+Browser-based login and registration makes use of three core HTTP technologies:
+
+- HTTP Redirects
+- HTTP POST (`application/json`, `application/x-www-urlencoded`) and RESTful GET
+  requests.
+- HTTP Cookies to prevent CSRF and Session Hijaking attack vectors.
+
+The browser flow is the easiest and most secure to set up and integrated with.
+ORY Kratos takes care of all required session and CSRF cookies and ensures that
+all security requirements are fulfilled.
+
+Future versions of ORY Kratos will be able to deal with multi-domain
+environments that require SSO. For example, one account would be used to sign
+into both `mydomain.com` and `anotherdomain.org`. A common real-world example is
+using your Google account to seamlessly be signed into YouTube and Google at the
+same time.
+
+This flow is not suitable for scenarios where you use purely programmatic
+clients that do not work well with HTTP Cookies and HTTP Redirects.
+
+### The Login and Registration User Interface
+
+The Login and Registration User Interface is a route (page / site) in your
+application that should render a sign in and registration form:
+
+```html
+<!-- Login -->
+<form action="..." method="POST">
+  <input type="text" name="identifier" placeholder="Enter your username" />
+  <input type="password" name="password" placeholder="Enter your password" />
+  <input type="hidden" name="csrf_token" value="cdef..." />
+  <input type="submit" />
+</form>
+
+<!-- Registration -->
+<form action="..." method="POST">
+  <input type="email" name="email" placeholder="Enter your E-Mail Address" />
+  <input type="password" name="password" placeholder="Enter your password" />
+  <input
+    type="first_name"
+    name="password"
+    placeholder="Enter your First Name"
+  />
+  <input type="last_name" name="password" placeholder="Enter your Last Name" />
+  <input type="hidden" name="csrf_token" value="cdef..." />
+  <input type="submit" />
+</form>
+```
+
+Once implemented (using e.g. our
+[reference implementation](https://github.com/ory/kratos-selfservice-ui-node))
+you reference these routes in your ORY Kratos config file:
+
+```yaml title="path/to/config/kratos.yml"
+# ...
+
+urls:
+  login_ui: https://.../login
+  registration_ui: https://.../registration
+# ...
+```
+
+Depending on the type of login flows you want to support, you may a also add a
+"Sign up/in with GitHub" flow:
+
+```html
+<!-- Login and Registration -->
+<form action="..." method="POST">
+  <input type="hidden" name="csrf_token" value="cdef..." />
+
+  <!-- Basically <a href="https://github.com/login/oauth/authorize?...">Sign up/in with GitHub</a> -->
+  <input type="submit" name="provider" value="GitHub" />
+</form>
+```
+
+In stark contrast to other Identity Systems, ORY Kratos does not render this
+HTML. Instead, you need to implement the HTML code in your application (e.g.
+NodeJS + ExpressJS, Java, PHP, ReactJS, ...), which gives you extreme
+flexibility and customizability in your user interface flows and designs.
+
+Each Login and Registration Strategy (e.g.
+[Username and Password](user-login-user-registration/username-email-password.mdx),
+[Social Sign In](user-login-user-registration/openid-connect-social-sign-in-oauth2.mdx),
+Passwordless, ...) works a bit different but they all boil down to the same
+abstract sequence:
+
+<Mermaid
+  chart={`
+sequenceDiagram
+  participant B as Browser
+  participant K as ORY Kratos
+  participant A as Your Application
+  B->>K: Initiate Login
+  K->>B: Redirects to your Application's /login endpoint
+  B->>A: Calls /login
+  A-->>K: Fetches data to render forms etc
+  B-->>A: Fills out forms, clicks e.g. "Submit Login"
+  B->>K: POSTs data to
+  K-->>K: Processes Login Info
+  alt Login data valid
+    K-->>B: Sets session cookie
+    K->>B: Redirects to e.g. Dashboard
+  else Login data invalid
+    K-->>B: Redirects to your Applicaiton's /login endpoint
+    B->>A: Calls /login
+    A-->>K: Fetches data to render form fields and errors
+    B-->>A: Fills out forms again, corrects errors
+    B->>K: POSTs data again - and so on...
+  end
+`}
+/>
+
+The exact data being fetched and the step _"Processes Login / Registration
+Info"_ depend, of course, on the actual Strategy being used. But it is important
+to understand that **"Your Application"** is responsible for rendering the
+actual Login and Registration HTML Forms. You can of course implement one app
+for rendering all the Login, Registration, ... screens, and another app (think
+"Service Oriented Architecture", "Micro-Services" or "Service Mesh") is
+responsible for rendering your Dashboards, Management Screens, and so on.
+
 :::note
 
 Please read the [Self-Service Flows](../../self-service) overview before continuing
