@@ -4,7 +4,7 @@ const admonitions = require("remark-admonitions");
 
 const links = [
   {
-    to: "index",
+    to: "/",
     activeBasePath: `${config.projectSlug}/docs`,
     label: `Docs`,
     position: "left"
