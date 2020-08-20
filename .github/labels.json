@@ -1,73 +1,86 @@
 [
   {
-    "name": "package/persistence/sql",
+    "name": "package/2fa",
     "color": "0A28FD",
     "aliases": [
-      "sql"
-    ]
-  },
-  {
-    "name": "package/sdk",
-    "color": "0A28FD",
-    "aliases": [
-      "sdk"
-    ]
-  },
-  {
-    "name": "package/telemetry",
-    "color": "0A28FD",
-    "aliases": [
-      "telemetry"
-    ]
-  },
-  {
-    "name": "package/oidc",
-    "color": "0A28FD",
-    "aliases": [
-      "oidc"
-    ]
-  },
-  {
-    "name": "package/consent",
-    "color": "0A28FD",
-    "aliases": [
-      "consent"
-    ]
-  },
-  {
-    "name": "package/oauth2",
-    "color": "0A28FD",
-    "aliases": [
-      "oauth2"
-    ]
-  },
-  {
-    "name": "package/client",
-    "color": "0A28FD",
-    "aliases": [
-      "client"
-    ]
-  },
-  {
-    "name": "package/jwk",
-    "color": "0A28FD",
-    "aliases": [
-      "jwk"
+      "module:2fa"
     ]
   },
   {
     "name": "package/cli",
     "color": "0A28FD",
     "aliases": [
-      "cmd",
-      "config"
+      "module:cli"
     ]
   },
   {
-    "name": "package/config",
+    "name": "package/courier",
     "color": "0A28FD",
     "aliases": [
-      "config"
+      "module:courier"
+    ]
+  },
+  {
+    "name": "package/courier",
+    "color": "0A28FD",
+    "aliases": [
+      "module:docs"
+    ]
+  },
+  {
+    "name": "package/selfservice/errorx",
+    "color": "0A28FD",
+    "aliases": [
+      "module:errorx"
+    ]
+  },
+  {
+    "name": "package/identity",
+    "color": "0A28FD",
+    "aliases": [
+      "module:identity"
+    ]
+  },
+  {
+    "name": "package/persistence/sql",
+    "color": "0A28FD",
+    "aliases": [
+      "module:migrations"
+    ]
+  },
+  {
+    "name": "package/selfservice",
+    "color": "0A28FD",
+    "aliases": [
+      "module:selfservice"
+    ]
+  },
+  {
+    "name": "package/selfservice/oidc",
+    "color": "0A28FD",
+    "aliases": [
+      "module:ss/oidc"
+    ]
+  },
+  {
+    "name": "package/selfservice/password",
+    "color": "0A28FD",
+    "aliases": [
+      "module:ss/password"
+    ]
+  },
+  {
+    "name": "package/selfservice/verification",
+    "color": "0A28FD",
+    "aliases": [
+      "module:verification"
+    ]
+  },
+  {
+    "name": "package/session",
+    "color": "0A28FD",
+    "aliases": [
+      "module:session"
     ]
   }
 ]
