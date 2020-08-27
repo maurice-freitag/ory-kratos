@@ -61,7 +61,7 @@ func (h *Handler) RegisterAdminRoutes(admin *x.RouterAdmin) {
 
 // swagger:route GET /self-service/recovery/api public initializeSelfServiceRecoveryViaAPIFlow
 //
-// Initialize Recovery Flow for API Clients
+// Initialize Browser-Based Account Recovery Flow
 //
 // This endpoint initiates a recovery flow for API clients such as mobile devices, smart TVs, and so on.
 //
@@ -155,7 +155,7 @@ type getSelfServiceRecoveryFlowParameters struct {
 
 // swagger:route GET /self-service/recovery/flows common public admin getSelfServiceRecoveryFlow
 //
-// Get information about a recovery flow
+// Get the Request Context of Browser-Based Recovery Flows
 //
 // This endpoint returns a recovery flow's context with, for example, error details and other information.
 //

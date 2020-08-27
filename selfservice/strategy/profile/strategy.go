@@ -120,7 +120,7 @@ func (s *Strategy) PopulateSettingsMethod(r *http.Request, id *identity.Identity
 
 // swagger:route POST /self-service/settings/methods/profile public completeSelfServiceSettingsFlowWithProfileMethod
 //
-// Complete Settings Flow with Profile Method
+// Complete the Browser-Based Settings Flow for Profile Data
 //
 // Use this endpoint to complete a settings flow by sending an identity's updated traits. This endpoint
 // behaves differently for API and browser flows.

@@ -80,7 +80,7 @@ func (h *Handler) NewRegistrationFlow(w http.ResponseWriter, r *http.Request, ft
 
 // swagger:route GET /self-service/registration/api public initializeSelfServiceRegistrationViaAPIFlow
 //
-// Initialize Registration Flow for API clients
+// Initialize Browser-Based Registration User Flow
 //
 // This endpoint initiates a registration flow for API clients such as mobile devices, smart TVs, and so on.
 //
@@ -174,7 +174,7 @@ type getSelfServiceRegistrationFlowParameters struct {
 
 // swagger:route GET /self-service/registration/flows common public admin getSelfServiceRegistrationFlow
 //
-// Get information about a registration flow
+// Get the Request Context of Browser-Based Registration User Flows
 //
 // This endpoint returns a registration flow's context with, for example, error details and other information.
 //

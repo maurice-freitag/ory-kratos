@@ -90,7 +90,7 @@ type initializeSelfServiceBrowserLoginFlow struct {
 
 // swagger:route GET /self-service/login/api public initializeSelfServiceLoginViaAPIFlow
 //
-// Initialize Login Flow for API clients
+// Initialize Browser-Based Login User Flow
 //
 // This endpoint initiates a login flow for API clients such as mobile devices, smart TVs, and so on.
 //
@@ -216,7 +216,7 @@ type getSelfServiceLoginFlow struct {
 
 // swagger:route GET /self-service/login/flows common public admin getSelfServiceLoginFlow
 //
-// Get information about a login flow
+// Get the Request Context Browser-Based Login User Flows
 //
 // This endpoint returns a login flow's context with, for example, error details and other information.
 //

@@ -76,7 +76,7 @@ func (p *CompleteSelfServiceSettingsFlowWithPasswordMethod) SetFlowID(rid uuid.U
 
 // swagger:route POST /self-service/settings/methods/password public completeSelfServiceSettingsFlowWithPasswordMethod
 //
-// Complete Settings Flow with Username/Email Password Method
+// Complete the Browser-Based Settings Flow for the Password Strategy
 //
 // Use this endpoint to complete a settings flow by sending an identity's updated password. This endpoint
 // behaves differently for API and browser flows.

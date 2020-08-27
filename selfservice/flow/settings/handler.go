@@ -105,7 +105,7 @@ func (h *Handler) NewFlow(w http.ResponseWriter, r *http.Request, i *identity.Id
 
 // swagger:route GET /self-service/settings/api public initializeSelfServiceSettingsViaAPIFlow
 //
-// Initialize Settings Flow for API Clients
+// Initialize Browser-Based Settings Flow
 //
 // This endpoint initiates a settings flow for API clients such as mobile devices, smart TVs, and so on.
 // You must provide a valid ORY Kratos Session Token for this endpoint to respond with HTTP 200 OK.
@@ -204,7 +204,7 @@ type getSelfServiceSettingsFlowParameters struct {
 
 // swagger:route GET /self-service/settings/flows common public admin getSelfServiceSettingsFlow
 //
-// Get Information About a Settings Flow
+// Get the Request Context of Browser-Based Settings Flows
 //
 // When accessing this endpoint through ORY Kratos' Public API you must ensure that either the ORY Kratos Session Cookie
 // or the ORY Kratos Session Token are set. The public endpoint does not return 404 status codes
