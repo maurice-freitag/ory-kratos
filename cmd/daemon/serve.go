@@ -5,6 +5,8 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/ory/kratos/metrics/prometheus"
+
 	"github.com/ory/analytics-go/v4"
 
 	"github.com/ory/x/flagx"
@@ -85,6 +87,7 @@ func serveAdmin(d driver.Driver, wg *sync.WaitGroup, cmd *cobra.Command, args []
 	r.RegisterAdminRoutes(router)
 	n.Use(NewNegroniLoggerMiddleware(l, "admin#"+c.SelfAdminURL().String()))
 	n.Use(sqa(cmd, d))
+	n.Use(d.Registry().PrometheusManager())
 
 	if tracer := d.Registry().Tracer(); tracer.IsLoaded() {
 		n.Use(tracer)
@@ -125,41 +128,27 @@ func sqa(cmd *cobra.Command, d driver.Driver) *metricsx.Service {
 				healthx.AliveCheckPath,
 				healthx.ReadyCheckPath,
 				healthx.VersionPath,
-
-				password.RouteRegistration,
-				password.RouteLogin,
-				password.RouteSettings,
-
-				oidc.RouteBase,
-
-				login.RouteInitBrowserFlow,
-				login.RouteInitAPIFlow,
-				login.RouteGetFlow,
-
-				logout.RouteBrowser,
-
-				registration.RouteInitBrowserFlow,
-				registration.RouteInitAPIFlow,
-				registration.RouteGetFlow,
-
-				session.RouteWhoami,
-				identity.RouteBase,
-
-				settings.RouteInitBrowserFlow,
-				settings.RouteInitAPIFlow,
-				settings.RouteGetFlow,
-
-				verification.RouteInitAPIFlow,
-				verification.RouteInitBrowserFlow,
-				verification.RouteGetFlow,
-
-				profile.RouteSettings,
-
-				link.RouteAdminCreateRecoveryLink,
-				link.RouteRecovery,
-				link.RouteVerification,
-
-				errorx.RouteGet,
+				"/auth/methods/oidc/",
+				password.RegistrationPath,
+				password.LoginPath,
+				oidc.BasePath,
+				login.BrowserLoginPath,
+				login.BrowserLoginRequestsPath,
+				logout.BrowserLogoutPath,
+				registration.BrowserRegistrationPath,
+				registration.BrowserRegistrationRequestsPath,
+				session.SessionsWhoamiPath,
+				identity.IdentitiesPath,
+				profile.PublicSettingsProfilePath,
+				settings.PublicPath,
+				settings.PublicRequestPath,
+				profile.PublicSettingsProfilePath,
+				verification.PublicVerificationCompletePath,
+				strings.ReplaceAll(strings.ReplaceAll(verification.PublicVerificationConfirmPath, ":via", "email"), ":code", ""),
+				strings.ReplaceAll(verification.PublicVerificationInitPath, ":via", "email"),
+				verification.PublicVerificationRequestPath,
+				errorx.ErrorsPath,
+				prometheus.MetricsPrometheusPath,
 			},
 			BuildVersion: d.Registry().BuildVersion(),
 			BuildHash:    d.Registry().BuildHash(),
