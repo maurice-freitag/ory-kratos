@@ -62,33 +62,7 @@ func (s *ManagerHTTP) CreateAndIssueCookie(ctx context.Context, w http.ResponseW
 
 func (s *ManagerHTTP) IssueCookie(ctx context.Context, w http.ResponseWriter, r *http.Request, session *Session) error {
 	cookie, _ := s.r.CookieManager().Get(r, s.cookieName)
-	if s.c.SessionDomain() != "" {
-		cookie.Options.Domain = s.c.SessionDomain()
-	}
-
-	old, err := s.FetchFromRequest(context.Background(), r)
-	if err != nil {
-		// No session was set prior -> regenerate anti-csrf token
-		_ = s.r.CSRFHandler().RegenerateToken(w, r)
-	} else if old.Identity.ID != session.Identity.ID {
-		// No session was set prior -> regenerate anti-csrf token
-		_ = s.r.CSRFHandler().RegenerateToken(w, r)
-	}
-
-	if s.c.SessionPath() != "" {
-		cookie.Options.Path = s.c.SessionPath()
-	}
-
-	if s.c.SessionSameSiteMode() != 0 {
-		cookie.Options.SameSite = s.c.SessionSameSiteMode()
-	}
-
-	cookie.Options.MaxAge = 0
-	if s.c.SessionPersistentCookie() {
-		cookie.Options.MaxAge = int(s.c.SessionLifespan().Seconds())
-	}
-
-	cookie.Values["session_token"] = session.Token
+	cookie.Values["sid"] = session.ID.String()
 	if err := cookie.Save(r, w); err != nil {
 		return errors.WithStack(err)
 	}
