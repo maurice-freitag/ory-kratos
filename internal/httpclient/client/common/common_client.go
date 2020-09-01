@@ -288,7 +288,7 @@ func (a *Client) GetSelfServiceError(params *GetSelfServiceErrorParams) (*GetSel
 }
 
 /*
-  GetSelfServiceLoginFlow gets information about a login flow
+  GetSelfServiceLoginFlow gets login flow
 
   This endpoint returns a login flow's context with, for example, error details and other information.
 
@@ -364,7 +364,7 @@ func (a *Client) GetSelfServiceRecoveryFlow(params *GetSelfServiceRecoveryFlowPa
 }
 
 /*
-  GetSelfServiceRegistrationFlow gets information about a registration flow
+  GetSelfServiceRegistrationFlow gets registration flow
 
   This endpoint returns a registration flow's context with, for example, error details and other information.
 
@@ -402,7 +402,7 @@ func (a *Client) GetSelfServiceRegistrationFlow(params *GetSelfServiceRegistrati
 }
 
 /*
-  GetSelfServiceSettingsFlow gets information about a settings flow
+  GetSelfServiceSettingsFlow gets settings flow
 
   When accessing this endpoint through ORY Kratos' Public API you must ensure that either the ORY Kratos Session Cookie
 or the ORY Kratos Session Token are set. The public endpoint does not return 404 status codes
@@ -444,7 +444,7 @@ func (a *Client) GetSelfServiceSettingsFlow(params *GetSelfServiceSettingsFlowPa
 }
 
 /*
-  GetSelfServiceVerificationFlow gets information about a verification flow
+  GetSelfServiceVerificationFlow gets verification flow
 
   This endpoint returns a verification flow's context with, for example, error details and other information.
 

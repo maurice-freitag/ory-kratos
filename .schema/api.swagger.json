@@ -1291,7 +1291,7 @@
           "public",
           "admin"
         ],
-        "summary": "Get information about a login flow",
+        "summary": "Get Login Flow",
         "operationId": "getSelfServiceLoginFlow",
         "parameters": [
           {
@@ -1561,12 +1561,6 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "recoveryFlow",
-            "schema": {
-              "$ref": "#/definitions/recoveryFlow"
-            }
-          },
           "302": {
             "description": "Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is\ntypically 201."
           },
@@ -1659,7 +1653,7 @@
           "public",
           "admin"
         ],
-        "summary": "Get information about a registration flow",
+        "summary": "Get Registration Flow",
         "operationId": "getSelfServiceRegistrationFlow",
         "parameters": [
           {
@@ -1838,7 +1832,7 @@
           "public",
           "admin"
         ],
-        "summary": "Get Information About a Settings Flow",
+        "summary": "Get Settings Flow",
         "operationId": "getSelfServiceSettingsFlow",
         "parameters": [
           {
@@ -2084,7 +2078,7 @@
           "public",
           "admin"
         ],
-        "summary": "Get information about a verification flow",
+        "summary": "Get Verification Flow",
         "operationId": "getSelfServiceVerificationFlow",
         "parameters": [
           {
@@ -2164,12 +2158,6 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "verificationFlow",
-            "schema": {
-              "$ref": "#/definitions/verificationFlow"
-            }
-          },
           "302": {
             "description": "Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is\ntypically 201."
           },
@@ -2503,14 +2491,9 @@
         "value",
         "verified",
         "via",
-        "status",
-        "expires_at"
+        "status"
       ],
       "properties": {
-        "expires_at": {
-          "type": "string",
-          "format": "date-time"
-        },
         "id": {
           "$ref": "#/definitions/UUID"
         },
