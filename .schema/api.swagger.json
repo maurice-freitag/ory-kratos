@@ -148,7 +148,7 @@
             "name": "Body",
             "in": "body",
             "schema": {
-              "$ref": "#/definitions/CreateIdentity"
+              "$ref": "#/definitions/CreateIdentityRequestPayload"
             }
           }
         ],
@@ -251,7 +251,7 @@
             "name": "Body",
             "in": "body",
             "schema": {
-              "$ref": "#/definitions/UpdateIdentity"
+              "$ref": "#/definitions/UpdateIdentityRequestPayload"
             }
           }
         ],
@@ -2283,23 +2283,7 @@
     }
   },
   "definitions": {
-    "CompleteSelfServiceSettingsFlowWithPasswordMethod": {
-      "type": "object",
-      "required": [
-        "password"
-      ],
-      "properties": {
-        "csrf_token": {
-          "description": "CSRFToken is the anti-CSRF token\n\ntype: string",
-          "type": "string"
-        },
-        "password": {
-          "description": "Password is the updated password\n\ntype: string",
-          "type": "string"
-        }
-      }
-    },
-    "CreateIdentity": {
+    "CreateIdentityRequestPayload": {
       "type": "object",
       "required": [
         "schema_id",
@@ -2313,22 +2297,6 @@
         "traits": {
           "description": "Traits represent an identity's traits. The identity is able to create, modify, and delete traits\nin a self-service manner. The input will always be validated against the JSON Schema defined\nin `schema_url`.",
           "type": "object"
-        }
-      }
-    },
-    "CreateRecoveryLink": {
-      "type": "object",
-      "required": [
-        "identity_id"
-      ],
-      "properties": {
-        "expires_in": {
-          "description": "Link Expires In\n\nThe recovery link will expire at that point in time. Defaults to the configuration value of\n`selfservice.flows.recovery.request_lifespan`.",
-          "type": "string",
-          "pattern": "^[0-9]+(ns|us|ms|s|m|h)$"
-        },
-        "identity_id": {
-          "$ref": "#/definitions/UUID"
         }
       }
     },
@@ -2468,7 +2436,7 @@
       "type": "string",
       "format": "uuid4"
     },
-    "UpdateIdentity": {
+    "UpdateIdentityRequestPayload": {
       "type": "object",
       "required": [
         "traits"

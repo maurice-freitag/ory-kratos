@@ -166,7 +166,6 @@ func (h *Handler) get(w http.ResponseWriter, r *http.Request, ps httprouter.Para
 }
 
 // swagger:parameters createIdentity
-// nolint:deadcode,unused
 type createIdentityParameters struct {
 	// in: body
 	Body CreateIdentity
@@ -233,7 +232,6 @@ func (h *Handler) create(w http.ResponseWriter, r *http.Request, _ httprouter.Pa
 }
 
 // swagger:parameters updateIdentity
-// nolint:deadcode,unused
 type updateIdentityParameters struct {
 	// ID must be set to the ID of identity you want to update
 	//
@@ -314,7 +312,6 @@ func (h *Handler) update(w http.ResponseWriter, r *http.Request, ps httprouter.P
 }
 
 // swagger:parameters deleteIdentity
-// nolint:deadcode,unused
 type deleteIdentityParameters struct {
 	// ID is the identity's ID.
 	//
