@@ -110,7 +110,13 @@
         ],
         "responses": {
           "200": {
-            "$ref": "#/responses/identityList"
+            "description": "A list of identities.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Identity"
+              }
+            }
           },
           "500": {
             "description": "genericError",
@@ -148,7 +154,10 @@
         ],
         "responses": {
           "201": {
-            "$ref": "#/responses/identityResponse"
+            "description": "A single identity.",
+            "schema": {
+              "$ref": "#/definitions/Identity"
+            }
           },
           "400": {
             "description": "genericError",
@@ -200,7 +209,10 @@
         ],
         "responses": {
           "200": {
-            "$ref": "#/responses/identityResponse"
+            "description": "A single identity.",
+            "schema": {
+              "$ref": "#/definitions/Identity"
+            }
           },
           "400": {
             "description": "genericError",
@@ -251,7 +263,10 @@
         ],
         "responses": {
           "200": {
-            "$ref": "#/responses/identityResponse"
+            "description": "A single identity.",
+            "schema": {
+              "$ref": "#/definitions/Identity"
+            }
           },
           "400": {
             "description": "genericError",
@@ -298,7 +313,7 @@
         ],
         "responses": {
           "204": {
-            "$ref": "#/responses/emptyResponse"
+            "description": "Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is\ntypically 201."
           },
           "404": {
             "description": "genericError",
@@ -328,7 +343,7 @@
         "operationId": "prometheus",
         "responses": {
           "200": {
-            "$ref": "#/responses/emptyResponse"
+            "description": "Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is\ntypically 201."
           }
         }
       }
@@ -427,7 +442,10 @@
         ],
         "responses": {
           "200": {
-            "$ref": "#/responses/schemaResponse"
+            "description": "The raw identity traits schema",
+            "schema": {
+              "type": "object"
+            }
           },
           "404": {
             "description": "genericError",
@@ -466,7 +484,7 @@
         ],
         "responses": {
           "302": {
-            "$ref": "#/responses/emptyResponse"
+            "description": "Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is\ntypically 201."
           },
           "500": {
             "description": "genericError",
@@ -491,7 +509,7 @@
         "operationId": "initializeSelfServiceBrowserLogoutFlow",
         "responses": {
           "302": {
-            "$ref": "#/responses/emptyResponse"
+            "description": "Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is\ntypically 201."
           },
           "500": {
             "description": "genericError",
@@ -516,7 +534,7 @@
         "operationId": "initializeSelfServiceRecoveryFlow",
         "responses": {
           "302": {
-            "$ref": "#/responses/emptyResponse"
+            "description": "Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is\ntypically 201."
           },
           "500": {
             "description": "genericError",
@@ -566,7 +584,7 @@
         ],
         "responses": {
           "302": {
-            "$ref": "#/responses/emptyResponse"
+            "description": "Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is\ntypically 201."
           },
           "500": {
             "description": "genericError",
@@ -591,7 +609,7 @@
         "operationId": "initializeSelfServiceBrowserRegistrationFlow",
         "responses": {
           "302": {
-            "$ref": "#/responses/emptyResponse"
+            "description": "Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is\ntypically 201."
           },
           "500": {
             "description": "genericError",
@@ -620,7 +638,7 @@
         "operationId": "completeSelfServiceBrowserSettingsOIDCSettingsFlow",
         "responses": {
           "302": {
-            "$ref": "#/responses/emptyResponse"
+            "description": "Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is\ntypically 201."
           },
           "500": {
             "description": "genericError",
@@ -939,7 +957,7 @@
         "operationId": "initializeSelfServiceSettingsFlow",
         "responses": {
           "302": {
-            "$ref": "#/responses/emptyResponse"
+            "description": "Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is\ntypically 201."
           },
           "500": {
             "description": "genericError",
@@ -968,7 +986,7 @@
         "operationId": "completeSelfServiceBrowserSettingsPasswordStrategyFlow",
         "responses": {
           "302": {
-            "$ref": "#/responses/emptyResponse"
+            "description": "Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is\ntypically 201."
           },
           "500": {
             "description": "genericError",
@@ -1014,7 +1032,7 @@
         ],
         "responses": {
           "302": {
-            "$ref": "#/responses/emptyResponse"
+            "description": "Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is\ntypically 201."
           },
           "500": {
             "description": "genericError",
@@ -1048,7 +1066,7 @@
         ],
         "responses": {
           "302": {
-            "$ref": "#/responses/emptyResponse"
+            "description": "Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is\ntypically 201."
           },
           "500": {
             "description": "genericError",
@@ -1093,7 +1111,7 @@
         ],
         "responses": {
           "302": {
-            "$ref": "#/responses/emptyResponse"
+            "description": "Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is\ntypically 201."
           },
           "500": {
             "description": "genericError",
@@ -1137,7 +1155,7 @@
         ],
         "responses": {
           "302": {
-            "$ref": "#/responses/emptyResponse"
+            "description": "Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is\ntypically 201."
           },
           "500": {
             "description": "genericError",
@@ -1175,7 +1193,10 @@
         ],
         "responses": {
           "200": {
-            "$ref": "#/responses/errorContainer"
+            "description": "User-facing error response",
+            "schema": {
+              "$ref": "#/definitions/errorContainer"
+            }
           },
           "403": {
             "description": "genericError",
@@ -2426,11 +2447,6 @@
       "format": "date-time",
       "title": "NullTime implements sql.NullTime functionality."
     },
-    "RWMutex": {
-      "description": "A RWMutex must not be copied after first use.\n\nIf a goroutine holds a RWMutex for reading and another goroutine might\ncall Lock, no goroutine should expect to be able to acquire a read lock\nuntil the initial read lock is released. In particular, this prohibits\nrecursive read locking. This is to ensure that the lock eventually becomes\navailable; a blocked Lock call excludes new readers from acquiring the\nlock.",
-      "type": "object",
-      "title": "A RWMutex is a reader/writer mutual exclusion lock.\nThe lock can be held by an arbitrary number of readers or a single writer.\nThe zero value for a RWMutex is an unlocked mutex."
-    },
     "RecoveryAddress": {
       "type": "object",
       "required": [
@@ -2464,7 +2480,10 @@
       "type": "string",
       "title": "Type is the flow type."
     },
-    "UUID": {"type": "string", "format": "uuid4"},
+    "UUID": {
+      "type": "string",
+      "format": "uuid4"
+    },
     "UpdateIdentityRequestPayload": {
       "type": "object",
       "required": [
@@ -2516,39 +2535,6 @@
     },
     "VerifiableAddressType": {
       "type": "string"
-    },
-    "completeSelfServiceBrowserSettingsOIDCFlowPayload": {
-      "type": "object",
-      "properties": {
-        "link": {
-          "description": "Link this provider\n\nEither this or `unlink` must be set.\n\ntype: string\nin: body",
-          "type": "string"
-        },
-        "request_id": {
-          "description": "RequestID is request ID.\n\nin: query",
-          "type": "string"
-        },
-        "unlink": {
-          "description": "Unlink this provider\n\nEither this or `link` must be set.\n\ntype: string\nin: body",
-          "type": "string"
-        }
-      }
-    },
-    "completeSelfServiceBrowserSettingsPasswordFlowPayload": {
-      "type": "object",
-      "required": [
-        "password"
-      ],
-      "properties": {
-        "password": {
-          "description": "Password is the updated password\n\ntype: string\nin: body",
-          "type": "string"
-        },
-        "request_id": {
-          "description": "RequestID is request ID.\n\nin: query",
-          "type": "string"
-        }
-      }
     },
     "completeSelfServiceBrowserSettingsStrategyProfileFlowPayload": {
       "type": "object",
@@ -2796,72 +2782,6 @@
         }
       }
     },
-    "loginRequestMethodConfigPayload": {
-      "type": "object",
-      "required": [
-        "action",
-        "method",
-        "fields"
-      ],
-      "properties": {
-        "action": {
-          "description": "Action should be used as the form action URL `\u003cform action=\"{{ .Action }}\" method=\"post\"\u003e`.",
-          "type": "string"
-        },
-        "fields": {
-          "$ref": "#/definitions/formFields"
-        },
-        "messages": {
-          "$ref": "#/definitions/Messages"
-        },
-        "method": {
-          "description": "Method is the form method (e.g. POST)",
-          "type": "string"
-        },
-        "providers": {
-          "description": "Providers is set for the \"oidc\" request method.",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/formField"
-          }
-        }
-      }
-    },
-    "oidcRequestMethodConfig": {
-      "type": "object",
-      "required": [
-        "action",
-        "method",
-        "fields"
-      ],
-      "properties": {
-        "action": {
-          "description": "Action should be used as the form action URL `\u003cform action=\"{{ .Action }}\" method=\"post\"\u003e`.",
-          "type": "string"
-        },
-        "fields": {
-          "$ref": "#/definitions/formFields"
-        },
-        "messages": {
-          "$ref": "#/definitions/Messages"
-        },
-        "method": {
-          "description": "Method is the form method (e.g. POST)",
-          "type": "string"
-        }
-      }
-    },
-    "oidcStrategyCredentialsConfig": {
-      "type": "object",
-      "properties": {
-        "providers": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ProviderCredentialsConfig"
-          }
-        }
-      }
-    },
     "recoveryRequest": {
       "description": "This request is used when an identity wants to recover their account.\n\nWe recommend reading the [Account Recovery Documentation](../self-service/flows/password-reset-account-recovery)",
       "type": "object",
@@ -2911,30 +2831,6 @@
         },
         "type": {
           "$ref": "#/definitions/Type"
-        }
-      }
-    },
-    "recoveryRequestConfigPayload": {
-      "type": "object",
-      "required": [
-        "action",
-        "method",
-        "fields"
-      ],
-      "properties": {
-        "action": {
-          "description": "Action should be used as the form action URL `\u003cform action=\"{{ .Action }}\" method=\"post\"\u003e`.",
-          "type": "string"
-        },
-        "fields": {
-          "$ref": "#/definitions/formFields"
-        },
-        "messages": {
-          "$ref": "#/definitions/Messages"
-        },
-        "method": {
-          "description": "Method is the form method (e.g. POST)",
-          "type": "string"
         }
       }
     },
@@ -3078,37 +2974,6 @@
         }
       }
     },
-    "registrationRequestMethodConfigPayload": {
-      "type": "object",
-      "required": [
-        "action",
-        "method",
-        "fields"
-      ],
-      "properties": {
-        "action": {
-          "description": "Action should be used as the form action URL `\u003cform action=\"{{ .Action }}\" method=\"post\"\u003e`.",
-          "type": "string"
-        },
-        "fields": {
-          "$ref": "#/definitions/formFields"
-        },
-        "messages": {
-          "$ref": "#/definitions/Messages"
-        },
-        "method": {
-          "description": "Method is the form method (e.g. POST)",
-          "type": "string"
-        },
-        "providers": {
-          "description": "Providers is set for the \"oidc\" request method.",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/formField"
-          }
-        }
-      }
-    },
     "session": {
       "type": "object",
       "required": [
@@ -3139,30 +3004,6 @@
         "issued_at": {
           "type": "string",
           "format": "date-time"
-        }
-      }
-    },
-    "settingsProfileFormConfig": {
-      "type": "object",
-      "required": [
-        "action",
-        "method",
-        "fields"
-      ],
-      "properties": {
-        "action": {
-          "description": "Action should be used as the form action URL `\u003cform action=\"{{ .Action }}\" method=\"post\"\u003e`.",
-          "type": "string"
-        },
-        "fields": {
-          "$ref": "#/definitions/formFields"
-        },
-        "messages": {
-          "$ref": "#/definitions/Messages"
-        },
-        "method": {
-          "description": "Method is the form method (e.g. POST)",
-          "type": "string"
         }
       }
     },
@@ -3219,30 +3060,6 @@
         },
         "type": {
           "$ref": "#/definitions/Type"
-        }
-      }
-    },
-    "settingsRequestConfigPayload": {
-      "type": "object",
-      "required": [
-        "action",
-        "method",
-        "fields"
-      ],
-      "properties": {
-        "action": {
-          "description": "Action should be used as the form action URL `\u003cform action=\"{{ .Action }}\" method=\"post\"\u003e`.",
-          "type": "string"
-        },
-        "fields": {
-          "$ref": "#/definitions/formFields"
-        },
-        "messages": {
-          "$ref": "#/definitions/Messages"
-        },
-        "method": {
-          "description": "Method is the form method (e.g. POST)",
-          "type": "string"
         }
       }
     },
@@ -3365,38 +3182,6 @@
           "description": "Version is the service's version.",
           "type": "string"
         }
-      }
-    }
-  },
-  "responses": {
-    "emptyResponse": {
-      "description": "Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is\ntypically 201."
-    },
-    "errorContainer": {
-      "description": "User-facing error response",
-      "schema": {
-        "$ref": "#/definitions/errorContainer"
-      }
-    },
-    "identityList": {
-      "description": "A list of identities.",
-      "schema": {
-        "type": "array",
-        "items": {
-          "$ref": "#/definitions/Identity"
-        }
-      }
-    },
-    "identityResponse": {
-      "description": "A single identity.",
-      "schema": {
-        "$ref": "#/definitions/Identity"
-      }
-    },
-    "schemaResponse": {
-      "description": "The raw identity traits schema",
-      "schema": {
-        "type": "object"
       }
     }
   },
