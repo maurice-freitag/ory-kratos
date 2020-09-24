@@ -287,7 +287,6 @@ func (c *HTMLForm) SetValue(name string, value interface{}) {
 
 	if f := c.getField(name); f != nil {
 		f.Value = value
-		f.Type = toFormType(name, value)
 		return
 	}
 	c.Fields = append(c.Fields, Field{
