@@ -7,6 +7,15 @@ title: Milestones and Roadmap
 
 _This milestone does not have a description._
 
+### [Bug](https://github.com/ory/kratos/labels/bug)
+
+Something is not working.
+
+#### Issues
+
+- [ ] Do not create system errors on duplicate credentials when linking oidc
+      providers ([kratos#694](https://github.com/ory/kratos/issues/694))
+
 ### [Feat](https://github.com/ory/kratos/labels/feat)
 
 New feature or request.
@@ -81,23 +90,6 @@ New feature or request.
       ([kratos#654](https://github.com/ory/kratos/issues/654))
 - [ ] Require identity deactivation before administrative deletion
       ([kratos#657](https://github.com/ory/kratos/issues/657))
-
-## [v0.6.0-alpha.1](https://github.com/ory/kratos/milestone/8)
-
-_This milestone does not have a description._
-
-### [Bug](https://github.com/ory/kratos/labels/bug)
-
-Something is not working.
-
-#### Issues
-
-- [ ] Document that identity information (traits, etc) are available to token
-      holders and backend systems
-      ([kratos#43](https://github.com/ory/kratos/issues/43)) -
-      [@hackerman](https://github.com/aeneasr)
-- [ ] Feature Request: Webhooks
-      ([kratos#271](https://github.com/ory/kratos/issues/271))
 
 ### [Docs](https://github.com/ory/kratos/labels/docs)
 
@@ -215,24 +207,12 @@ New feature or request.
 
 #### Pull Requests
 
-- [ ] feat: implement API-based self-service flows
-      ([kratos#624](https://github.com/ory/kratos/pull/624)) -
-      [@hackerman](https://github.com/aeneasr)
 - [x] fix: resolve identity admin api issues
       ([kratos#586](https://github.com/ory/kratos/pull/586)) -
       [@hackerman](https://github.com/aeneasr)
-
-### [Help wanted](https://github.com/ory/kratos/labels/help%20wanted)
-
-We are looking for help on this one.
-
-#### Issues
-
-- [ ] Design of the client cli
-      ([kratos#663](https://github.com/ory/kratos/issues/663)) -
-      [@Patrik](https://github.com/zepatrik)
-- [ ] Email field type changes on second request for request context during
-      registration flow ([kratos#670](https://github.com/ory/kratos/issues/670))
+- [x] feat: implement API-based self-service flows
+      ([kratos#624](https://github.com/ory/kratos/pull/624)) -
+      [@hackerman](https://github.com/aeneasr)
 
 ### [Docs](https://github.com/ory/kratos/labels/docs)
 
@@ -240,11 +220,11 @@ Affects documentation.
 
 #### Issues
 
-- [ ] Remove reverse proxy from node example and rely on port and the domain
-      parameter ([kratos#661](https://github.com/ory/kratos/issues/661)) -
-      [@hackerman](https://github.com/aeneasr)
 - [x] Document multi-tenant set up
       ([kratos#370](https://github.com/ory/kratos/issues/370))
+- [x] Remove reverse proxy from node example and rely on port and the domain
+      parameter ([kratos#661](https://github.com/ory/kratos/issues/661)) -
+      [@hackerman](https://github.com/aeneasr)
 
 ### [Rfc](https://github.com/ory/kratos/labels/rfc)
 
@@ -252,7 +232,7 @@ A request for comments to discuss and share ideas.
 
 #### Issues
 
-- [ ] Rename login/registration/recovery/... request to flow
+- [x] Rename login/registration/recovery/... request to flow
       ([kratos#635](https://github.com/ory/kratos/issues/635)) -
       [@hackerman](https://github.com/aeneasr)
 
@@ -262,7 +242,7 @@ Blocks milestones or other issues or pulls.
 
 #### Issues
 
-- [ ] Remove reverse proxy from node example and rely on port and the domain
+- [x] Remove reverse proxy from node example and rely on port and the domain
       parameter ([kratos#661](https://github.com/ory/kratos/issues/661)) -
       [@hackerman](https://github.com/aeneasr)
 - [x] Rename `request_lifespan` to `lifespan`
@@ -271,22 +251,6 @@ Blocks milestones or other issues or pulls.
 
 #### Pull Requests
 
-- [ ] feat: implement API-based self-service flows
-      ([kratos#624](https://github.com/ory/kratos/pull/624)) -
-      [@hackerman](https://github.com/aeneasr)
-
-### [Breaking change](https://github.com/ory/kratos/labels/breaking%20change)
-
-Changes behavior in a breaking manner.
-
-#### Issues
-
-- [x] Rename `request_lifespan` to `lifespan`
-      ([kratos#666](https://github.com/ory/kratos/issues/666)) -
-      [@hackerman](https://github.com/aeneasr)
-
-#### Pull Requests
-
-- [ ] feat: implement API-based self-service flows
+- [x] feat: implement API-based self-service flows
       ([kratos#624](https://github.com/ory/kratos/pull/624)) -
       [@hackerman](https://github.com/aeneasr)
