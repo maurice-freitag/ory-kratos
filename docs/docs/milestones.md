@@ -54,42 +54,24 @@ New feature or request.
 
 #### Issues
 
-- [ ] Implement Security Questions MFA
-      ([kratos#469](https://github.com/ory/kratos/issues/469))
-- [ ] Feature request: adjustable thresholds on how many times a password has
-      been in a breach according to haveibeenpwned
-      ([kratos#450](https://github.com/ory/kratos/issues/450))
-- [ ] Do not send credentials to hooks
-      ([kratos#77](https://github.com/ory/kratos/issues/77)) -
-      [@hackerman](https://github.com/aeneasr)
-- [ ] Implement immutable keyword in JSON Schema for Identity Traits
-      ([kratos#117](https://github.com/ory/kratos/issues/117))
-- [ ] Add filters to admin api
-      ([kratos#249](https://github.com/ory/kratos/issues/249))
-- [ ] Feature Request: Webhooks
-      ([kratos#271](https://github.com/ory/kratos/issues/271))
-- [ ] Support email verification paswordless login
-      ([kratos#286](https://github.com/ory/kratos/issues/286))
-- [ ] Support remote argon2 execution
-      ([kratos#357](https://github.com/ory/kratos/issues/357)) -
-      [@hackerman](https://github.com/aeneasr)
-- [ ] Implement identity state and administrative deactivation, deletion of
-      identities ([kratos#598](https://github.com/ory/kratos/issues/598)) -
-      [@hackerman](https://github.com/aeneasr)
-- [ ] SMTP Error spams the server logs
-      ([kratos#402](https://github.com/ory/kratos/issues/402))
-- [ ] Gracefully handle CSRF errors
-      ([kratos#91](https://github.com/ory/kratos/issues/91)) -
-      [@hackerman](https://github.com/aeneasr)
-- [ ] How to sign in with Twitter
-      ([kratos#517](https://github.com/ory/kratos/issues/517))
-- [ ] Add ability to import user credentials
-      ([kratos#605](https://github.com/ory/kratos/issues/605)) -
-      [@hackerman](https://github.com/aeneasr)
-- [ ] Throttling repeated login requests
-      ([kratos#654](https://github.com/ory/kratos/issues/654))
-- [ ] Require identity deactivation before administrative deletion
-      ([kratos#657](https://github.com/ory/kratos/issues/657))
+- [ ] Implement Security Questions MFA ([kratos#469](https://github.com/ory/kratos/issues/469))
+- [ ] Feature request: adjustable thresholds on how many times a password has been in a breach according to haveibeenpwned ([kratos#450](https://github.com/ory/kratos/issues/450))
+- [ ] Do not send credentials to hooks ([kratos#77](https://github.com/ory/kratos/issues/77)) - [@hackerman](https://github.com/aeneasr)
+- [ ] Implement immutable keyword in JSON Schema for Identity Traits ([kratos#117](https://github.com/ory/kratos/issues/117))
+- [ ] Add filters to admin api ([kratos#249](https://github.com/ory/kratos/issues/249))
+- [ ] Feature Request: Webhooks ([kratos#271](https://github.com/ory/kratos/issues/271))
+- [ ] Support email verification paswordless login ([kratos#286](https://github.com/ory/kratos/issues/286))
+- [ ] Prevent account enumeration for profile updates ([kratos#292](https://github.com/ory/kratos/issues/292)) - [@hackerman](https://github.com/aeneasr)
+- [ ] Support remote argon2 execution ([kratos#357](https://github.com/ory/kratos/issues/357)) - [@hackerman](https://github.com/aeneasr)
+- [ ] Implement identity state and administrative deactivation, deletion of identities ([kratos#598](https://github.com/ory/kratos/issues/598)) - [@hackerman](https://github.com/aeneasr)
+- [ ] SMTP Error spams the server logs ([kratos#402](https://github.com/ory/kratos/issues/402))
+- [ ] Gracefully handle CSRF errors ([kratos#91](https://github.com/ory/kratos/issues/91)) - [@hackerman](https://github.com/aeneasr)
+- [ ] How to sign in with Twitter ([kratos#517](https://github.com/ory/kratos/issues/517))
+- [ ] Add ability to import user credentials ([kratos#605](https://github.com/ory/kratos/issues/605)) - [@hackerman](https://github.com/aeneasr)
+- [ ] Throttling repeated login requests ([kratos#654](https://github.com/ory/kratos/issues/654))
+- [ ] Require identity deactivation before administrative deletion ([kratos#657](https://github.com/ory/kratos/issues/657))
+- [ ] Add return_to after logout ([kratos#702](https://github.com/ory/kratos/issues/702)) - [@Patrik](https://github.com/zepatrik)
+- [ ] Write CLI helper for recommending Argon2 parameters ([kratos#723](https://github.com/ory/kratos/issues/723))
 
 ### [Docs](https://github.com/ory/kratos/labels/docs)
 
@@ -159,9 +141,8 @@ Something is not working.
 
 #### Pull Requests
 
-- [ ] fix: escape jsx characters in api documentation
-      ([kratos#703](https://github.com/ory/kratos/pull/703)) -
-      [@hackerman](https://github.com/aeneasr)
+- [x] fix: escape jsx characters in api documentation ([kratos#703](https://github.com/ory/kratos/pull/703)) - [@hackerman](https://github.com/aeneasr)
+- [x] fix: mark flow methods' fields as required ([kratos#708](https://github.com/ory/kratos/pull/708)) - [@hackerman](https://github.com/aeneasr)
 
 ### [Feat](https://github.com/ory/kratos/labels/feat)
 
@@ -169,47 +150,22 @@ New feature or request.
 
 #### Issues
 
-- [ ] Design of the client cli
-      ([kratos#663](https://github.com/ory/kratos/issues/663)) -
-      [@Patrik](https://github.com/zepatrik)
-- [ ] Implement React SPA sample app
-      ([kratos#668](https://github.com/ory/kratos/issues/668)) -
-      [@hackerman](https://github.com/aeneasr)
-- [ ] Implement React Native sample application consuming API
-      ([kratos#667](https://github.com/ory/kratos/issues/667)) -
-      [@hackerman](https://github.com/aeneasr)
-- [ ] Rename strategy to method in internal APIs and Documentation
-      ([kratos#683](https://github.com/ory/kratos/issues/683)) -
-      [@hackerman](https://github.com/aeneasr)
-- [x] Implement JSON capabilities in ErrorHandler
-      ([kratos#61](https://github.com/ory/kratos/issues/61)) -
-      [@hackerman](https://github.com/aeneasr)
-- [x] Allow attaching credentials to identities in CRUD create
-      ([kratos#200](https://github.com/ory/kratos/issues/200))
-- [x] Move away from UUID-based challenges and responses
-      ([kratos#241](https://github.com/ory/kratos/issues/241)) -
-      [@hackerman](https://github.com/aeneasr)
-- [x] Add tests to prevent duplicate migration files
-      ([kratos#282](https://github.com/ory/kratos/issues/282)) -
-      [@Patrik](https://github.com/zepatrik)
-- [x] Session cookie (ory_kratos_session) expired time should be configurable
-      ([kratos#326](https://github.com/ory/kratos/issues/326)) -
-      [@hackerman](https://github.com/aeneasr)
-- [x] Can not update an identity using PUT /identities/{id}
-      ([kratos#435](https://github.com/ory/kratos/issues/435))
-- [x] Make session cookie 'domain' property configurable
-      ([kratos#516](https://github.com/ory/kratos/issues/516))
-- [x] Remove one of in-memory/on-disk SQLite e2e runners and replace with faster
-      test ([kratos#580](https://github.com/ory/kratos/issues/580)) -
-      [@Andreas Bucksteeg](https://github.com/tricky42)
-- [x] Password similarity policy is too strict
-      ([kratos#581](https://github.com/ory/kratos/issues/581)) -
-      [@Patrik](https://github.com/zepatrik)
-- [x] Implement a test-error for implementing the Error UI
-      ([kratos#610](https://github.com/ory/kratos/issues/610))
-- [x] Rename `request_lifespan` to `lifespan`
-      ([kratos#666](https://github.com/ory/kratos/issues/666)) -
-      [@hackerman](https://github.com/aeneasr)
+- [ ] Implement React SPA sample app ([kratos#668](https://github.com/ory/kratos/issues/668)) - [@hackerman](https://github.com/aeneasr)
+- [ ] Implement React Native sample application consuming API ([kratos#667](https://github.com/ory/kratos/issues/667)) - [@hackerman](https://github.com/aeneasr)
+- [ ] Rename strategy to method in internal APIs and Documentation ([kratos#683](https://github.com/ory/kratos/issues/683)) - [@hackerman](https://github.com/aeneasr)
+- [ ] Configurable CORS headers ([kratos#712](https://github.com/ory/kratos/issues/712)) - [@hackerman](https://github.com/aeneasr)
+- [x] Implement JSON capabilities in ErrorHandler ([kratos#61](https://github.com/ory/kratos/issues/61)) - [@hackerman](https://github.com/aeneasr)
+- [x] Allow attaching credentials to identities in CRUD create ([kratos#200](https://github.com/ory/kratos/issues/200))
+- [x] Move away from UUID-based challenges and responses ([kratos#241](https://github.com/ory/kratos/issues/241)) - [@hackerman](https://github.com/aeneasr)
+- [x] Add tests to prevent duplicate migration files ([kratos#282](https://github.com/ory/kratos/issues/282)) - [@Patrik](https://github.com/zepatrik)
+- [x] Session cookie (ory_kratos_session) expired time should be configurable ([kratos#326](https://github.com/ory/kratos/issues/326)) - [@hackerman](https://github.com/aeneasr)
+- [x] Can not update an identity using PUT /identities/{id} ([kratos#435](https://github.com/ory/kratos/issues/435))
+- [x] Make session cookie 'domain' property configurable ([kratos#516](https://github.com/ory/kratos/issues/516))
+- [x] Remove one of in-memory/on-disk SQLite e2e runners and replace with faster test ([kratos#580](https://github.com/ory/kratos/issues/580)) - [@Andreas Bucksteeg](https://github.com/tricky42)
+- [x] Password similarity policy is too strict ([kratos#581](https://github.com/ory/kratos/issues/581)) - [@Patrik](https://github.com/zepatrik)
+- [x] Implement a test-error for implementing the Error UI ([kratos#610](https://github.com/ory/kratos/issues/610))
+- [x] Design of the client cli ([kratos#663](https://github.com/ory/kratos/issues/663)) - [@Patrik](https://github.com/zepatrik)
+- [x] Rename `request_lifespan` to `lifespan` ([kratos#666](https://github.com/ory/kratos/issues/666)) - [@hackerman](https://github.com/aeneasr)
 
 #### Pull Requests
 
