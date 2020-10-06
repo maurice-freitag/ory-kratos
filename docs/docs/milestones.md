@@ -162,12 +162,9 @@ New feature or request.
 
 #### Pull Requests
 
-- [x] fix: resolve identity admin api issues
-      ([kratos#586](https://github.com/ory/kratos/pull/586)) -
-      [@hackerman](https://github.com/aeneasr)
-- [x] feat: implement API-based self-service flows
-      ([kratos#624](https://github.com/ory/kratos/pull/624)) -
-      [@hackerman](https://github.com/aeneasr)
+- [ ] feat: prepare v0.5.0 release ([kratos#736](https://github.com/ory/kratos/pull/736)) - [@hackerman](https://github.com/aeneasr)
+- [x] fix: resolve identity admin api issues ([kratos#586](https://github.com/ory/kratos/pull/586)) - [@hackerman](https://github.com/aeneasr)
+- [x] feat: implement API-based self-service flows ([kratos#624](https://github.com/ory/kratos/pull/624)) - [@hackerman](https://github.com/aeneasr)
 
 ### [Docs](https://github.com/ory/kratos/labels/docs)
 
@@ -180,6 +177,10 @@ Affects documentation.
 - [x] Remove reverse proxy from node example and rely on port and the domain
       parameter ([kratos#661](https://github.com/ory/kratos/issues/661)) -
       [@hackerman](https://github.com/aeneasr)
+
+#### Pull Requests
+
+- [ ] feat: prepare v0.5.0 release ([kratos#736](https://github.com/ory/kratos/pull/736)) - [@hackerman](https://github.com/aeneasr)
 
 ### [Rfc](https://github.com/ory/kratos/labels/rfc)
 
