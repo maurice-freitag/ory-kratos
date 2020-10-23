@@ -159,12 +159,7 @@ func (s *Strategy) handleRegistration(w http.ResponseWriter, r *http.Request, _ 
 		return
 	}
 
-	if err := decoderx.NewHTTP().Decode(r, &p,
-		decoderx.HTTPFormDecoder(),
-		option,
-		decoderx.HTTPDecoderSetIgnoreParseErrorsStrategy(decoderx.ParseErrorIgnoreConversionErrors),
-		decoderx.HTTPDecoderSetValidatePayloads(false),
-	); err != nil {
+	if err := flow.VerifyRequest(r, ar.Type, s.c.DisableAPIFlowEnforcement(), s.d.GenerateCSRFToken, p.CSRFToken); err != nil {
 		s.handleRegistrationError(w, r, ar, &p, err)
 		return
 	}
