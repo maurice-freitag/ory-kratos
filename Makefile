@@ -8,7 +8,6 @@ export GO111MODULE := on
 export PATH := .bin:${PATH}
 
 GO_DEPENDENCIES = github.com/ory/go-acc \
-				  github.com/sqs/goreturns \
 				  github.com/ory/x/tools/listx \
 				  github.com/markbates/pkger/cmd/pkger \
 				  github.com/golang/mock/mockgen \
@@ -104,8 +103,8 @@ quickstart-dev:
 
 # Formats the code
 .PHONY: format
-format: .bin/goreturns
-		goreturns -w -local github.com/ory $$(listx .)
+format: .bin/goimports
+		goimports -w -local github.com/ory .
 		cd docs; npm run format
 		npm run format
 
