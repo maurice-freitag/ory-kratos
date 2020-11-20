@@ -57,8 +57,10 @@ module.exports = {
   tagline: config.projectTagLine,
   url: `https://www.ory.sh/`,
   baseUrl: `/${config.projectSlug}/docs/`,
-  favicon: "img/favico.png",
-  organizationName: "ory", // Usually your GitHub org/user name.
+  favicon: 'img/favico.png',
+  onBrokenLinks: 'error',
+  onBrokenMarkdownLinks: 'error',
+  organizationName: 'ory', // Usually your GitHub org/user name.
   projectName: config.projectSlug, // Usually your repo name.
   themeConfig: {
     googleAnalytics: {
