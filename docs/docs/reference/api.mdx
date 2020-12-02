@@ -83,7 +83,6 @@ status will never refer to the cluster state, only to a single instance.
     {label: 'Java', value: 'java'}, {label: 'Python', value: 'python'}, {label: 'Ruby', value: 'ruby'}]}>
 <TabItem value="shell">
 
-
 ```shell
 curl -X GET /health/alive \
   -H 'Accept: application/json'
@@ -91,7 +90,6 @@ curl -X GET /health/alive \
 
 </TabItem>
 <TabItem value="go">
-
 
 ```go
 package main
@@ -121,7 +119,6 @@ func main() {
 </TabItem>
 <TabItem value="node">
 
-
 ```javascript
 const fetch = require('node-fetch')
 
@@ -141,7 +138,6 @@ fetch('/health/alive', {
 
 </TabItem>
 <TabItem value="java">
-
 
 ```java
 // This sample needs improvement.
@@ -169,7 +165,6 @@ System.out.println(response.toString());
 </TabItem>
 <TabItem value="python">
 
-
 ```python
 import requests
 
@@ -188,7 +183,6 @@ print r.json()
 </TabItem>
 <TabItem value="ruby">
 
-
 ```ruby
 require 'rest-client'
 require 'json'
@@ -205,7 +199,6 @@ p JSON.parse(result)
 
 </TabItem>
 </Tabs>
-
 
 <a id="opIdisInstanceReady"></a>
 
@@ -256,7 +249,6 @@ status will never refer to the cluster state, only to a single instance.
     {label: 'Java', value: 'java'}, {label: 'Python', value: 'python'}, {label: 'Ruby', value: 'ruby'}]}>
 <TabItem value="shell">
 
-
 ```shell
 curl -X GET /health/ready \
   -H 'Accept: application/json'
@@ -264,7 +256,6 @@ curl -X GET /health/ready \
 
 </TabItem>
 <TabItem value="go">
-
 
 ```go
 package main
@@ -294,7 +285,6 @@ func main() {
 </TabItem>
 <TabItem value="node">
 
-
 ```javascript
 const fetch = require('node-fetch')
 
@@ -314,7 +304,6 @@ fetch('/health/ready', {
 
 </TabItem>
 <TabItem value="java">
-
 
 ```java
 // This sample needs improvement.
@@ -342,7 +331,6 @@ System.out.println(response.toString());
 </TabItem>
 <TabItem value="python">
 
-
 ```python
 import requests
 
@@ -361,7 +349,6 @@ print r.json()
 </TabItem>
 <TabItem value="ruby">
 
-
 ```ruby
 require 'rest-client'
 require 'json'
@@ -378,7 +365,6 @@ p JSON.parse(result)
 
 </TabItem>
 </Tabs>
-
 
 <a id="ory-kratos-administrative-endpoints"></a>
 
@@ -491,7 +477,6 @@ Status Code **200**
     {label: 'Java', value: 'java'}, {label: 'Python', value: 'python'}, {label: 'Ruby', value: 'ruby'}]}>
 <TabItem value="shell">
 
-
 ```shell
 curl -X GET /identities \
   -H 'Accept: application/json'
@@ -499,7 +484,6 @@ curl -X GET /identities \
 
 </TabItem>
 <TabItem value="go">
-
 
 ```go
 package main
@@ -529,7 +513,6 @@ func main() {
 </TabItem>
 <TabItem value="node">
 
-
 ```javascript
 const fetch = require('node-fetch')
 
@@ -549,7 +532,6 @@ fetch('/identities', {
 
 </TabItem>
 <TabItem value="java">
-
 
 ```java
 // This sample needs improvement.
@@ -577,7 +559,6 @@ System.out.println(response.toString());
 </TabItem>
 <TabItem value="python">
 
-
 ```python
 import requests
 
@@ -596,7 +577,6 @@ print r.json()
 </TabItem>
 <TabItem value="ruby">
 
-
 ```ruby
 require 'rest-client'
 require 'json'
@@ -613,7 +593,6 @@ p JSON.parse(result)
 
 </TabItem>
 </Tabs>
-
 
 <a id="opIdcreateIdentity"></a>
 
@@ -702,7 +681,6 @@ Learn how identities work in
     {label: 'Java', value: 'java'}, {label: 'Python', value: 'python'}, {label: 'Ruby', value: 'ruby'}]}>
 <TabItem value="shell">
 
-
 ```shell
 curl -X POST /identities \
   -H 'Content-Type: application/json' \  -H 'Accept: application/json'
@@ -710,7 +688,6 @@ curl -X POST /identities \
 
 </TabItem>
 <TabItem value="go">
-
 
 ```go
 package main
@@ -741,7 +718,6 @@ func main() {
 </TabItem>
 <TabItem value="node">
 
-
 ```javascript
 const fetch = require('node-fetch');
 const input = '{
@@ -765,7 +741,6 @@ fetch('/identities', {
 
 </TabItem>
 <TabItem value="java">
-
 
 ```java
 // This sample needs improvement.
@@ -793,7 +768,6 @@ System.out.println(response.toString());
 </TabItem>
 <TabItem value="python">
 
-
 ```python
 import requests
 
@@ -813,7 +787,6 @@ print r.json()
 </TabItem>
 <TabItem value="ruby">
 
-
 ```ruby
 require 'rest-client'
 require 'json'
@@ -831,7 +804,6 @@ p JSON.parse(result)
 
 </TabItem>
 </Tabs>
-
 
 <a id="opIdgetIdentity"></a>
 
@@ -905,7 +877,6 @@ Learn how identities work in
     {label: 'Java', value: 'java'}, {label: 'Python', value: 'python'}, {label: 'Ruby', value: 'ruby'}]}>
 <TabItem value="shell">
 
-
 ```shell
 curl -X GET /identities/{id} \
   -H 'Accept: application/json'
@@ -913,7 +884,6 @@ curl -X GET /identities/{id} \
 
 </TabItem>
 <TabItem value="go">
-
 
 ```go
 package main
@@ -943,7 +913,6 @@ func main() {
 </TabItem>
 <TabItem value="node">
 
-
 ```javascript
 const fetch = require('node-fetch')
 
@@ -963,7 +932,6 @@ fetch('/identities/{id}', {
 
 </TabItem>
 <TabItem value="java">
-
 
 ```java
 // This sample needs improvement.
@@ -991,7 +959,6 @@ System.out.println(response.toString());
 </TabItem>
 <TabItem value="python">
 
-
 ```python
 import requests
 
@@ -1010,7 +977,6 @@ print r.json()
 </TabItem>
 <TabItem value="ruby">
 
-
 ```ruby
 require 'rest-client'
 require 'json'
@@ -1027,7 +993,6 @@ p JSON.parse(result)
 
 </TabItem>
 </Tabs>
-
 
 <a id="opIdupdateIdentity"></a>
 
@@ -1120,7 +1085,6 @@ Learn how identities work in
     {label: 'Java', value: 'java'}, {label: 'Python', value: 'python'}, {label: 'Ruby', value: 'ruby'}]}>
 <TabItem value="shell">
 
-
 ```shell
 curl -X PUT /identities/{id} \
   -H 'Content-Type: application/json' \  -H 'Accept: application/json'
@@ -1128,7 +1092,6 @@ curl -X PUT /identities/{id} \
 
 </TabItem>
 <TabItem value="go">
-
 
 ```go
 package main
@@ -1159,7 +1122,6 @@ func main() {
 </TabItem>
 <TabItem value="node">
 
-
 ```javascript
 const fetch = require('node-fetch');
 const input = '{
@@ -1183,7 +1145,6 @@ fetch('/identities/{id}', {
 
 </TabItem>
 <TabItem value="java">
-
 
 ```java
 // This sample needs improvement.
@@ -1211,7 +1172,6 @@ System.out.println(response.toString());
 </TabItem>
 <TabItem value="python">
 
-
 ```python
 import requests
 
@@ -1231,7 +1191,6 @@ print r.json()
 </TabItem>
 <TabItem value="ruby">
 
-
 ```ruby
 require 'rest-client'
 require 'json'
@@ -1249,7 +1208,6 @@ p JSON.parse(result)
 
 </TabItem>
 </Tabs>
-
 
 <a id="opIddeleteIdentity"></a>
 
@@ -1317,7 +1275,6 @@ Learn how identities work in
     {label: 'Java', value: 'java'}, {label: 'Python', value: 'python'}, {label: 'Ruby', value: 'ruby'}]}>
 <TabItem value="shell">
 
-
 ```shell
 curl -X DELETE /identities/{id} \
   -H 'Accept: application/json'
@@ -1325,7 +1282,6 @@ curl -X DELETE /identities/{id} \
 
 </TabItem>
 <TabItem value="go">
-
 
 ```go
 package main
@@ -1355,7 +1311,6 @@ func main() {
 </TabItem>
 <TabItem value="node">
 
-
 ```javascript
 const fetch = require('node-fetch')
 
@@ -1375,7 +1330,6 @@ fetch('/identities/{id}', {
 
 </TabItem>
 <TabItem value="java">
-
 
 ```java
 // This sample needs improvement.
@@ -1403,7 +1357,6 @@ System.out.println(response.toString());
 </TabItem>
 <TabItem value="python">
 
-
 ```python
 import requests
 
@@ -1422,7 +1375,6 @@ print r.json()
 </TabItem>
 <TabItem value="ruby">
 
-
 ```ruby
 require 'rest-client'
 require 'json'
@@ -1439,7 +1391,6 @@ p JSON.parse(result)
 
 </TabItem>
 </Tabs>
-
 
 <a id="opIdprometheus"></a>
 
@@ -1482,7 +1433,6 @@ your-deployment-like-so:-responses"
     {label: 'Java', value: 'java'}, {label: 'Python', value: 'python'}, {label: 'Ruby', value: 'ruby'}]}>
 <TabItem value="shell">
 
-
 ```shell
 curl -X GET /metrics/prometheus
 
@@ -1490,7 +1440,6 @@ curl -X GET /metrics/prometheus
 
 </TabItem>
 <TabItem value="go">
-
 
 ```go
 package main
@@ -1517,7 +1466,6 @@ func main() {
 </TabItem>
 <TabItem value="node">
 
-
 ```javascript
 const fetch = require('node-fetch')
 
@@ -1532,7 +1480,6 @@ fetch('/metrics/prometheus', {
 
 </TabItem>
 <TabItem value="java">
-
 
 ```java
 // This sample needs improvement.
@@ -1560,7 +1507,6 @@ System.out.println(response.toString());
 </TabItem>
 <TabItem value="python">
 
-
 ```python
 import requests
 
@@ -1574,7 +1520,6 @@ print r.json()
 </TabItem>
 <TabItem value="ruby">
 
-
 ```ruby
 require 'rest-client'
 require 'json'
@@ -1587,7 +1532,6 @@ p JSON.parse(result)
 
 </TabItem>
 </Tabs>
-
 
 <a id="opIdcreateRecoveryLink"></a>
 
@@ -1653,7 +1597,6 @@ for them to recover (or activate) their account.
     {label: 'Java', value: 'java'}, {label: 'Python', value: 'python'}, {label: 'Ruby', value: 'ruby'}]}>
 <TabItem value="shell">
 
-
 ```shell
 curl -X POST /recovery/link \
   -H 'Content-Type: application/json' \  -H 'Accept: application/json'
@@ -1661,7 +1604,6 @@ curl -X POST /recovery/link \
 
 </TabItem>
 <TabItem value="go">
-
 
 ```go
 package main
@@ -1692,7 +1634,6 @@ func main() {
 </TabItem>
 <TabItem value="node">
 
-
 ```javascript
 const fetch = require('node-fetch');
 const input = '{
@@ -1716,7 +1657,6 @@ fetch('/recovery/link', {
 
 </TabItem>
 <TabItem value="java">
-
 
 ```java
 // This sample needs improvement.
@@ -1744,7 +1684,6 @@ System.out.println(response.toString());
 </TabItem>
 <TabItem value="python">
 
-
 ```python
 import requests
 
@@ -1764,7 +1703,6 @@ print r.json()
 </TabItem>
 <TabItem value="ruby">
 
-
 ```ruby
 require 'rest-client'
 require 'json'
@@ -1782,7 +1720,6 @@ p JSON.parse(result)
 
 </TabItem>
 </Tabs>
-
 
 <a id="ory-kratos-public-endpoints"></a>
 
@@ -1841,7 +1778,6 @@ Get a Traits Schema Definition
     {label: 'Java', value: 'java'}, {label: 'Python', value: 'python'}, {label: 'Ruby', value: 'ruby'}]}>
 <TabItem value="shell">
 
-
 ```shell
 curl -X GET /schemas/{id} \
   -H 'Accept: application/json'
@@ -1849,7 +1785,6 @@ curl -X GET /schemas/{id} \
 
 </TabItem>
 <TabItem value="go">
-
 
 ```go
 package main
@@ -1879,7 +1814,6 @@ func main() {
 </TabItem>
 <TabItem value="node">
 
-
 ```javascript
 const fetch = require('node-fetch')
 
@@ -1899,7 +1833,6 @@ fetch('/schemas/{id}', {
 
 </TabItem>
 <TabItem value="java">
-
 
 ```java
 // This sample needs improvement.
@@ -1927,7 +1860,6 @@ System.out.println(response.toString());
 </TabItem>
 <TabItem value="python">
 
-
 ```python
 import requests
 
@@ -1946,7 +1878,6 @@ print r.json()
 </TabItem>
 <TabItem value="ruby">
 
-
 ```ruby
 require 'rest-client'
 require 'json'
@@ -1963,7 +1894,6 @@ p JSON.parse(result)
 
 </TabItem>
 </Tabs>
-
 
 <a id="opIdinitializeSelfServiceBrowserLogoutFlow"></a>
 
@@ -2027,7 +1957,6 @@ More information can be found at
     {label: 'Java', value: 'java'}, {label: 'Python', value: 'python'}, {label: 'Ruby', value: 'ruby'}]}>
 <TabItem value="shell">
 
-
 ```shell
 curl -X GET /self-service/browser/flows/logout \
   -H 'Accept: application/json'
@@ -2035,7 +1964,6 @@ curl -X GET /self-service/browser/flows/logout \
 
 </TabItem>
 <TabItem value="go">
-
 
 ```go
 package main
@@ -2065,7 +1993,6 @@ func main() {
 </TabItem>
 <TabItem value="node">
 
-
 ```javascript
 const fetch = require('node-fetch')
 
@@ -2085,7 +2012,6 @@ fetch('/self-service/browser/flows/logout', {
 
 </TabItem>
 <TabItem value="java">
-
 
 ```java
 // This sample needs improvement.
@@ -2113,7 +2039,6 @@ System.out.println(response.toString());
 </TabItem>
 <TabItem value="python">
 
-
 ```python
 import requests
 
@@ -2132,7 +2057,6 @@ print r.json()
 </TabItem>
 <TabItem value="ruby">
 
-
 ```ruby
 require 'rest-client'
 require 'json'
@@ -2149,7 +2073,6 @@ p JSON.parse(result)
 
 </TabItem>
 </Tabs>
-
 
 <a id="opIdcompleteSelfServiceBrowserSettingsOIDCSettingsFlow"></a>
 
@@ -2209,7 +2132,6 @@ More information can be found at
     {label: 'Java', value: 'java'}, {label: 'Python', value: 'python'}, {label: 'Ruby', value: 'ruby'}]}>
 <TabItem value="shell">
 
-
 ```shell
 curl -X POST /self-service/browser/flows/registration/strategies/oidc/settings/connections \
   -H 'Accept: application/json'
@@ -2217,7 +2139,6 @@ curl -X POST /self-service/browser/flows/registration/strategies/oidc/settings/c
 
 </TabItem>
 <TabItem value="go">
-
 
 ```go
 package main
@@ -2247,7 +2168,6 @@ func main() {
 </TabItem>
 <TabItem value="node">
 
-
 ```javascript
 const fetch = require('node-fetch')
 
@@ -2270,7 +2190,6 @@ fetch(
 
 </TabItem>
 <TabItem value="java">
-
 
 ```java
 // This sample needs improvement.
@@ -2298,7 +2217,6 @@ System.out.println(response.toString());
 </TabItem>
 <TabItem value="python">
 
-
 ```python
 import requests
 
@@ -2317,7 +2235,6 @@ print r.json()
 </TabItem>
 <TabItem value="ruby">
 
-
 ```ruby
 require 'rest-client'
 require 'json'
@@ -2334,7 +2251,6 @@ p JSON.parse(result)
 
 </TabItem>
 </Tabs>
-
 
 <a id="opIdgetSelfServiceError"></a>
 
@@ -2764,7 +2680,6 @@ traits: {}
     {label: 'Java', value: 'java'}, {label: 'Python', value: 'python'}, {label: 'Ruby', value: 'ruby'}]}>
 <TabItem value="shell">
 
-
 ```shell
 curl -X GET /self-service/errors?error=string \
   -H 'Accept: application/json'
@@ -2772,7 +2687,6 @@ curl -X GET /self-service/errors?error=string \
 
 </TabItem>
 <TabItem value="go">
-
 
 ```go
 package main
@@ -2802,7 +2716,6 @@ func main() {
 </TabItem>
 <TabItem value="node">
 
-
 ```javascript
 const fetch = require('node-fetch')
 
@@ -2822,7 +2735,6 @@ fetch('/self-service/errors?error=string', {
 
 </TabItem>
 <TabItem value="java">
-
 
 ```java
 // This sample needs improvement.
@@ -2850,7 +2762,6 @@ System.out.println(response.toString());
 </TabItem>
 <TabItem value="python">
 
-
 ```python
 import requests
 
@@ -2870,7 +2781,6 @@ print r.json()
 </TabItem>
 <TabItem value="ruby">
 
-
 ```ruby
 require 'rest-client'
 require 'json'
@@ -2888,7 +2798,6 @@ p JSON.parse(result)
 
 </TabItem>
 </Tabs>
-
 
 <a id="opIdinitializeSelfServiceLoginViaAPIFlow"></a>
 
@@ -4000,7 +3909,6 @@ _Error response_
     {label: 'Java', value: 'java'}, {label: 'Python', value: 'python'}, {label: 'Ruby', value: 'ruby'}]}>
 <TabItem value="shell">
 
-
 ```shell
 curl -X GET /self-service/login/api \
   -H 'Accept: application/json'
@@ -4008,7 +3916,6 @@ curl -X GET /self-service/login/api \
 
 </TabItem>
 <TabItem value="go">
-
 
 ```go
 package main
@@ -4038,7 +3945,6 @@ func main() {
 </TabItem>
 <TabItem value="node">
 
-
 ```javascript
 const fetch = require('node-fetch')
 
@@ -4058,7 +3964,6 @@ fetch('/self-service/login/api', {
 
 </TabItem>
 <TabItem value="java">
-
 
 ```java
 // This sample needs improvement.
@@ -4086,7 +3991,6 @@ System.out.println(response.toString());
 </TabItem>
 <TabItem value="python">
 
-
 ```python
 import requests
 
@@ -4105,7 +4009,6 @@ print r.json()
 </TabItem>
 <TabItem value="ruby">
 
-
 ```ruby
 require 'rest-client'
 require 'json'
@@ -4122,7 +4025,6 @@ p JSON.parse(result)
 
 </TabItem>
 </Tabs>
-
 
 <a id="opIdinitializeSelfServiceLoginViaBrowserFlow"></a>
 
@@ -4185,7 +4087,6 @@ More information can be found at
     {label: 'Java', value: 'java'}, {label: 'Python', value: 'python'}, {label: 'Ruby', value: 'ruby'}]}>
 <TabItem value="shell">
 
-
 ```shell
 curl -X GET /self-service/login/browser \
   -H 'Accept: application/json'
@@ -4193,7 +4094,6 @@ curl -X GET /self-service/login/browser \
 
 </TabItem>
 <TabItem value="go">
-
 
 ```go
 package main
@@ -4223,7 +4123,6 @@ func main() {
 </TabItem>
 <TabItem value="node">
 
-
 ```javascript
 const fetch = require('node-fetch')
 
@@ -4243,7 +4142,6 @@ fetch('/self-service/login/browser', {
 
 </TabItem>
 <TabItem value="java">
-
 
 ```java
 // This sample needs improvement.
@@ -4271,7 +4169,6 @@ System.out.println(response.toString());
 </TabItem>
 <TabItem value="python">
 
-
 ```python
 import requests
 
@@ -4290,7 +4187,6 @@ print r.json()
 </TabItem>
 <TabItem value="ruby">
 
-
 ```ruby
 require 'rest-client'
 require 'json'
@@ -4307,7 +4203,6 @@ p JSON.parse(result)
 
 </TabItem>
 </Tabs>
-
 
 <a id="opIdgetSelfServiceLoginFlow"></a>
 
@@ -4491,7 +4386,6 @@ application (e.g. `/login?flow=abcde`).
     {label: 'Java', value: 'java'}, {label: 'Python', value: 'python'}, {label: 'Ruby', value: 'ruby'}]}>
 <TabItem value="shell">
 
-
 ```shell
 curl -X GET /self-service/login/flows?id=string \
   -H 'Accept: application/json'
@@ -4499,7 +4393,6 @@ curl -X GET /self-service/login/flows?id=string \
 
 </TabItem>
 <TabItem value="go">
-
 
 ```go
 package main
@@ -4529,7 +4422,6 @@ func main() {
 </TabItem>
 <TabItem value="node">
 
-
 ```javascript
 const fetch = require('node-fetch')
 
@@ -4549,7 +4441,6 @@ fetch('/self-service/login/flows?id=string', {
 
 </TabItem>
 <TabItem value="java">
-
 
 ```java
 // This sample needs improvement.
@@ -4577,7 +4468,6 @@ System.out.println(response.toString());
 </TabItem>
 <TabItem value="python">
 
-
 ```python
 import requests
 
@@ -4597,7 +4487,6 @@ print r.json()
 </TabItem>
 <TabItem value="ruby">
 
-
 ```ruby
 require 'rest-client'
 require 'json'
@@ -4615,7 +4504,6 @@ p JSON.parse(result)
 
 </TabItem>
 </Tabs>
-
 
 <a id="opIdcompleteSelfServiceLoginFlowWithPasswordMethod"></a>
 
@@ -4732,7 +4620,6 @@ password: string
     {label: 'Java', value: 'java'}, {label: 'Python', value: 'python'}, {label: 'Ruby', value: 'ruby'}]}>
 <TabItem value="shell">
 
-
 ```shell
 curl -X POST /self-service/login/methods/password?flow=string \
   -H 'Content-Type: application/json' \  -H 'Accept: application/json'
@@ -4740,7 +4627,6 @@ curl -X POST /self-service/login/methods/password?flow=string \
 
 </TabItem>
 <TabItem value="go">
-
 
 ```go
 package main
@@ -4771,7 +4657,6 @@ func main() {
 </TabItem>
 <TabItem value="node">
 
-
 ```javascript
 const fetch = require('node-fetch');
 const input = '{
@@ -4796,7 +4681,6 @@ fetch('/self-service/login/methods/password?flow=string', {
 
 </TabItem>
 <TabItem value="java">
-
 
 ```java
 // This sample needs improvement.
@@ -4824,7 +4708,6 @@ System.out.println(response.toString());
 </TabItem>
 <TabItem value="python">
 
-
 ```python
 import requests
 
@@ -4845,7 +4728,6 @@ print r.json()
 </TabItem>
 <TabItem value="ruby">
 
-
 ```ruby
 require 'rest-client'
 require 'json'
@@ -4864,7 +4746,6 @@ p JSON.parse(result)
 
 </TabItem>
 </Tabs>
-
 
 <a id="opIdinitializeSelfServiceRecoveryViaAPIFlow"></a>
 
@@ -5013,7 +4894,6 @@ More information can be found at
     {label: 'Java', value: 'java'}, {label: 'Python', value: 'python'}, {label: 'Ruby', value: 'ruby'}]}>
 <TabItem value="shell">
 
-
 ```shell
 curl -X GET /self-service/recovery/api \
   -H 'Accept: application/json'
@@ -5021,7 +4901,6 @@ curl -X GET /self-service/recovery/api \
 
 </TabItem>
 <TabItem value="go">
-
 
 ```go
 package main
@@ -5051,7 +4930,6 @@ func main() {
 </TabItem>
 <TabItem value="node">
 
-
 ```javascript
 const fetch = require('node-fetch')
 
@@ -5071,7 +4949,6 @@ fetch('/self-service/recovery/api', {
 
 </TabItem>
 <TabItem value="java">
-
 
 ```java
 // This sample needs improvement.
@@ -5099,7 +4976,6 @@ System.out.println(response.toString());
 </TabItem>
 <TabItem value="python">
 
-
 ```python
 import requests
 
@@ -5118,7 +4994,6 @@ print r.json()
 </TabItem>
 <TabItem value="ruby">
 
-
 ```ruby
 require 'rest-client'
 require 'json'
@@ -5135,7 +5010,6 @@ p JSON.parse(result)
 
 </TabItem>
 </Tabs>
-
 
 <a id="opIdinitializeSelfServiceRecoveryViaBrowserFlow"></a>
 
@@ -5198,7 +5072,6 @@ More information can be found at
     {label: 'Java', value: 'java'}, {label: 'Python', value: 'python'}, {label: 'Ruby', value: 'ruby'}]}>
 <TabItem value="shell">
 
-
 ```shell
 curl -X GET /self-service/recovery/browser \
   -H 'Accept: application/json'
@@ -5206,7 +5079,6 @@ curl -X GET /self-service/recovery/browser \
 
 </TabItem>
 <TabItem value="go">
-
 
 ```go
 package main
@@ -5236,7 +5108,6 @@ func main() {
 </TabItem>
 <TabItem value="node">
 
-
 ```javascript
 const fetch = require('node-fetch')
 
@@ -5256,7 +5127,6 @@ fetch('/self-service/recovery/browser', {
 
 </TabItem>
 <TabItem value="java">
-
 
 ```java
 // This sample needs improvement.
@@ -5284,7 +5154,6 @@ System.out.println(response.toString());
 </TabItem>
 <TabItem value="python">
 
-
 ```python
 import requests
 
@@ -5303,7 +5172,6 @@ print r.json()
 </TabItem>
 <TabItem value="ruby">
 
-
 ```ruby
 require 'rest-client'
 require 'json'
@@ -5320,7 +5188,6 @@ p JSON.parse(result)
 
 </TabItem>
 </Tabs>
-
 
 <a id="opIdgetSelfServiceRecoveryFlow"></a>
 
@@ -5467,7 +5334,6 @@ your application (e.g. `/recovery?flow=abcde`).
     {label: 'Java', value: 'java'}, {label: 'Python', value: 'python'}, {label: 'Ruby', value: 'ruby'}]}>
 <TabItem value="shell">
 
-
 ```shell
 curl -X GET /self-service/recovery/flows?id=string \
   -H 'Accept: application/json'
@@ -5475,7 +5341,6 @@ curl -X GET /self-service/recovery/flows?id=string \
 
 </TabItem>
 <TabItem value="go">
-
 
 ```go
 package main
@@ -5505,7 +5370,6 @@ func main() {
 </TabItem>
 <TabItem value="node">
 
-
 ```javascript
 const fetch = require('node-fetch')
 
@@ -5525,7 +5389,6 @@ fetch('/self-service/recovery/flows?id=string', {
 
 </TabItem>
 <TabItem value="java">
-
 
 ```java
 // This sample needs improvement.
@@ -5553,7 +5416,6 @@ System.out.println(response.toString());
 </TabItem>
 <TabItem value="python">
 
-
 ```python
 import requests
 
@@ -5573,7 +5435,6 @@ print r.json()
 </TabItem>
 <TabItem value="ruby">
 
-
 ```ruby
 require 'rest-client'
 require 'json'
@@ -5591,7 +5452,6 @@ p JSON.parse(result)
 
 </TabItem>
 </Tabs>
-
 
 <a id="opIdcompleteSelfServiceRecoveryFlowWithLinkMethod"></a>
 
@@ -5775,7 +5635,6 @@ format: uuid
     {label: 'Java', value: 'java'}, {label: 'Python', value: 'python'}, {label: 'Ruby', value: 'ruby'}]}>
 <TabItem value="shell">
 
-
 ```shell
 curl -X POST /self-service/recovery/methods/link \
   -H 'Content-Type: application/json' \  -H 'Accept: application/json'
@@ -5783,7 +5642,6 @@ curl -X POST /self-service/recovery/methods/link \
 
 </TabItem>
 <TabItem value="go">
-
 
 ```go
 package main
@@ -5814,7 +5672,6 @@ func main() {
 </TabItem>
 <TabItem value="node">
 
-
 ```javascript
 const fetch = require('node-fetch');
 const input = '{
@@ -5838,7 +5695,6 @@ fetch('/self-service/recovery/methods/link', {
 
 </TabItem>
 <TabItem value="java">
-
 
 ```java
 // This sample needs improvement.
@@ -5866,7 +5722,6 @@ System.out.println(response.toString());
 </TabItem>
 <TabItem value="python">
 
-
 ```python
 import requests
 
@@ -5886,7 +5741,6 @@ print r.json()
 </TabItem>
 <TabItem value="ruby">
 
-
 ```ruby
 require 'rest-client'
 require 'json'
@@ -5904,7 +5758,6 @@ p JSON.parse(result)
 
 </TabItem>
 </Tabs>
-
 
 <a id="opIdinitializeSelfServiceRegistrationViaAPIFlow"></a>
 
@@ -6089,7 +5942,6 @@ More information can be found at
     {label: 'Java', value: 'java'}, {label: 'Python', value: 'python'}, {label: 'Ruby', value: 'ruby'}]}>
 <TabItem value="shell">
 
-
 ```shell
 curl -X GET /self-service/registration/api \
   -H 'Accept: application/json'
@@ -6097,7 +5949,6 @@ curl -X GET /self-service/registration/api \
 
 </TabItem>
 <TabItem value="go">
-
 
 ```go
 package main
@@ -6127,7 +5978,6 @@ func main() {
 </TabItem>
 <TabItem value="node">
 
-
 ```javascript
 const fetch = require('node-fetch')
 
@@ -6147,7 +5997,6 @@ fetch('/self-service/registration/api', {
 
 </TabItem>
 <TabItem value="java">
-
 
 ```java
 // This sample needs improvement.
@@ -6175,7 +6024,6 @@ System.out.println(response.toString());
 </TabItem>
 <TabItem value="python">
 
-
 ```python
 import requests
 
@@ -6194,7 +6042,6 @@ print r.json()
 </TabItem>
 <TabItem value="ruby">
 
-
 ```ruby
 require 'rest-client'
 require 'json'
@@ -6211,7 +6058,6 @@ p JSON.parse(result)
 
 </TabItem>
 </Tabs>
-
 
 <a id="opIdinitializeSelfServiceRegistrationViaBrowserFlow"></a>
 
@@ -6279,7 +6125,6 @@ More information can be found at
     {label: 'Java', value: 'java'}, {label: 'Python', value: 'python'}, {label: 'Ruby', value: 'ruby'}]}>
 <TabItem value="shell">
 
-
 ```shell
 curl -X GET /self-service/registration/browser \
   -H 'Accept: application/json'
@@ -6287,7 +6132,6 @@ curl -X GET /self-service/registration/browser \
 
 </TabItem>
 <TabItem value="go">
-
 
 ```go
 package main
@@ -6317,7 +6161,6 @@ func main() {
 </TabItem>
 <TabItem value="node">
 
-
 ```javascript
 const fetch = require('node-fetch')
 
@@ -6337,7 +6180,6 @@ fetch('/self-service/registration/browser', {
 
 </TabItem>
 <TabItem value="java">
-
 
 ```java
 // This sample needs improvement.
@@ -6365,7 +6207,6 @@ System.out.println(response.toString());
 </TabItem>
 <TabItem value="python">
 
-
 ```python
 import requests
 
@@ -6384,7 +6225,6 @@ print r.json()
 </TabItem>
 <TabItem value="ruby">
 
-
 ```ruby
 require 'rest-client'
 require 'json'
@@ -6401,7 +6241,6 @@ p JSON.parse(result)
 
 </TabItem>
 </Tabs>
-
 
 <a id="opIdgetSelfServiceRegistrationFlow"></a>
 
@@ -6584,7 +6423,6 @@ application (e.g. `/registration?flow=abcde`).
     {label: 'Java', value: 'java'}, {label: 'Python', value: 'python'}, {label: 'Ruby', value: 'ruby'}]}>
 <TabItem value="shell">
 
-
 ```shell
 curl -X GET /self-service/registration/flows?id=string \
   -H 'Accept: application/json'
@@ -6592,7 +6430,6 @@ curl -X GET /self-service/registration/flows?id=string \
 
 </TabItem>
 <TabItem value="go">
-
 
 ```go
 package main
@@ -6622,7 +6459,6 @@ func main() {
 </TabItem>
 <TabItem value="node">
 
-
 ```javascript
 const fetch = require('node-fetch')
 
@@ -6642,7 +6478,6 @@ fetch('/self-service/registration/flows?id=string', {
 
 </TabItem>
 <TabItem value="java">
-
 
 ```java
 // This sample needs improvement.
@@ -6670,7 +6505,6 @@ System.out.println(response.toString());
 </TabItem>
 <TabItem value="python">
 
-
 ```python
 import requests
 
@@ -6690,7 +6524,6 @@ print r.json()
 </TabItem>
 <TabItem value="ruby">
 
-
 ```ruby
 require 'rest-client'
 require 'json'
@@ -6708,7 +6541,6 @@ p JSON.parse(result)
 
 </TabItem>
 </Tabs>
-
 
 <a id="opIdcompleteSelfServiceRegistrationFlowWithPasswordMethod"></a>
 
@@ -6846,7 +6678,6 @@ More information can be found at
     {label: 'Java', value: 'java'}, {label: 'Python', value: 'python'}, {label: 'Ruby', value: 'ruby'}]}>
 <TabItem value="shell">
 
-
 ```shell
 curl -X POST /self-service/registration/methods/password \
   -H 'Content-Type: application/json' \  -H 'Accept: application/json'
@@ -6854,7 +6685,6 @@ curl -X POST /self-service/registration/methods/password \
 
 </TabItem>
 <TabItem value="go">
-
 
 ```go
 package main
@@ -6885,7 +6715,6 @@ func main() {
 </TabItem>
 <TabItem value="node">
 
-
 ```javascript
 const fetch = require('node-fetch')
 const input = '{}'
@@ -6907,7 +6736,6 @@ fetch('/self-service/registration/methods/password', {
 
 </TabItem>
 <TabItem value="java">
-
 
 ```java
 // This sample needs improvement.
@@ -6935,7 +6763,6 @@ System.out.println(response.toString());
 </TabItem>
 <TabItem value="python">
 
-
 ```python
 import requests
 
@@ -6955,7 +6782,6 @@ print r.json()
 </TabItem>
 <TabItem value="ruby">
 
-
 ```ruby
 require 'rest-client'
 require 'json'
@@ -6973,7 +6799,6 @@ p JSON.parse(result)
 
 </TabItem>
 </Tabs>
-
 
 <a id="opIdinitializeSelfServiceSettingsViaAPIFlow"></a>
 
@@ -7146,7 +6971,6 @@ More information can be found at
     {label: 'Java', value: 'java'}, {label: 'Python', value: 'python'}, {label: 'Ruby', value: 'ruby'}]}>
 <TabItem value="shell">
 
-
 ```shell
 curl -X GET /self-service/settings/api \
   -H 'Accept: application/json' \  -H 'X-Session-Token: API_KEY'
@@ -7154,7 +6978,6 @@ curl -X GET /self-service/settings/api \
 
 </TabItem>
 <TabItem value="go">
-
 
 ```go
 package main
@@ -7185,7 +7008,6 @@ func main() {
 </TabItem>
 <TabItem value="node">
 
-
 ```javascript
 const fetch = require('node-fetch')
 
@@ -7206,7 +7028,6 @@ fetch('/self-service/settings/api', {
 
 </TabItem>
 <TabItem value="java">
-
 
 ```java
 // This sample needs improvement.
@@ -7234,7 +7055,6 @@ System.out.println(response.toString());
 </TabItem>
 <TabItem value="python">
 
-
 ```python
 import requests
 
@@ -7254,7 +7074,6 @@ print r.json()
 </TabItem>
 <TabItem value="ruby">
 
-
 ```ruby
 require 'rest-client'
 require 'json'
@@ -7272,7 +7091,6 @@ p JSON.parse(result)
 
 </TabItem>
 </Tabs>
-
 
 <a id="opIdinitializeSelfServiceSettingsViaBrowserFlow"></a>
 
@@ -7341,7 +7159,6 @@ More information can be found at
     {label: 'Java', value: 'java'}, {label: 'Python', value: 'python'}, {label: 'Ruby', value: 'ruby'}]}>
 <TabItem value="shell">
 
-
 ```shell
 curl -X GET /self-service/settings/browser \
   -H 'Accept: application/json' \  -H 'X-Session-Token: API_KEY'
@@ -7349,7 +7166,6 @@ curl -X GET /self-service/settings/browser \
 
 </TabItem>
 <TabItem value="go">
-
 
 ```go
 package main
@@ -7380,7 +7196,6 @@ func main() {
 </TabItem>
 <TabItem value="node">
 
-
 ```javascript
 const fetch = require('node-fetch')
 
@@ -7401,7 +7216,6 @@ fetch('/self-service/settings/browser', {
 
 </TabItem>
 <TabItem value="java">
-
 
 ```java
 // This sample needs improvement.
@@ -7429,7 +7243,6 @@ System.out.println(response.toString());
 </TabItem>
 <TabItem value="python">
 
-
 ```python
 import requests
 
@@ -7449,7 +7262,6 @@ print r.json()
 </TabItem>
 <TabItem value="ruby">
 
-
 ```ruby
 require 'rest-client'
 require 'json'
@@ -7467,7 +7279,6 @@ p JSON.parse(result)
 
 </TabItem>
 </Tabs>
-
 
 <a id="opIdgetSelfServiceSettingsFlow"></a>
 
@@ -7646,7 +7457,6 @@ application (e.g. `/settings?flow=abcde`).
     {label: 'Java', value: 'java'}, {label: 'Python', value: 'python'}, {label: 'Ruby', value: 'ruby'}]}>
 <TabItem value="shell">
 
-
 ```shell
 curl -X GET /self-service/settings/flows?id=string \
   -H 'Accept: application/json' \  -H 'X-Session-Token: API_KEY'
@@ -7654,7 +7464,6 @@ curl -X GET /self-service/settings/flows?id=string \
 
 </TabItem>
 <TabItem value="go">
-
 
 ```go
 package main
@@ -7685,7 +7494,6 @@ func main() {
 </TabItem>
 <TabItem value="node">
 
-
 ```javascript
 const fetch = require('node-fetch')
 
@@ -7706,7 +7514,6 @@ fetch('/self-service/settings/flows?id=string', {
 
 </TabItem>
 <TabItem value="java">
-
 
 ```java
 // This sample needs improvement.
@@ -7734,7 +7541,6 @@ System.out.println(response.toString());
 </TabItem>
 <TabItem value="python">
 
-
 ```python
 import requests
 
@@ -7755,7 +7561,6 @@ print r.json()
 </TabItem>
 <TabItem value="ruby">
 
-
 ```ruby
 require 'rest-client'
 require 'json'
@@ -7774,7 +7579,6 @@ p JSON.parse(result)
 
 </TabItem>
 </Tabs>
-
 
 <a id="opIdcompleteSelfServiceSettingsFlowWithPasswordMethod"></a>
 
@@ -7999,7 +7803,6 @@ password: string
     {label: 'Java', value: 'java'}, {label: 'Python', value: 'python'}, {label: 'Ruby', value: 'ruby'}]}>
 <TabItem value="shell">
 
-
 ```shell
 curl -X POST /self-service/settings/methods/password \
   -H 'Content-Type: application/json' \  -H 'Accept: application/json' \  -H 'X-Session-Token: API_KEY'
@@ -8007,7 +7810,6 @@ curl -X POST /self-service/settings/methods/password \
 
 </TabItem>
 <TabItem value="go">
-
 
 ```go
 package main
@@ -8039,7 +7841,6 @@ func main() {
 </TabItem>
 <TabItem value="node">
 
-
 ```javascript
 const fetch = require('node-fetch');
 const input = '{
@@ -8063,7 +7864,6 @@ fetch('/self-service/settings/methods/password', {
 
 </TabItem>
 <TabItem value="java">
-
 
 ```java
 // This sample needs improvement.
@@ -8091,7 +7891,6 @@ System.out.println(response.toString());
 </TabItem>
 <TabItem value="python">
 
-
 ```python
 import requests
 
@@ -8112,7 +7911,6 @@ print r.json()
 </TabItem>
 <TabItem value="ruby">
 
-
 ```ruby
 require 'rest-client'
 require 'json'
@@ -8131,7 +7929,6 @@ p JSON.parse(result)
 
 </TabItem>
 </Tabs>
-
 
 <a id="opIdcompleteSelfServiceSettingsFlowWithProfileMethod"></a>
 
@@ -8328,7 +8125,6 @@ More information can be found at
     {label: 'Java', value: 'java'}, {label: 'Python', value: 'python'}, {label: 'Ruby', value: 'ruby'}]}>
 <TabItem value="shell">
 
-
 ```shell
 curl -X POST /self-service/settings/methods/profile \
   -H 'Content-Type: application/json' \  -H 'Accept: application/json' \  -H 'X-Session-Token: API_KEY'
@@ -8336,7 +8132,6 @@ curl -X POST /self-service/settings/methods/profile \
 
 </TabItem>
 <TabItem value="go">
-
 
 ```go
 package main
@@ -8368,7 +8163,6 @@ func main() {
 </TabItem>
 <TabItem value="node">
 
-
 ```javascript
 const fetch = require('node-fetch')
 const input = '{}'
@@ -8391,7 +8185,6 @@ fetch('/self-service/settings/methods/profile', {
 
 </TabItem>
 <TabItem value="java">
-
 
 ```java
 // This sample needs improvement.
@@ -8419,7 +8212,6 @@ System.out.println(response.toString());
 </TabItem>
 <TabItem value="python">
 
-
 ```python
 import requests
 
@@ -8440,7 +8232,6 @@ print r.json()
 </TabItem>
 <TabItem value="ruby">
 
-
 ```ruby
 require 'rest-client'
 require 'json'
@@ -8459,7 +8250,6 @@ p JSON.parse(result)
 
 </TabItem>
 </Tabs>
-
 
 <a id="opIdinitializeSelfServiceVerificationViaAPIFlow"></a>
 
@@ -8605,7 +8395,6 @@ More information can be found at
     {label: 'Java', value: 'java'}, {label: 'Python', value: 'python'}, {label: 'Ruby', value: 'ruby'}]}>
 <TabItem value="shell">
 
-
 ```shell
 curl -X GET /self-service/verification/api \
   -H 'Accept: application/json'
@@ -8613,7 +8402,6 @@ curl -X GET /self-service/verification/api \
 
 </TabItem>
 <TabItem value="go">
-
 
 ```go
 package main
@@ -8643,7 +8431,6 @@ func main() {
 </TabItem>
 <TabItem value="node">
 
-
 ```javascript
 const fetch = require('node-fetch')
 
@@ -8663,7 +8450,6 @@ fetch('/self-service/verification/api', {
 
 </TabItem>
 <TabItem value="java">
-
 
 ```java
 // This sample needs improvement.
@@ -8691,7 +8477,6 @@ System.out.println(response.toString());
 </TabItem>
 <TabItem value="python">
 
-
 ```python
 import requests
 
@@ -8710,7 +8495,6 @@ print r.json()
 </TabItem>
 <TabItem value="ruby">
 
-
 ```ruby
 require 'rest-client'
 require 'json'
@@ -8727,7 +8511,6 @@ p JSON.parse(result)
 
 </TabItem>
 </Tabs>
-
 
 <a id="opIdinitializeSelfServiceVerificationViaBrowserFlow"></a>
 
@@ -8789,7 +8572,6 @@ More information can be found at
     {label: 'Java', value: 'java'}, {label: 'Python', value: 'python'}, {label: 'Ruby', value: 'ruby'}]}>
 <TabItem value="shell">
 
-
 ```shell
 curl -X GET /self-service/verification/browser \
   -H 'Accept: application/json'
@@ -8797,7 +8579,6 @@ curl -X GET /self-service/verification/browser \
 
 </TabItem>
 <TabItem value="go">
-
 
 ```go
 package main
@@ -8827,7 +8608,6 @@ func main() {
 </TabItem>
 <TabItem value="node">
 
-
 ```javascript
 const fetch = require('node-fetch')
 
@@ -8847,7 +8627,6 @@ fetch('/self-service/verification/browser', {
 
 </TabItem>
 <TabItem value="java">
-
 
 ```java
 // This sample needs improvement.
@@ -8875,7 +8654,6 @@ System.out.println(response.toString());
 </TabItem>
 <TabItem value="python">
 
-
 ```python
 import requests
 
@@ -8894,7 +8672,6 @@ print r.json()
 </TabItem>
 <TabItem value="ruby">
 
-
 ```ruby
 require 'rest-client'
 require 'json'
@@ -8911,7 +8688,6 @@ p JSON.parse(result)
 
 </TabItem>
 </Tabs>
-
 
 <a id="opIdgetSelfServiceVerificationFlow"></a>
 
@@ -9058,7 +8834,6 @@ your application (e.g. `/verification?flow=abcde`).
     {label: 'Java', value: 'java'}, {label: 'Python', value: 'python'}, {label: 'Ruby', value: 'ruby'}]}>
 <TabItem value="shell">
 
-
 ```shell
 curl -X GET /self-service/verification/flows?id=string \
   -H 'Accept: application/json'
@@ -9066,7 +8841,6 @@ curl -X GET /self-service/verification/flows?id=string \
 
 </TabItem>
 <TabItem value="go">
-
 
 ```go
 package main
@@ -9096,7 +8870,6 @@ func main() {
 </TabItem>
 <TabItem value="node">
 
-
 ```javascript
 const fetch = require('node-fetch')
 
@@ -9116,7 +8889,6 @@ fetch('/self-service/verification/flows?id=string', {
 
 </TabItem>
 <TabItem value="java">
-
 
 ```java
 // This sample needs improvement.
@@ -9144,7 +8916,6 @@ System.out.println(response.toString());
 </TabItem>
 <TabItem value="python">
 
-
 ```python
 import requests
 
@@ -9164,7 +8935,6 @@ print r.json()
 </TabItem>
 <TabItem value="ruby">
 
-
 ```ruby
 require 'rest-client'
 require 'json'
@@ -9182,7 +8952,6 @@ p JSON.parse(result)
 
 </TabItem>
 </Tabs>
-
 
 <a id="opIdcompleteSelfServiceVerificationFlowWithLinkMethod"></a>
 
@@ -9367,7 +9136,6 @@ format: uuid
     {label: 'Java', value: 'java'}, {label: 'Python', value: 'python'}, {label: 'Ruby', value: 'ruby'}]}>
 <TabItem value="shell">
 
-
 ```shell
 curl -X POST /self-service/verification/methods/link \
   -H 'Content-Type: application/json' \  -H 'Accept: application/json'
@@ -9375,7 +9143,6 @@ curl -X POST /self-service/verification/methods/link \
 
 </TabItem>
 <TabItem value="go">
-
 
 ```go
 package main
@@ -9406,7 +9173,6 @@ func main() {
 </TabItem>
 <TabItem value="node">
 
-
 ```javascript
 const fetch = require('node-fetch');
 const input = '{
@@ -9430,7 +9196,6 @@ fetch('/self-service/verification/methods/link', {
 
 </TabItem>
 <TabItem value="java">
-
 
 ```java
 // This sample needs improvement.
@@ -9458,7 +9223,6 @@ System.out.println(response.toString());
 </TabItem>
 <TabItem value="python">
 
-
 ```python
 import requests
 
@@ -9478,7 +9242,6 @@ print r.json()
 </TabItem>
 <TabItem value="ruby">
 
-
 ```ruby
 require 'rest-client'
 require 'json'
@@ -9496,7 +9259,6 @@ p JSON.parse(result)
 
 </TabItem>
 </Tabs>
-
 
 <a id="opIdrevokeSession"></a>
 
@@ -9572,7 +9334,6 @@ Flow instead.
     {label: 'Java', value: 'java'}, {label: 'Python', value: 'python'}, {label: 'Ruby', value: 'ruby'}]}>
 <TabItem value="shell">
 
-
 ```shell
 curl -X DELETE /sessions \
   -H 'Content-Type: application/json' \  -H 'Accept: application/json'
@@ -9580,7 +9341,6 @@ curl -X DELETE /sessions \
 
 </TabItem>
 <TabItem value="go">
-
 
 ```go
 package main
@@ -9611,7 +9371,6 @@ func main() {
 </TabItem>
 <TabItem value="node">
 
-
 ```javascript
 const fetch = require('node-fetch');
 const input = '{
@@ -9634,7 +9393,6 @@ fetch('/sessions', {
 
 </TabItem>
 <TabItem value="java">
-
 
 ```java
 // This sample needs improvement.
@@ -9662,7 +9420,6 @@ System.out.println(response.toString());
 </TabItem>
 <TabItem value="python">
 
-
 ```python
 import requests
 
@@ -9682,7 +9439,6 @@ print r.json()
 </TabItem>
 <TabItem value="ruby">
 
-
 ```ruby
 require 'rest-client'
 require 'json'
@@ -9700,7 +9456,6 @@ p JSON.parse(result)
 
 </TabItem>
 </Tabs>
-
 
 <a id="opIdwhoami"></a>
 
@@ -9791,7 +9546,6 @@ This endpoint is useful for reverse proxies and API Gateways.
     {label: 'Java', value: 'java'}, {label: 'Python', value: 'python'}, {label: 'Ruby', value: 'ruby'}]}>
 <TabItem value="shell">
 
-
 ```shell
 curl -X GET /sessions/whoami \
   -H 'Accept: application/json' \  -H 'Cookie: string' \  -H 'X-Session-Token: API_KEY'
@@ -9799,7 +9553,6 @@ curl -X GET /sessions/whoami \
 
 </TabItem>
 <TabItem value="go">
-
 
 ```go
 package main
@@ -9831,7 +9584,6 @@ func main() {
 </TabItem>
 <TabItem value="node">
 
-
 ```javascript
 const fetch = require('node-fetch')
 
@@ -9853,7 +9605,6 @@ fetch('/sessions/whoami', {
 
 </TabItem>
 <TabItem value="java">
-
 
 ```java
 // This sample needs improvement.
@@ -9881,7 +9632,6 @@ System.out.println(response.toString());
 </TabItem>
 <TabItem value="python">
 
-
 ```python
 import requests
 
@@ -9902,7 +9652,6 @@ print r.json()
 </TabItem>
 <TabItem value="ruby">
 
-
 ```ruby
 require 'rest-client'
 require 'json'
@@ -9921,7 +9670,6 @@ p JSON.parse(result)
 
 </TabItem>
 </Tabs>
-
 
 <a id="ory-kratos-version"></a>
 
@@ -9975,7 +9723,6 @@ status will never refer to the cluster state, only to a single instance.
     {label: 'Java', value: 'java'}, {label: 'Python', value: 'python'}, {label: 'Ruby', value: 'ruby'}]}>
 <TabItem value="shell">
 
-
 ```shell
 curl -X GET /version \
   -H 'Accept: application/json'
@@ -9983,7 +9730,6 @@ curl -X GET /version \
 
 </TabItem>
 <TabItem value="go">
-
 
 ```go
 package main
@@ -10013,7 +9759,6 @@ func main() {
 </TabItem>
 <TabItem value="node">
 
-
 ```javascript
 const fetch = require('node-fetch')
 
@@ -10033,7 +9778,6 @@ fetch('/version', {
 
 </TabItem>
 <TabItem value="java">
-
 
 ```java
 // This sample needs improvement.
@@ -10061,7 +9805,6 @@ System.out.println(response.toString());
 </TabItem>
 <TabItem value="python">
 
-
 ```python
 import requests
 
@@ -10080,7 +9823,6 @@ print r.json()
 </TabItem>
 <TabItem value="ruby">
 
-
 ```ruby
 require 'rest-client'
 require 'json'
@@ -10097,7 +9839,6 @@ p JSON.parse(result)
 
 </TabItem>
 </Tabs>
-
 
 ## Schemas
 
