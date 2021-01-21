@@ -1,6 +1,5 @@
 disallowAdditionalPropertiesIfNotPresent: true
-packageName: client
-generateInterfaces: true
+packageName: kratos
+generateInterfaces: false
 isGoSubmodule: false
 structPrefix: true
-enumClassPrefix: true
