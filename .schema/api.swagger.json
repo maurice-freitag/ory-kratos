@@ -2614,10 +2614,11 @@
       }
     },
     "errorContainer": {
+      "description": "ErrorContainer ErrorContainer ErrorContainer error container",
       "type": "object",
       "required": [
-        "errors",
-        "id"
+        "id",
+        "errors"
       ],
       "properties": {
         "errors": {
@@ -2667,7 +2668,7 @@
       }
     },
     "formFields": {
-      "description": "FormFields Fields contains multiple fields",
+      "description": "Fields contains multiple fields",
       "type": "array",
       "items": {
         "$ref": "#/definitions/formField"
@@ -2841,11 +2842,11 @@
       }
     },
     "loginViaApiResponse": {
-      "description": "LoginViaAPIResponse LoginViaAPIResponse The Response for Login Flows via API",
+      "description": "The Response for Login Flows via API",
       "type": "object",
       "required": [
-        "session_token",
-        "session"
+        "session",
+        "session_token"
       ],
       "properties": {
         "session": {
@@ -3094,14 +3095,13 @@
       }
     },
     "session": {
-      "description": "Session Session session",
       "type": "object",
       "required": [
-        "id",
-        "expires_at",
         "authenticated_at",
-        "issued_at",
-        "identity"
+        "expires_at",
+        "id",
+        "identity",
+        "issued_at"
       ],
       "properties": {
         "active": {
@@ -3109,12 +3109,10 @@
           "type": "boolean"
         },
         "authenticated_at": {
-          "description": "authenticated at",
           "type": "string",
           "format": "date-time"
         },
         "expires_at": {
-          "description": "expires at",
           "type": "string",
           "format": "date-time"
         },
@@ -3125,7 +3123,6 @@
           "$ref": "#/definitions/Identity"
         },
         "issued_at": {
-          "description": "issued at",
           "type": "string",
           "format": "date-time"
         }
@@ -3310,12 +3307,11 @@
       }
     },
     "verificationFlowMethodConfig": {
-      "description": "VerificationFlowMethodConfig VerificationFlowMethodConfig verification flow method config",
       "type": "object",
       "required": [
         "action",
-        "method",
-        "fields"
+        "fields",
+        "method"
       ],
       "properties": {
         "action": {
@@ -3335,6 +3331,7 @@
       }
     },
     "version": {
+      "description": "Version Version Version Version Version version",
       "type": "object",
       "properties": {
         "version": {
