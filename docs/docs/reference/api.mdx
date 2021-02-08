@@ -10405,6 +10405,8 @@ verification flow with link method_
 }
 ```
 
+_ErrorContainer ErrorContainer ErrorContainer ErrorContainer error container_
+
 #### Properties
 
 | Name   | Type                | Required | Restrictions | Description             |
@@ -10506,7 +10508,7 @@ _Fields contains multiple fields_
 }
 ```
 
-_GenericError Error response_
+_Error response_
 
 #### Properties
 
@@ -10582,6 +10584,8 @@ payload_
   "status": "string"
 }
 ```
+
+_HealthStatus HealthStatus health status_
 
 #### Properties
 
@@ -10800,10 +10804,10 @@ _LoginFlowMethod login flow method_
 
 #### Properties
 
-| Name   | Type                                                  | Required | Restrictions | Description                                                                                |
-| ------ | ----------------------------------------------------- | -------- | ------------ | ------------------------------------------------------------------------------------------ |
-| config | [loginFlowMethodConfig](#schemaloginflowmethodconfig) | true     | none         | LoginFlowMethodConfig LoginFlowMethodConfig LoginFlowMethodConfig login flow method config |
-| method | [CredentialsType](#schemacredentialstype)             | true     | none         | and so on.                                                                                 |
+| Name   | Type                                                  | Required | Restrictions | Description |
+| ------ | ----------------------------------------------------- | -------- | ------------ | ----------- |
+| config | [loginFlowMethodConfig](#schemaloginflowmethodconfig) | true     | none         | none        |
+| method | [CredentialsType](#schemacredentialstype)             | true     | none         | and so on.  |
 
 <a id="tocSloginflowmethodconfig"></a>
 
@@ -10862,9 +10866,6 @@ _LoginFlowMethod login flow method_
 }
 ```
 
-_LoginFlowMethodConfig LoginFlowMethodConfig LoginFlowMethodConfig login flow
-method config_
-
 #### Properties
 
 | Name      | Type                            | Required | Restrictions | Description                                                                                                 |
@@ -10917,7 +10918,7 @@ method config_
 }
 ```
 
-_LoginViaAPIResponse The Response for Login Flows via API_
+_The Response for Login Flows via API_
 
 #### Properties
 
@@ -11020,7 +11021,7 @@ _LoginViaAPIResponse The Response for Login Flows via API_
 }
 ```
 
-_A Recovery Flow_
+_RecoveryFlow A Recovery Flow_
 
 #### Properties
 
@@ -11083,10 +11084,10 @@ _RecoveryFlowMethod RecoveryFlowMethod recovery flow method_
 
 #### Properties
 
-| Name   | Type                                                        | Required | Restrictions | Description                                          |
-| ------ | ----------------------------------------------------------- | -------- | ------------ | ---------------------------------------------------- |
-| config | [recoveryFlowMethodConfig](#schemarecoveryflowmethodconfig) | true     | none         | RecoveryFlowMethodConfig recovery flow method config |
-| method | string                                                      | true     | none         | Method contains the request credentials type.        |
+| Name   | Type                                                        | Required | Restrictions | Description                                   |
+| ------ | ----------------------------------------------------------- | -------- | ------------ | --------------------------------------------- |
+| config | [recoveryFlowMethodConfig](#schemarecoveryflowmethodconfig) | true     | none         | none                                          |
+| method | string                                                      | true     | none         | Method contains the request credentials type. |
 
 <a id="tocSrecoveryflowmethodconfig"></a>
 
@@ -11127,8 +11128,6 @@ _RecoveryFlowMethod RecoveryFlowMethod recovery flow method_
 }
 ```
 
-_RecoveryFlowMethodConfig recovery flow method config_
-
 #### Properties
 
 | Name     | Type                            | Required | Restrictions | Description                                                                                                 |
@@ -11151,14 +11150,12 @@ _RecoveryFlowMethodConfig recovery flow method config_
 }
 ```
 
-_RecoveryLink RecoveryLink recovery link_
-
 #### Properties
 
-| Name          | Type              | Required | Restrictions | Description                                                                                                |
-| ------------- | ----------------- | -------- | ------------ | ---------------------------------------------------------------------------------------------------------- |
-| expires_at    | string(date-time) | false    | none         | Recovery Link Expires At The timestamp when the recovery link expires. Format: date-time Format: date-time |
-| recovery_link | string            | true     | none         | Recovery Link This link can be used to recover the account.                                                |
+| Name          | Type              | Required | Restrictions | Description                                                            |
+| ------------- | ----------------- | -------- | ------------ | ---------------------------------------------------------------------- |
+| expires_at    | string(date-time) | false    | none         | Recovery Link Expires At The timestamp when the recovery link expires. |
+| recovery_link | string            | true     | none         | Recovery Link This link can be used to recover the account.            |
 
 <a id="tocSregistrationflow"></a>
 
@@ -11302,7 +11299,7 @@ registration flow_
 | issued_at                  | string(date-time)                                       | true     | none         | IssuedAt is the time (UTC) when the flow occurred.                                                                                                                                     |
 | messages                   | [Messages](#schemamessages)                             | false    | none         | Messages Messages Messages Messages Messages Messages Messages Messages Messages Messages Messages messages                                                                            |
 | methods                    | object                                                  | true     | none         | Methods contains context for all enabled registration methods. If a registration flow has been processed, but for example the password is incorrect, this will contain error messages. |
-| » **additionalProperties** | [registrationFlowMethod](#schemaregistrationflowmethod) | false    | none         | RegistrationFlowMethod registration flow method                                                                                                                                        |
+| » **additionalProperties** | [registrationFlowMethod](#schemaregistrationflowmethod) | false    | none         | none                                                                                                                                                                                   |
 | request_url                | string                                                  | true     | none         | RequestURL is the initial URL that was requested from ORY Kratos. It can be used to forward information contained in the URL's path or query for example.                              |
 | type                       | [Type](#schematype)                                     | false    | none         | The flow type can either be `api` or `browser`.                                                                                                                                        |
 
@@ -11366,14 +11363,12 @@ registration flow_
 }
 ```
 
-_RegistrationFlowMethod registration flow method_
-
 #### Properties
 
-| Name   | Type                                                                | Required | Restrictions | Description                                                                               |
-| ------ | ------------------------------------------------------------------- | -------- | ------------ | ----------------------------------------------------------------------------------------- |
-| config | [registrationFlowMethodConfig](#schemaregistrationflowmethodconfig) | true     | none         | RegistrationFlowMethodConfig RegistrationFlowMethodConfig registration flow method config |
-| method | [CredentialsType](#schemacredentialstype)                           | true     | none         | and so on.                                                                                |
+| Name   | Type                                                                | Required | Restrictions | Description |
+| ------ | ------------------------------------------------------------------- | -------- | ------------ | ----------- |
+| config | [registrationFlowMethodConfig](#schemaregistrationflowmethodconfig) | true     | none         | none        |
+| method | [CredentialsType](#schemacredentialstype)                           | true     | none         | and so on.  |
 
 <a id="tocSregistrationflowmethodconfig"></a>
 
@@ -11431,9 +11426,6 @@ _RegistrationFlowMethod registration flow method_
   ]
 }
 ```
-
-_RegistrationFlowMethodConfig RegistrationFlowMethodConfig registration flow
-method config_
 
 #### Properties
 
@@ -11510,7 +11502,7 @@ method config_
 }
 ```
 
-_RegistrationViaAPIResponse The Response for Registration Flows via API_
+_The Response for Registration Flows via API_
 
 #### Properties
 
@@ -11771,10 +11763,10 @@ _SettingsFlow SettingsFlow Flow represents a Settings Flow_
 
 #### Properties
 
-| Name   | Type                                                        | Required | Restrictions | Description                                                                   |
-| ------ | ----------------------------------------------------------- | -------- | ------------ | ----------------------------------------------------------------------------- |
-| config | [settingsFlowMethodConfig](#schemasettingsflowmethodconfig) | true     | none         | SettingsFlowMethodConfig SettingsFlowMethodConfig settings flow method config |
-| method | string                                                      | true     | none         | Method is the name of this flow method.                                       |
+| Name   | Type                                                        | Required | Restrictions | Description                             |
+| ------ | ----------------------------------------------------------- | -------- | ------------ | --------------------------------------- |
+| config | [settingsFlowMethodConfig](#schemasettingsflowmethodconfig) | true     | none         | none                                    |
+| method | string                                                      | true     | none         | Method is the name of this flow method. |
 
 <a id="tocSsettingsflowmethodconfig"></a>
 
@@ -11814,8 +11806,6 @@ _SettingsFlow SettingsFlow Flow represents a Settings Flow_
   "method": "string"
 }
 ```
-
-_SettingsFlowMethodConfig SettingsFlowMethodConfig settings flow method config_
 
 #### Properties
 
@@ -12083,7 +12073,7 @@ _VerificationFlow VerificationFlow A Verification Flow_
 | issued_at                  | string(date-time)                                       | false    | none         | IssuedAt is the time (UTC) when the request occurred. Format: date-time Format: date-time                                                                                                 |
 | messages                   | [Messages](#schemamessages)                             | false    | none         | Messages Messages Messages Messages Messages Messages Messages Messages Messages Messages Messages messages                                                                               |
 | methods                    | object                                                  | true     | none         | Methods contains context for all account verification methods. If a registration request has been processed, but for example the password is incorrect, this will contain error messages. |
-| » **additionalProperties** | [verificationFlowMethod](#schemaverificationflowmethod) | false    | none         | none                                                                                                                                                                                      |
+| » **additionalProperties** | [verificationFlowMethod](#schemaverificationflowmethod) | false    | none         | VerificationFlowMethod verification flow method                                                                                                                                           |
 | request_url                | string                                                  | false    | none         | RequestURL is the initial URL that was requested from ORY Kratos. It can be used to forward information contained in the URL's path or query for example.                                 |
 | state                      | [State](#schemastate)                                   | true     | none         | State State State State State State State State State State State state                                                                                                                   |
 | type                       | [Type](#schematype)                                     | false    | none         | The flow type can either be `api` or `browser`.                                                                                                                                           |
@@ -12129,6 +12119,8 @@ _VerificationFlow VerificationFlow A Verification Flow_
   "method": "string"
 }
 ```
+
+_VerificationFlowMethod verification flow method_
 
 #### Properties
 
@@ -12198,8 +12190,6 @@ _VerificationFlowMethodConfig verification flow method config_
   "version": "string"
 }
 ```
-
-_Version Version Version Version Version Version version_
 
 #### Properties
 
