@@ -2636,7 +2636,7 @@
       }
     },
     "formField": {
-      "description": "Field represents a HTML Form Field",
+      "description": "FormField FormField Field represents a HTML Form Field",
       "type": "object",
       "required": [
         "name",
@@ -2682,7 +2682,7 @@
     "genericError": {
       "description": "Error responses are sent when an error (e.g. unauthorized, bad request, ...) occurred.",
       "type": "object",
-      "title": "GenericError GenericError GenericError Error response",
+      "title": "Error response",
       "properties": {
         "error": {
           "$ref": "#/definitions/genericErrorPayload"
@@ -2740,7 +2740,6 @@
       }
     },
     "healthStatus": {
-      "description": "HealthStatus HealthStatus health status",
       "type": "object",
       "properties": {
         "status": {
@@ -2752,13 +2751,13 @@
     "loginFlow": {
       "description": "This object represents a login flow. A login flow is initiated at the \"Initiate Login API / Browser Flow\"\nendpoint by a client.\n\nOnce a login flow is completed successfully, a session cookie or session token will be issued.",
       "type": "object",
-      "title": "LoginFlow Login Flow",
+      "title": "Login Flow",
       "required": [
-        "id",
         "expires_at",
+        "id",
         "issued_at",
-        "request_url",
-        "methods"
+        "methods",
+        "request_url"
       ],
       "properties": {
         "active": {
@@ -2816,12 +2815,11 @@
       }
     },
     "loginFlowMethodConfig": {
-      "description": "LoginFlowMethodConfig login flow method config",
       "type": "object",
       "required": [
         "action",
-        "method",
-        "fields"
+        "fields",
+        "method"
       ],
       "properties": {
         "action": {
@@ -2867,13 +2865,13 @@
     "recoveryFlow": {
       "description": "This request is used when an identity wants to recover their account.\n\nWe recommend reading the [Account Recovery Documentation](../self-service/flows/password-reset-account-recovery)",
       "type": "object",
-      "title": "A Recovery Flow",
+      "title": "RecoveryFlow A Recovery Flow",
       "required": [
-        "expires_at",
         "id",
+        "expires_at",
         "issued_at",
-        "methods",
         "request_url",
+        "methods",
         "state"
       ],
       "properties": {
@@ -2934,12 +2932,11 @@
       }
     },
     "recoveryFlowMethodConfig": {
-      "description": "RecoveryFlowMethodConfig RecoveryFlowMethodConfig recovery flow method config",
       "type": "object",
       "required": [
         "action",
-        "method",
-        "fields"
+        "fields",
+        "method"
       ],
       "properties": {
         "action": {
@@ -2977,14 +2974,13 @@
       }
     },
     "registrationFlow": {
-      "description": "RegistrationFlow RegistrationFlow RegistrationFlow RegistrationFlow registration flow",
       "type": "object",
       "required": [
-        "id",
         "expires_at",
+        "id",
         "issued_at",
-        "request_url",
-        "methods"
+        "methods",
+        "request_url"
       ],
       "properties": {
         "active": {
@@ -3139,14 +3135,14 @@
     "settingsRequest": {
       "description": "This request is used when an identity wants to update settings\n(e.g. profile data, passwords, ...) in a selfservice manner.\n\nWe recommend reading the [User Settings Documentation](../self-service/flows/user-settings)",
       "type": "object",
-      "title": "SettingsFlow Flow represents a Settings Flow",
+      "title": "Flow represents a Settings Flow",
       "required": [
-        "id",
         "expires_at",
-        "issued_at",
-        "request_url",
-        "methods",
+        "id",
         "identity",
+        "issued_at",
+        "methods",
+        "request_url",
         "state"
       ],
       "properties": {
@@ -3209,11 +3205,12 @@
       }
     },
     "settingsFlowMethodConfig": {
+      "description": "SettingsFlowMethodConfig SettingsFlowMethodConfig settings flow method config",
       "type": "object",
       "required": [
         "action",
-        "fields",
-        "method"
+        "method",
+        "fields"
       ],
       "properties": {
         "action": {
@@ -3297,11 +3294,10 @@
       }
     },
     "verificationFlowMethod": {
-      "description": "VerificationFlowMethod verification flow method",
       "type": "object",
       "required": [
-        "method",
-        "config"
+        "config",
+        "method"
       ],
       "properties": {
         "config": {
@@ -3339,7 +3335,6 @@
       }
     },
     "version": {
-      "description": "Version version",
       "type": "object",
       "properties": {
         "version": {
