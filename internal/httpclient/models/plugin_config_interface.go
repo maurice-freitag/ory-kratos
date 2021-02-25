@@ -15,13 +15,10 @@ import (
 	"github.com/go-openapi/validate"
 )
 
-// PluginConfigInterface PluginConfigInterface PluginConfigInterface PluginConfigInterface PluginConfigInterface PluginConfigInterface PluginConfigInterface PluginConfigInterface PluginConfigInterface The interface between Docker and the plugin
+// PluginConfigInterface PluginConfigInterface The interface between Docker and the plugin
 //
 // swagger:model PluginConfigInterface
 type PluginConfigInterface struct {
-
-	// Protocol to use for clients connecting to the plugin.
-	ProtocolScheme string `json:"ProtocolScheme,omitempty"`
 
 	// socket
 	// Required: true
