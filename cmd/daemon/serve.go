@@ -166,26 +166,41 @@ func sqa(cmd *cobra.Command, d driver.Registry) *metricsx.Service {
 				healthx.AliveCheckPath,
 				healthx.ReadyCheckPath,
 				healthx.VersionPath,
-				"/auth/methods/oidc/",
-				password.RegistrationPath,
-				password.LoginPath,
-				oidc.BasePath,
-				login.BrowserLoginPath,
-				login.BrowserLoginRequestsPath,
-				logout.BrowserLogoutPath,
-				registration.BrowserRegistrationPath,
-				registration.BrowserRegistrationRequestsPath,
-				session.SessionsWhoamiPath,
-				identity.IdentitiesPath,
-				profile.PublicSettingsProfilePath,
-				settings.PublicPath,
-				settings.PublicRequestPath,
-				profile.PublicSettingsProfilePath,
-				verification.PublicVerificationCompletePath,
-				strings.ReplaceAll(strings.ReplaceAll(verification.PublicVerificationConfirmPath, ":via", "email"), ":code", ""),
-				strings.ReplaceAll(verification.PublicVerificationInitPath, ":via", "email"),
-				verification.PublicVerificationRequestPath,
-				errorx.ErrorsPath,
+
+				password.RouteRegistration,
+				password.RouteSettings,
+
+				oidc.RouteBase,
+
+				login.RouteInitBrowserFlow,
+				login.RouteInitAPIFlow,
+				login.RouteGetFlow,
+				login.RouteSubmitFlow,
+
+				logout.RouteBrowser,
+
+				registration.RouteInitBrowserFlow,
+				registration.RouteInitAPIFlow,
+				registration.RouteGetFlow,
+
+				session.RouteWhoami,
+				identity.RouteBase,
+
+				settings.RouteInitBrowserFlow,
+				settings.RouteInitAPIFlow,
+				settings.RouteGetFlow,
+
+				verification.RouteInitAPIFlow,
+				verification.RouteInitBrowserFlow,
+				verification.RouteGetFlow,
+
+				profile.RouteSettings,
+
+				link.RouteAdminCreateRecoveryLink,
+				link.RouteRecovery,
+				link.RouteVerification,
+
+				errorx.RouteGet,
 				prometheus.MetricsPrometheusPath,
 			},
 			BuildVersion: config.Version,
