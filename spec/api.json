@@ -2648,7 +2648,7 @@
       }
     },
     "PluginConfigLinux": {
-      "description": "PluginConfigLinux PluginConfigLinux PluginConfigLinux plugin config linux",
+      "description": "PluginConfigLinux plugin config linux",
       "type": "object",
       "required": [
         "AllowAllDevices",
@@ -2677,7 +2677,7 @@
       }
     },
     "PluginConfigNetwork": {
-      "description": "PluginConfigNetwork plugin config network",
+      "description": "PluginConfigNetwork PluginConfigNetwork plugin config network",
       "type": "object",
       "required": [
         "Type"
@@ -2690,7 +2690,7 @@
       }
     },
     "PluginConfigRootfs": {
-      "description": "PluginConfigRootfs PluginConfigRootfs plugin config rootfs",
+      "description": "PluginConfigRootfs plugin config rootfs",
       "type": "object",
       "properties": {
         "diff_ids": {
@@ -2707,7 +2707,7 @@
       }
     },
     "PluginConfigUser": {
-      "description": "PluginConfigUser PluginConfigUser PluginConfigUser plugin config user",
+      "description": "PluginConfigUser plugin config user",
       "type": "object",
       "properties": {
         "GID": {
@@ -2754,7 +2754,7 @@
       }
     },
     "PluginEnv": {
-      "description": "PluginEnv PluginEnv plugin env",
+      "description": "PluginEnv plugin env",
       "type": "object",
       "required": [
         "Description",
@@ -2785,7 +2785,7 @@
       }
     },
     "PluginInterfaceType": {
-      "description": "PluginInterfaceType plugin interface type",
+      "description": "PluginInterfaceType PluginInterfaceType plugin interface type",
       "type": "object",
       "required": [
         "Capability",
@@ -2808,7 +2808,7 @@
       }
     },
     "PluginMount": {
-      "description": "PluginMount plugin mount",
+      "description": "PluginMount PluginMount plugin mount",
       "type": "object",
       "required": [
         "Description",
@@ -2858,7 +2858,7 @@
     },
     "PluginSettings": {
       "type": "object",
-      "title": "PluginSettings Settings that can be modified by users.",
+      "title": "PluginSettings PluginSettings Settings that can be modified by users.",
       "required": [
         "Args",
         "Devices",
@@ -2994,7 +2994,7 @@
       "type": "string"
     },
     "VolumeUsageData": {
-      "description": "VolumeUsageData Usage details about the volume. This information is used by the\n`GET /system/df` endpoint, and omitted in other endpoints.",
+      "description": "VolumeUsageData VolumeUsageData Usage details about the volume. This information is used by the\n`GET /system/df` endpoint, and omitted in other endpoints.",
       "type": "object",
       "required": [
         "RefCount",
@@ -3095,7 +3095,7 @@
       }
     },
     "formFields": {
-      "description": "FormFields Fields contains multiple fields",
+      "description": "Fields contains multiple fields",
       "type": "array",
       "items": {
         "$ref": "#/definitions/formField"
@@ -3174,13 +3174,13 @@
     "loginFlow": {
       "description": "This object represents a login flow. A login flow is initiated at the \"Initiate Login API / Browser Flow\"\nendpoint by a client.\n\nOnce a login flow is completed successfully, a session cookie or session token will be issued.",
       "type": "object",
-      "title": "LoginFlow LoginFlow LoginFlow LoginFlow LoginFlow LoginFlow Login Flow",
+      "title": "Login Flow",
       "required": [
-        "id",
         "expires_at",
+        "id",
         "issued_at",
-        "request_url",
-        "methods"
+        "methods",
+        "request_url"
       ],
       "properties": {
         "active": {
@@ -3238,12 +3238,11 @@
       }
     },
     "loginFlowMethodConfig": {
-      "description": "LoginFlowMethodConfig LoginFlowMethodConfig login flow method config",
       "type": "object",
       "required": [
         "action",
-        "method",
-        "fields"
+        "fields",
+        "method"
       ],
       "properties": {
         "action": {
@@ -3270,11 +3269,11 @@
       }
     },
     "loginViaApiResponse": {
-      "description": "The Response for Login Flows via API",
+      "description": "LoginViaAPIResponse LoginViaAPIResponse LoginViaAPIResponse LoginViaAPIResponse The Response for Login Flows via API",
       "type": "object",
       "required": [
-        "session",
-        "session_token"
+        "session_token",
+        "session"
       ],
       "properties": {
         "session": {
@@ -3339,11 +3338,10 @@
       }
     },
     "recoveryFlowMethod": {
-      "description": "RecoveryFlowMethod recovery flow method",
       "type": "object",
       "required": [
-        "method",
-        "config"
+        "config",
+        "method"
       ],
       "properties": {
         "config": {
@@ -3356,11 +3354,12 @@
       }
     },
     "recoveryFlowMethodConfig": {
+      "description": "RecoveryFlowMethodConfig recovery flow method config",
       "type": "object",
       "required": [
         "action",
-        "fields",
-        "method"
+        "method",
+        "fields"
       ],
       "properties": {
         "action": {
@@ -3458,12 +3457,11 @@
       }
     },
     "registrationFlowMethodConfig": {
-      "description": "RegistrationFlowMethodConfig registration flow method config",
       "type": "object",
       "required": [
         "action",
-        "method",
-        "fields"
+        "fields",
+        "method"
       ],
       "properties": {
         "action": {
@@ -3490,11 +3488,11 @@
       }
     },
     "registrationViaApiResponse": {
-      "description": "RegistrationViaAPIResponse The Response for Registration Flows via API",
+      "description": "The Response for Registration Flows via API",
       "type": "object",
       "required": [
-        "session_token",
-        "identity"
+        "identity",
+        "session_token"
       ],
       "properties": {
         "identity": {
@@ -3629,12 +3627,11 @@
       }
     },
     "settingsFlowMethodConfig": {
-      "description": "SettingsFlowMethodConfig SettingsFlowMethodConfig SettingsFlowMethodConfig SettingsFlowMethodConfig settings flow method config",
       "type": "object",
       "required": [
         "action",
-        "method",
-        "fields"
+        "fields",
+        "method"
       ],
       "properties": {
         "action": {
@@ -3718,10 +3715,11 @@
       }
     },
     "verificationFlowMethod": {
+      "description": "VerificationFlowMethod VerificationFlowMethod verification flow method",
       "type": "object",
       "required": [
-        "config",
-        "method"
+        "method",
+        "config"
       ],
       "properties": {
         "config": {
@@ -3759,7 +3757,6 @@
       }
     },
     "version": {
-      "description": "Version version",
       "type": "object",
       "properties": {
         "version": {
