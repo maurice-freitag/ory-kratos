@@ -2707,7 +2707,7 @@
       }
     },
     "PluginConfigUser": {
-      "description": "PluginConfigUser plugin config user",
+      "description": "PluginConfigUser PluginConfigUser PluginConfigUser PluginConfigUser PluginConfigUser plugin config user",
       "type": "object",
       "properties": {
         "GID": {
@@ -3059,7 +3059,7 @@
       }
     },
     "formField": {
-      "description": "Field represents a HTML Form Field",
+      "description": "FormField FormField FormField Field represents a HTML Form Field",
       "type": "object",
       "required": [
         "name",
@@ -3105,7 +3105,7 @@
     "genericError": {
       "description": "Error responses are sent when an error (e.g. unauthorized, bad request, ...) occurred.",
       "type": "object",
-      "title": "Error response",
+      "title": "GenericError GenericError GenericError Error response",
       "properties": {
         "error": {
           "$ref": "#/definitions/genericErrorPayload"
@@ -3444,11 +3444,10 @@
       }
     },
     "registrationFlowMethod": {
-      "description": "RegistrationFlowMethod registration flow method",
       "type": "object",
       "required": [
-        "method",
-        "config"
+        "config",
+        "method"
       ],
       "properties": {
         "config": {
