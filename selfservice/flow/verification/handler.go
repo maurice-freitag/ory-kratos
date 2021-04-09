@@ -359,7 +359,26 @@ func (h *Handler) toVia(ps httprouter.Params) (identity.VerifiableAddressType, e
 	return "", errors.WithStack(herodot.ErrBadRequest.WithReasonf("Verification only works for email but got: %s", v))
 }
 
-// swagger:route POST /self-service/verification/methods/link public completeSelfServiceVerificationFlow
+// nolint:deadcode,unused
+// swagger:parameters submitSelfServiceVerificationFlow
+type submitSelfServiceVerificationFlow struct {
+	// The Registration Flow ID
+	//
+	// The value for this parameter comes from `flow` URL Query parameter sent to your
+	// application (e.g. `/registration?flow=abcde`).
+	//
+	// required: true
+	// in: query
+	Flow string `json:"flow"`
+
+	// in: body
+	Body submitSelfServiceRecoveryFlowBody
+}
+
+// swagger:model submitSelfServiceRecoveryFlow
+type submitSelfServiceRecoveryFlowBody struct{}
+
+// swagger:route POST /self-service/verification/methods/link public submitSelfServiceVerificationFlow
 //
 // Complete Verification Flow
 //
