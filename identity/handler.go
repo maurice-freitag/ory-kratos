@@ -95,7 +95,7 @@ type listIdentityParameters struct {
 //
 // Lists all identities. Does not support search at the moment.
 //
-// Learn how identities work in [ORY Kratos' User And Identity Model Documentation](https://www.ory.sh/docs/next/kratos/concepts/identity-user-model).
+// Learn how identities work in [Ory Kratos' User And Identity Model Documentation](https://www.ory.sh/docs/next/kratos/concepts/identity-user-model).
 //
 //     Produces:
 //     - application/json
@@ -137,7 +137,7 @@ type getIdentityParameters struct {
 //
 // Get an Identity
 //
-// Learn how identities work in [ORY Kratos' User And Identity Model Documentation](https://www.ory.sh/docs/next/kratos/concepts/identity-user-model).
+// Learn how identities work in [Ory Kratos' User And Identity Model Documentation](https://www.ory.sh/docs/next/kratos/concepts/identity-user-model).
 //
 //     Consumes:
 //     - application/json
@@ -191,7 +191,7 @@ type CreateIdentity struct {
 // This endpoint creates an identity. It is NOT possible to set an identity's credentials (password, ...)
 // using this method! A way to achieve that will be introduced in the future.
 //
-// Learn how identities work in [ORY Kratos' User And Identity Model Documentation](https://www.ory.sh/docs/next/kratos/concepts/identity-user-model).
+// Learn how identities work in [Ory Kratos' User And Identity Model Documentation](https://www.ory.sh/docs/next/kratos/concepts/identity-user-model).
 //
 //     Consumes:
 //     - application/json
@@ -263,7 +263,7 @@ type UpdateIdentity struct {
 //
 // The full identity payload (except credentials) is expected. This endpoint does not support patching.
 //
-// Learn how identities work in [ORY Kratos' User And Identity Model Documentation](https://www.ory.sh/docs/next/kratos/concepts/identity-user-model).
+// Learn how identities work in [Ory Kratos' User And Identity Model Documentation](https://www.ory.sh/docs/next/kratos/concepts/identity-user-model).
 //
 //     Consumes:
 //     - application/json
@@ -326,7 +326,7 @@ type deleteIdentityParameters struct {
 // This endpoint returns 204 when the identity was deleted or when the identity was not found, in which case it is
 // assumed that is has been deleted already.
 //
-// Learn how identities work in [ORY Kratos' User And Identity Model Documentation](https://www.ory.sh/docs/next/kratos/concepts/identity-user-model).
+// Learn how identities work in [Ory Kratos' User And Identity Model Documentation](https://www.ory.sh/docs/next/kratos/concepts/identity-user-model).
 //
 //     Produces:
 //     - application/json
