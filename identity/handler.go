@@ -104,7 +104,7 @@ type listIdentityParameters struct {
 //
 //     Responses:
 //       200: identityList
-//       500: genericError
+//       500: jsonError
 func (h *Handler) list(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	page, itemsPerPage := x.ParsePagination(r)
 	is, err := h.r.IdentityPool().ListIdentities(r.Context(), page, itemsPerPage)
@@ -149,9 +149,8 @@ type getIdentityParameters struct {
 //
 //     Responses:
 //       200: identityResponse
-//       400: genericError
-//       404: genericError
-//       500: genericError
+//       404: jsonError
+//       500: jsonError
 func (h *Handler) get(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	i, err := h.r.IdentityPool().GetIdentity(r.Context(), x.ParseUUID(ps.ByName("id")))
 	if err != nil {
@@ -168,6 +167,7 @@ type createIdentityParameters struct {
 	Body CreateIdentity
 }
 
+// swagger:model createIdentity
 type CreateIdentity struct {
 	// SchemaID is the ID of the JSON Schema to be used for validating the identity's traits.
 	//
@@ -203,9 +203,9 @@ type CreateIdentity struct {
 //
 //     Responses:
 //       201: identityResponse
-//       400: genericError
-//		 409: genericError
-//       500: genericError
+//       400: jsonError
+//		 409: jsonError
+//       500: jsonError
 func (h *Handler) create(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	var cr CreateIdentity
 	if err := jsonx.NewStrictDecoder(r.Body).Decode(&cr); err != nil {
@@ -241,6 +241,7 @@ type updateIdentityParameters struct {
 	Body UpdateIdentity
 }
 
+// swagger:model updateIdentity
 type UpdateIdentity struct {
 	// SchemaID is the ID of the JSON Schema to be used for validating the identity's traits. If set
 	// will update the Identity's SchemaID.
@@ -274,10 +275,11 @@ type UpdateIdentity struct {
 //     Schemes: http, https
 //
 //     Responses:
-//       200: identityResponse
-//       400: genericError
-//       404: genericError
-//       500: genericError
+//       200: identity
+//       400: jsonError
+//       404: jsonError
+//		 409: jsonError
+//       500: jsonError
 func (h *Handler) update(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	var ur UpdateIdentity
 	if err := errors.WithStack(jsonx.NewStrictDecoder(r.Body).Decode(&ur)); err != nil {
@@ -335,8 +337,8 @@ type deleteIdentityParameters struct {
 //
 //     Responses:
 //       204: emptyResponse
-//		 404: genericError
-//       500: genericError
+//       404: jsonError
+//       500: jsonError
 func (h *Handler) delete(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	if err := h.r.IdentityPool().(PrivilegedPool).DeleteIdentity(r.Context(), x.ParseUUID(ps.ByName("id"))); err != nil {
 		h.r.Writer().WriteError(w, r, err)
