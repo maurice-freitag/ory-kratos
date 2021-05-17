@@ -408,10 +408,10 @@ This is the number of items per page.
 
 ##### Overview
 
-| Status | Meaning                                                                    | Description           | Schema                              |
-| ------ | -------------------------------------------------------------------------- | --------------------- | ----------------------------------- |
-| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | A list of identities. | Inline                              |
-| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | genericError          | [genericError](#schemagenericerror) |
+| Status | Meaning                                                                    | Description           | Schema                        |
+| ------ | -------------------------------------------------------------------------- | --------------------- | ----------------------------- |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | A list of identities. | Inline                        |
+| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | jsonError             | [jsonError](#schemajsonerror) |
 
 <a id="list-identities-responseschema"></a>
 
@@ -419,24 +419,31 @@ This is the number of items per page.
 
 Status Code **200**
 
-| Name                   | Type                                                      | Required | Restrictions | Description                                                                                                       |
-| ---------------------- | --------------------------------------------------------- | -------- | ------------ | ----------------------------------------------------------------------------------------------------------------- |
-| _anonymous_            | [[Identity](#schemaidentity)]                             | false    | none         | none                                                                                                              |
-| » id                   | [UUID](#schemauuid)(uuid4)                                | true     | none         | none                                                                                                              |
-| » recovery_addresses   | [[RecoveryAddress](#schemarecoveryaddress)]               | false    | none         | RecoveryAddresses contains all the addresses that can be used to recover an identity.                             |
-| »» id                  | [UUID](#schemauuid)(uuid4)                                | true     | none         | none                                                                                                              |
-| »» value               | string                                                    | true     | none         | none                                                                                                              |
-| »» via                 | [RecoveryAddressType](#schemarecoveryaddresstype)         | true     | none         | none                                                                                                              |
-| » schema_id            | string                                                    | true     | none         | SchemaID is the ID of the JSON Schema to be used for validating the identity's traits.                            |
-| » schema_url           | string                                                    | true     | none         | SchemaURL is the URL of the endpoint where the identity's traits schema can be fetched from.<br/><br/>format: url |
-| » traits               | [Traits](#schematraits)                                   | true     | none         | none                                                                                                              |
-| » verifiable_addresses | [[VerifiableAddress](#schemaverifiableaddress)]           | false    | none         | VerifiableAddresses contains all the addresses that can be verified by the user.                                  |
-| »» id                  | [UUID](#schemauuid)(uuid4)                                | true     | none         | none                                                                                                              |
-| »» status              | [VerifiableAddressStatus](#schemaverifiableaddressstatus) | true     | none         | none                                                                                                              |
-| »» value               | string                                                    | true     | none         | none                                                                                                              |
-| »» verified            | boolean                                                   | true     | none         | none                                                                                                              |
-| »» verified_at         | [NullTime](#schemanulltime)(date-time)                    | false    | none         | none                                                                                                              |
-| »» via                 | [VerifiableAddressType](#schemaverifiableaddresstype)     | true     | none         | none                                                                                                              |
+| Name                                         | Type                                                                      | Required | Restrictions | Description                                                                                                                                                                                                            |
+| -------------------------------------------- | ------------------------------------------------------------------------- | -------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| _anonymous_                                  | [[identity](#schemaidentity)]                                             | false    | none         | [An identity can be a real human, a service, an IoT device - everything that<br/>can be described as an "actor" in a system.]                                                                                          |
+| » Identity represents an Ory Kratos identity | [identity](#schemaidentity)                                               | false    | none         | An identity can be a real human, a service, an IoT device - everything that<br/>can be described as an "actor" in a system.                                                                                            |
+| »» created_at                                | string(date-time)                                                         | false    | none         | CreatedAt is a helper struct field for gobuffalo.pop.                                                                                                                                                                  |
+| »» id                                        | [UUID](#schemauuid)(uuid4)                                                | true     | none         | none                                                                                                                                                                                                                   |
+| »» recovery_addresses                        | [[RecoveryAddress](#schemarecoveryaddress)]                               | false    | none         | RecoveryAddresses contains all the addresses that can be used to recover an identity.                                                                                                                                  |
+| »»» created_at                               | string(date-time)                                                         | false    | none         | CreatedAt is a helper struct field for gobuffalo.pop.                                                                                                                                                                  |
+| »»» id                                       | [UUID](#schemauuid)(uuid4)                                                | true     | none         | none                                                                                                                                                                                                                   |
+| »»» updated_at                               | string(date-time)                                                         | false    | none         | UpdatedAt is a helper struct field for gobuffalo.pop.                                                                                                                                                                  |
+| »»» value                                    | string                                                                    | true     | none         | none                                                                                                                                                                                                                   |
+| »»» via                                      | [RecoveryAddressType](#schemarecoveryaddresstype)                         | true     | none         | none                                                                                                                                                                                                                   |
+| »» schema_id                                 | string                                                                    | true     | none         | SchemaID is the ID of the JSON Schema to be used for validating the identity's traits.                                                                                                                                 |
+| »» schema_url                                | string                                                                    | true     | none         | SchemaURL is the URL of the endpoint where the identity's traits schema can be fetched from.<br/><br/>format: url                                                                                                      |
+| »» traits                                    | [identityTraits](#schemaidentitytraits)                                   | true     | none         | Traits represent an identity's traits. The identity is able to create, modify, and delete traits<br/>in a self-service manner. The input will always be validated against the JSON Schema defined<br/>in `schema_url`. |
+| »» updated_at                                | string(date-time)                                                         | false    | none         | UpdatedAt is a helper struct field for gobuffalo.pop.                                                                                                                                                                  |
+| »» verifiable_addresses                      | [[verifiableIdentityAddress](#schemaverifiableidentityaddress)]           | false    | none         | VerifiableAddresses contains all the addresses that can be verified by the user.                                                                                                                                       |
+| »»» created_at                               | string(date-time)                                                         | false    | none         | When this entry was created                                                                                                                                                                                            |
+| »»» id                                       | [UUID](#schemauuid)(uuid4)                                                | true     | none         | none                                                                                                                                                                                                                   |
+| »»» status                                   | [identityVerifiableAddressStatus](#schemaidentityverifiableaddressstatus) | true     | none         | VerifiableAddressStatus must not exceed 16 characters as that is the limitation in the SQL Schema                                                                                                                      |
+| »»» updated_at                               | string(date-time)                                                         | false    | none         | When this entry was last updated                                                                                                                                                                                       |
+| »»» value                                    | string                                                                    | true     | none         | The address value<br/><br/>example foo@user.com                                                                                                                                                                        |
+| »»» verified                                 | boolean                                                                   | true     | none         | Indicates if the address has already been verified                                                                                                                                                                     |
+| »»» verified_at                              | [NullTime](#schemanulltime)(date-time)                                    | false    | none         | none                                                                                                                                                                                                                   |
+| »»» via                                      | [identityVerifiableAddressType](#schemaidentityverifiableaddresstype)     | true     | none         | VerifiableAddressType must not exceed 16 characters as that is the limitation in the SQL Schema                                                                                                                        |
 
 ##### Examples
 
@@ -445,10 +452,13 @@ Status Code **200**
 ```json
 [
   {
+    "created_at": "2019-08-24T14:15:22Z",
     "id": "string",
     "recovery_addresses": [
       {
+        "created_at": "2019-08-24T14:15:22Z",
         "id": "string",
+        "updated_at": "2019-08-24T14:15:22Z",
         "value": "string",
         "via": "string"
       }
@@ -456,10 +466,13 @@ Status Code **200**
     "schema_id": "string",
     "schema_url": "string",
     "traits": {},
+    "updated_at": "2019-08-24T14:15:22Z",
     "verifiable_addresses": [
       {
+        "created_at": "2014-01-01T23:28:56.782Z",
         "id": "string",
         "status": "string",
+        "updated_at": "2014-01-01T23:28:56.782Z",
         "value": "string",
         "verified": true,
         "verified_at": "2019-08-24T14:15:22Z",
@@ -629,7 +642,7 @@ Learn how identities work in
 
 | Parameter | In   | Type                                    | Required | Description |
 | --------- | ---- | --------------------------------------- | -------- | ----------- |
-| body      | body | [CreateIdentity](#schemacreateidentity) | false    | none        |
+| body      | body | [createIdentity](#schemacreateidentity) | false    | none        |
 
 #### Responses
 
@@ -637,12 +650,12 @@ Learn how identities work in
 
 ##### Overview
 
-| Status | Meaning                                                                    | Description        | Schema                              |
-| ------ | -------------------------------------------------------------------------- | ------------------ | ----------------------------------- |
-| 201    | [Created](https://tools.ietf.org/html/rfc7231#section-6.3.2)               | A single identity. | [Identity](#schemaidentity)         |
-| 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | genericError       | [genericError](#schemagenericerror) |
-| 409    | [Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)              | genericError       | [genericError](#schemagenericerror) |
-| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | genericError       | [genericError](#schemagenericerror) |
+| Status | Meaning                                                                    | Description        | Schema                        |
+| ------ | -------------------------------------------------------------------------- | ------------------ | ----------------------------- |
+| 201    | [Created](https://tools.ietf.org/html/rfc7231#section-6.3.2)               | A single identity. | [identity](#schemaidentity)   |
+| 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | jsonError          | [jsonError](#schemajsonerror) |
+| 409    | [Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)              | jsonError          | [jsonError](#schemajsonerror) |
+| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | jsonError          | [jsonError](#schemajsonerror) |
 
 ##### Examples
 
@@ -650,10 +663,13 @@ Learn how identities work in
 
 ```json
 {
+  "created_at": "2019-08-24T14:15:22Z",
   "id": "string",
   "recovery_addresses": [
     {
+      "created_at": "2019-08-24T14:15:22Z",
       "id": "string",
+      "updated_at": "2019-08-24T14:15:22Z",
       "value": "string",
       "via": "string"
     }
@@ -661,10 +677,13 @@ Learn how identities work in
   "schema_id": "string",
   "schema_url": "string",
   "traits": {},
+  "updated_at": "2019-08-24T14:15:22Z",
   "verifiable_addresses": [
     {
+      "created_at": "2014-01-01T23:28:56.782Z",
       "id": "string",
       "status": "string",
+      "updated_at": "2014-01-01T23:28:56.782Z",
       "value": "string",
       "verified": true,
       "verified_at": "2019-08-24T14:15:22Z",
@@ -834,12 +853,11 @@ Learn how identities work in
 
 ##### Overview
 
-| Status | Meaning                                                                    | Description        | Schema                              |
-| ------ | -------------------------------------------------------------------------- | ------------------ | ----------------------------------- |
-| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | A single identity. | [Identity](#schemaidentity)         |
-| 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | genericError       | [genericError](#schemagenericerror) |
-| 404    | [Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)             | genericError       | [genericError](#schemagenericerror) |
-| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | genericError       | [genericError](#schemagenericerror) |
+| Status | Meaning                                                                    | Description        | Schema                        |
+| ------ | -------------------------------------------------------------------------- | ------------------ | ----------------------------- |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | A single identity. | [identity](#schemaidentity)   |
+| 404    | [Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)             | jsonError          | [jsonError](#schemajsonerror) |
+| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | jsonError          | [jsonError](#schemajsonerror) |
 
 ##### Examples
 
@@ -847,10 +865,13 @@ Learn how identities work in
 
 ```json
 {
+  "created_at": "2019-08-24T14:15:22Z",
   "id": "string",
   "recovery_addresses": [
     {
+      "created_at": "2019-08-24T14:15:22Z",
       "id": "string",
+      "updated_at": "2019-08-24T14:15:22Z",
       "value": "string",
       "via": "string"
     }
@@ -858,10 +879,13 @@ Learn how identities work in
   "schema_id": "string",
   "schema_url": "string",
   "traits": {},
+  "updated_at": "2019-08-24T14:15:22Z",
   "verifiable_addresses": [
     {
+      "created_at": "2014-01-01T23:28:56.782Z",
       "id": "string",
       "status": "string",
+      "updated_at": "2014-01-01T23:28:56.782Z",
       "value": "string",
       "verified": true,
       "verified_at": "2019-08-24T14:15:22Z",
@@ -1034,7 +1058,7 @@ Learn how identities work in
 | Parameter | In   | Type                                    | Required | Description                                             |
 | --------- | ---- | --------------------------------------- | -------- | ------------------------------------------------------- |
 | id        | path | string                                  | true     | ID must be set to the ID of identity you want to update |
-| body      | body | [UpdateIdentity](#schemaupdateidentity) | false    | none                                                    |
+| body      | body | [updateIdentity](#schemaupdateidentity) | false    | none                                                    |
 
 #### Responses
 
@@ -1042,12 +1066,13 @@ Learn how identities work in
 
 ##### Overview
 
-| Status | Meaning                                                                    | Description        | Schema                              |
-| ------ | -------------------------------------------------------------------------- | ------------------ | ----------------------------------- |
-| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | A single identity. | [Identity](#schemaidentity)         |
-| 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | genericError       | [genericError](#schemagenericerror) |
-| 404    | [Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)             | genericError       | [genericError](#schemagenericerror) |
-| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | genericError       | [genericError](#schemagenericerror) |
+| Status | Meaning                                                                    | Description | Schema                        |
+| ------ | -------------------------------------------------------------------------- | ----------- | ----------------------------- |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | identity    | [identity](#schemaidentity)   |
+| 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | jsonError   | [jsonError](#schemajsonerror) |
+| 404    | [Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)             | jsonError   | [jsonError](#schemajsonerror) |
+| 409    | [Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)              | jsonError   | [jsonError](#schemajsonerror) |
+| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | jsonError   | [jsonError](#schemajsonerror) |
 
 ##### Examples
 
@@ -1055,10 +1080,13 @@ Learn how identities work in
 
 ```json
 {
+  "created_at": "2019-08-24T14:15:22Z",
   "id": "string",
   "recovery_addresses": [
     {
+      "created_at": "2019-08-24T14:15:22Z",
       "id": "string",
+      "updated_at": "2019-08-24T14:15:22Z",
       "value": "string",
       "via": "string"
     }
@@ -1066,10 +1094,13 @@ Learn how identities work in
   "schema_id": "string",
   "schema_url": "string",
   "traits": {},
+  "updated_at": "2019-08-24T14:15:22Z",
   "verifiable_addresses": [
     {
+      "created_at": "2014-01-01T23:28:56.782Z",
       "id": "string",
       "status": "string",
+      "updated_at": "2014-01-01T23:28:56.782Z",
       "value": "string",
       "verified": true,
       "verified_at": "2019-08-24T14:15:22Z",
@@ -1244,11 +1275,11 @@ Learn how identities work in
 
 ##### Overview
 
-| Status | Meaning                                                                    | Description                                                                                                                   | Schema                              |
-| ------ | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
-| 204    | [No Content](https://tools.ietf.org/html/rfc7231#section-6.3.5)            | Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is typically 201. | None                                |
-| 404    | [Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)             | genericError                                                                                                                  | [genericError](#schemagenericerror) |
-| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | genericError                                                                                                                  | [genericError](#schemagenericerror) |
+| Status | Meaning                                                                    | Description                                                                                                                   | Schema                        |
+| ------ | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| 204    | [No Content](https://tools.ietf.org/html/rfc7231#section-6.3.5)            | Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is typically 201. | None                          |
+| 404    | [Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)             | jsonError                                                                                                                     | [jsonError](#schemajsonerror) |
+| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | jsonError                                                                                                                     | [jsonError](#schemajsonerror) |
 
 ##### Examples
 
@@ -1258,12 +1289,12 @@ Learn how identities work in
 {
   "error": {
     "code": 404,
-    "debug": "The database adapter was unable to find the element",
+    "debug": "SQL field \"foo\" is not a bool.",
     "details": {},
-    "message": "string",
-    "reason": "string",
-    "request": "string",
-    "status": "string"
+    "message": "The resource could not be found",
+    "reason": "User with ID 1234 does not exist.",
+    "request": "d7ef54b1-ec15-46e6-bccb-524b82c035e6",
+    "status": "Not Found"
   }
 }
 ```
@@ -1574,9 +1605,9 @@ for them to recover (or activate) their account.
 | Status | Meaning                                                                    | Description  | Schema                              |
 | ------ | -------------------------------------------------------------------------- | ------------ | ----------------------------------- |
 | 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | recoveryLink | [recoveryLink](#schemarecoverylink) |
-| 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | genericError | [genericError](#schemagenericerror) |
-| 404    | [Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)             | genericError | [genericError](#schemagenericerror) |
-| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | genericError | [genericError](#schemagenericerror) |
+| 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | jsonError    | [jsonError](#schemajsonerror)       |
+| 404    | [Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)             | jsonError    | [jsonError](#schemajsonerror)       |
+| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | jsonError    | [jsonError](#schemajsonerror)       |
 
 ##### Examples
 
@@ -1752,11 +1783,11 @@ Get a Traits Schema Definition
 
 ##### Overview
 
-| Status | Meaning                                                                    | Description  | Schema                              |
-| ------ | -------------------------------------------------------------------------- | ------------ | ----------------------------------- |
-| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | jsonSchema   | [jsonSchema](#schemajsonschema)     |
-| 404    | [Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)             | genericError | [genericError](#schemagenericerror) |
-| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | genericError | [genericError](#schemagenericerror) |
+| Status | Meaning                                                                    | Description | Schema                          |
+| ------ | -------------------------------------------------------------------------- | ----------- | ------------------------------- |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | jsonSchema  | [jsonSchema](#schemajsonschema) |
+| 404    | [Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)             | jsonError   | [jsonError](#schemajsonerror)   |
+| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | jsonError   | [jsonError](#schemajsonerror)   |
 
 ##### Examples
 
@@ -1921,10 +1952,10 @@ More information can be found at
 
 ##### Overview
 
-| Status | Meaning                                                                    | Description                                                                                                                   | Schema                              |
-| ------ | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
-| 302    | [Found](https://tools.ietf.org/html/rfc7231#section-6.4.3)                 | Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is typically 201. | None                                |
-| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | genericError                                                                                                                  | [genericError](#schemagenericerror) |
+| Status | Meaning                                                                    | Description                                                                                                                   | Schema                        |
+| ------ | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| 302    | [Found](https://tools.ietf.org/html/rfc7231#section-6.4.3)                 | Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is typically 201. | None                          |
+| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | jsonError                                                                                                                     | [jsonError](#schemajsonerror) |
 
 ##### Examples
 
@@ -1934,12 +1965,12 @@ More information can be found at
 {
   "error": {
     "code": 404,
-    "debug": "The database adapter was unable to find the element",
+    "debug": "SQL field \"foo\" is not a bool.",
     "details": {},
-    "message": "string",
-    "reason": "string",
-    "request": "string",
-    "status": "string"
+    "message": "The resource could not be found",
+    "reason": "User with ID 1234 does not exist.",
+    "request": "d7ef54b1-ec15-46e6-bccb-524b82c035e6",
+    "status": "Not Found"
   }
 }
 ```
@@ -2471,12 +2502,12 @@ traits: {}
 
 ##### Overview
 
-| Status | Meaning                                                                    | Description                | Schema                                  |
-| ------ | -------------------------------------------------------------------------- | -------------------------- | --------------------------------------- |
-| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | User-facing error response | [errorContainer](#schemaerrorcontainer) |
-| 403    | [Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)             | genericError               | [genericError](#schemagenericerror)     |
-| 404    | [Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)             | genericError               | [genericError](#schemagenericerror)     |
-| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | genericError               | [genericError](#schemagenericerror)     |
+| Status | Meaning                                                                    | Description                | Schema                                                        |
+| ------ | -------------------------------------------------------------------------- | -------------------------- | ------------------------------------------------------------- |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | User-facing error response | [selfServiceErrorContainer](#schemaselfserviceerrorcontainer) |
+| 403    | [Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)             | jsonError                  | [jsonError](#schemajsonerror)                                 |
+| 404    | [Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)             | jsonError                  | [jsonError](#schemajsonerror)                                 |
+| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | jsonError                  | [jsonError](#schemajsonerror)                                 |
 
 ##### Examples
 
@@ -2484,8 +2515,10 @@ traits: {}
 
 ```json
 {
+  "created_at": "2019-08-24T14:15:22Z",
   "errors": {},
-  "id": "string"
+  "id": "string",
+  "updated_at": "2019-08-24T14:15:22Z"
 }
 ```
 
@@ -2681,7 +2714,7 @@ application (e.g. `/login?flow=abcde`).
 | 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | loginViaApiResponse                                                                                                           | [loginViaApiResponse](#schemaloginviaapiresponse) |
 | 302    | [Found](https://tools.ietf.org/html/rfc7231#section-6.4.3)                 | Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is typically 201. | None                                              |
 | 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | loginFlow                                                                                                                     | [loginFlow](#schemaloginflow)                     |
-| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | genericError                                                                                                                  | [genericError](#schemagenericerror)               |
+| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | jsonError                                                                                                                     | [jsonError](#schemajsonerror)                     |
 
 ##### Examples
 
@@ -2695,10 +2728,13 @@ application (e.g. `/login?flow=abcde`).
     "expires_at": "2019-08-24T14:15:22Z",
     "id": "string",
     "identity": {
+      "created_at": "2019-08-24T14:15:22Z",
       "id": "string",
       "recovery_addresses": [
         {
+          "created_at": "2019-08-24T14:15:22Z",
           "id": "string",
+          "updated_at": "2019-08-24T14:15:22Z",
           "value": "string",
           "via": "string"
         }
@@ -2706,10 +2742,13 @@ application (e.g. `/login?flow=abcde`).
       "schema_id": "string",
       "schema_url": "string",
       "traits": {},
+      "updated_at": "2019-08-24T14:15:22Z",
       "verifiable_addresses": [
         {
+          "created_at": "2014-01-01T23:28:56.782Z",
           "id": "string",
           "status": "string",
+          "updated_at": "2014-01-01T23:28:56.782Z",
           "value": "string",
           "verified": true,
           "verified_at": "2019-08-24T14:15:22Z",
@@ -2856,9 +2895,9 @@ p JSON.parse(result)
 </TabItem>
 </Tabs>
 
-<a id="opIdinitializeSelfServiceLoginViaAPIFlow"></a>
+<a id="opIdinitializeSelfServiceLoginForNativeApps"></a>
 
-### Initialize browser-based verification flow
+### Initialize Login Flow for Native Apps and API clients
 
 ```
 GET /self-service/login/api HTTP/1.1
@@ -2890,7 +2929,7 @@ Native, Objective C, Swift, Java, ...).
 More information can be found at
 [Ory Kratos User Login and User Registration Documentation](https://www.ory.sh/docs/next/kratos/self-service/flows/user-login-user-registration).
 
-<a id="initialize-login-flow-for-api-clients-parameters"></a>
+<a id="initialize-login-flow-for-native-apps-and-api-clients-parameters"></a>
 
 #### Parameters
 
@@ -2907,15 +2946,15 @@ to sign in again. This will reset the authenticated_at time of the session.
 
 #### Responses
 
-<a id="initialize-login-flow-for-api-clients-responses"></a>
+<a id="initialize-login-flow-for-native-apps-and-api-clients-responses"></a>
 
 ##### Overview
 
-| Status | Meaning                                                                    | Description  | Schema                              |
-| ------ | -------------------------------------------------------------------------- | ------------ | ----------------------------------- |
-| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | loginFlow    | [loginFlow](#schemaloginflow)       |
-| 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | genericError | [genericError](#schemagenericerror) |
-| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | genericError | [genericError](#schemagenericerror) |
+| Status | Meaning                                                                    | Description | Schema                        |
+| ------ | -------------------------------------------------------------------------- | ----------- | ----------------------------- |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | loginFlow   | [loginFlow](#schemaloginflow) |
+| 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | jsonError   | [jsonError](#schemajsonerror) |
+| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | jsonError   | [jsonError](#schemajsonerror) |
 
 ##### Examples
 
@@ -3836,6 +3875,7 @@ _Error response_
 ```json
 {
   "active": "string",
+  "created_at": "2019-08-24T14:15:22Z",
   "expires_at": "2019-08-24T14:15:22Z",
   "forced": true,
   "id": "string",
@@ -3876,7 +3916,8 @@ _Error response_
         "type": "string"
       }
     ]
-  }
+  },
+  "updated_at": "2019-08-24T14:15:22Z"
 }
 ```
 
@@ -4006,7 +4047,7 @@ p JSON.parse(result)
 </TabItem>
 </Tabs>
 
-<a id="opIdinitializeSelfServiceLoginViaBrowserFlow"></a>
+<a id="opIdinitializeSelfServiceLoginForBrowsers"></a>
 
 ### Initialize Login Flow for browsers
 
@@ -4028,16 +4069,31 @@ This endpoint is NOT INTENDED for API clients and only works with browsers
 More information can be found at
 [Ory Kratos User Login and User Registration Documentation](https://www.ory.sh/docs/next/kratos/self-service/flows/user-login-user-registration).
 
+<a id="initialize-login-flow-for-browsers-parameters"></a>
+
+#### Parameters
+
+| Parameter | In    | Type    | Required | Description             |
+| --------- | ----- | ------- | -------- | ----------------------- |
+| refresh   | query | boolean | false    | Refresh a login session |
+
+##### Detailed descriptions
+
+**refresh**: Refresh a login session
+
+If set to true, this will refresh an existing login session by asking the user
+to sign in again. This will reset the authenticated_at time of the session.
+
 #### Responses
 
 <a id="initialize-login-flow-for-browsers-responses"></a>
 
 ##### Overview
 
-| Status | Meaning                                                                    | Description                                                                                                                   | Schema                              |
-| ------ | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
-| 302    | [Found](https://tools.ietf.org/html/rfc7231#section-6.4.3)                 | Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is typically 201. | None                                |
-| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | genericError                                                                                                                  | [genericError](#schemagenericerror) |
+| Status | Meaning                                                                    | Description                                                                                                                   | Schema                        |
+| ------ | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| 302    | [Found](https://tools.ietf.org/html/rfc7231#section-6.4.3)                 | Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is typically 201. | None                          |
+| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | jsonError                                                                                                                     | [jsonError](#schemajsonerror) |
 
 ##### Examples
 
@@ -4047,12 +4103,12 @@ More information can be found at
 {
   "error": {
     "code": 404,
-    "debug": "The database adapter was unable to find the element",
+    "debug": "SQL field \"foo\" is not a bool.",
     "details": {},
-    "message": "string",
-    "reason": "string",
-    "request": "string",
-    "status": "string"
+    "message": "The resource could not be found",
+    "reason": "User with ID 1234 does not exist.",
+    "request": "d7ef54b1-ec15-46e6-bccb-524b82c035e6",
+    "status": "Not Found"
   }
 }
 ```
@@ -4220,13 +4276,13 @@ application (e.g. `/login?flow=abcde`).
 
 ##### Overview
 
-| Status | Meaning                                                                    | Description  | Schema                              |
-| ------ | -------------------------------------------------------------------------- | ------------ | ----------------------------------- |
-| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | loginFlow    | [loginFlow](#schemaloginflow)       |
-| 403    | [Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)             | genericError | [genericError](#schemagenericerror) |
-| 404    | [Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)             | genericError | [genericError](#schemagenericerror) |
-| 410    | [Gone](https://tools.ietf.org/html/rfc7231#section-6.5.9)                  | genericError | [genericError](#schemagenericerror) |
-| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | genericError | [genericError](#schemagenericerror) |
+| Status | Meaning                                                                    | Description | Schema                        |
+| ------ | -------------------------------------------------------------------------- | ----------- | ----------------------------- |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | loginFlow   | [loginFlow](#schemaloginflow) |
+| 403    | [Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)             | jsonError   | [jsonError](#schemajsonerror) |
+| 404    | [Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)             | jsonError   | [jsonError](#schemajsonerror) |
+| 410    | [Gone](https://tools.ietf.org/html/rfc7231#section-6.5.9)                  | jsonError   | [jsonError](#schemajsonerror) |
+| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | jsonError   | [jsonError](#schemajsonerror) |
 
 ##### Examples
 
@@ -4235,6 +4291,7 @@ application (e.g. `/login?flow=abcde`).
 ```json
 {
   "active": "string",
+  "created_at": "2019-08-24T14:15:22Z",
   "expires_at": "2019-08-24T14:15:22Z",
   "forced": true,
   "id": "string",
@@ -4275,7 +4332,8 @@ application (e.g. `/login?flow=abcde`).
         "type": "string"
       }
     ]
-  }
+  },
+  "updated_at": "2019-08-24T14:15:22Z"
 }
 ```
 
@@ -4476,7 +4534,7 @@ application (e.g. `/registration?flow=abcde`).
 | ------ | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
 | 302    | [Found](https://tools.ietf.org/html/rfc7231#section-6.4.3)                 | Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is typically 201. | None                                |
 | 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | recoveryFlow                                                                                                                  | [recoveryFlow](#schemarecoveryflow) |
-| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | genericError                                                                                                                  | [genericError](#schemagenericerror) |
+| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | jsonError                                                                                                                     | [jsonError](#schemajsonerror)       |
 
 ##### Examples
 
@@ -4662,9 +4720,9 @@ p JSON.parse(result)
 </TabItem>
 </Tabs>
 
-<a id="opIdinitializeSelfServiceRecoveryViaAPIFlow"></a>
+<a id="opIdinitializeSelfServiceRecoveryForNativeApps"></a>
 
-### Initialize Recovery Flow for API Clients
+### Initialize Recovery Flow for Native Apps and API clients
 
 ```
 GET /self-service/recovery/api HTTP/1.1
@@ -4698,15 +4756,15 @@ More information can be found at
 
 #### Responses
 
-<a id="initialize-recovery-flow-for-api-clients-responses"></a>
+<a id="initialize-recovery-flow-for-native-apps-and-api-clients-responses"></a>
 
 ##### Overview
 
 | Status | Meaning                                                                    | Description  | Schema                              |
 | ------ | -------------------------------------------------------------------------- | ------------ | ----------------------------------- |
 | 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | recoveryFlow | [recoveryFlow](#schemarecoveryflow) |
-| 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | genericError | [genericError](#schemagenericerror) |
-| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | genericError | [genericError](#schemagenericerror) |
+| 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | jsonError    | [jsonError](#schemajsonerror)       |
+| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | jsonError    | [jsonError](#schemajsonerror)       |
 
 ##### Examples
 
@@ -4885,7 +4943,7 @@ p JSON.parse(result)
 </TabItem>
 </Tabs>
 
-<a id="opIdinitializeSelfServiceRecoveryViaBrowserFlow"></a>
+<a id="opIdinitializeSelfServiceRecoveryForBrowsers"></a>
 
 ### Initialize Recovery Flow for Browser Clients
 
@@ -4913,10 +4971,10 @@ More information can be found at
 
 ##### Overview
 
-| Status | Meaning                                                                    | Description                                                                                                                   | Schema                              |
-| ------ | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
-| 302    | [Found](https://tools.ietf.org/html/rfc7231#section-6.4.3)                 | Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is typically 201. | None                                |
-| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | genericError                                                                                                                  | [genericError](#schemagenericerror) |
+| Status | Meaning                                                                    | Description                                                                                                                   | Schema                        |
+| ------ | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| 302    | [Found](https://tools.ietf.org/html/rfc7231#section-6.4.3)                 | Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is typically 201. | None                          |
+| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | jsonError                                                                                                                     | [jsonError](#schemajsonerror) |
 
 ##### Examples
 
@@ -4926,12 +4984,12 @@ More information can be found at
 {
   "error": {
     "code": 404,
-    "debug": "The database adapter was unable to find the element",
+    "debug": "SQL field \"foo\" is not a bool.",
     "details": {},
-    "message": "string",
-    "reason": "string",
-    "request": "string",
-    "status": "string"
+    "message": "The resource could not be found",
+    "reason": "User with ID 1234 does not exist.",
+    "request": "d7ef54b1-ec15-46e6-bccb-524b82c035e6",
+    "status": "Not Found"
   }
 }
 ```
@@ -5102,9 +5160,9 @@ your application (e.g. `/recovery?flow=abcde`).
 | Status | Meaning                                                                    | Description  | Schema                              |
 | ------ | -------------------------------------------------------------------------- | ------------ | ----------------------------------- |
 | 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | recoveryFlow | [recoveryFlow](#schemarecoveryflow) |
-| 404    | [Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)             | genericError | [genericError](#schemagenericerror) |
-| 410    | [Gone](https://tools.ietf.org/html/rfc7231#section-6.5.9)                  | genericError | [genericError](#schemagenericerror) |
-| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | genericError | [genericError](#schemagenericerror) |
+| 404    | [Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)             | jsonError    | [jsonError](#schemajsonerror)       |
+| 410    | [Gone](https://tools.ietf.org/html/rfc7231#section-6.5.9)                  | jsonError    | [jsonError](#schemajsonerror)       |
+| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | jsonError    | [jsonError](#schemajsonerror)       |
 
 ##### Examples
 
@@ -5363,7 +5421,7 @@ format: uuid
 | ------ | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
 | 302    | [Found](https://tools.ietf.org/html/rfc7231#section-6.4.3)                 | Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is typically 201. | None                                |
 | 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | recoveryFlow                                                                                                                  | [recoveryFlow](#schemarecoveryflow) |
-| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | genericError                                                                                                                  | [genericError](#schemagenericerror) |
+| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | jsonError                                                                                                                     | [jsonError](#schemajsonerror)       |
 
 ##### Examples
 
@@ -5617,7 +5675,7 @@ application (e.g. `/registration?flow=abcde`).
 | 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | registrationViaApiResponse                                                                                                    | [registrationViaApiResponse](#schemaregistrationviaapiresponse) |
 | 302    | [Found](https://tools.ietf.org/html/rfc7231#section-6.4.3)                 | Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is typically 201. | None                                                            |
 | 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | registrationFlow                                                                                                              | [registrationFlow](#schemaregistrationflow)                     |
-| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | genericError                                                                                                                  | [genericError](#schemagenericerror)                             |
+| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | jsonError                                                                                                                     | [jsonError](#schemajsonerror)                                   |
 
 ##### Examples
 
@@ -5626,10 +5684,13 @@ application (e.g. `/registration?flow=abcde`).
 ```json
 {
   "identity": {
+    "created_at": "2019-08-24T14:15:22Z",
     "id": "string",
     "recovery_addresses": [
       {
+        "created_at": "2019-08-24T14:15:22Z",
         "id": "string",
+        "updated_at": "2019-08-24T14:15:22Z",
         "value": "string",
         "via": "string"
       }
@@ -5637,10 +5698,13 @@ application (e.g. `/registration?flow=abcde`).
     "schema_id": "string",
     "schema_url": "string",
     "traits": {},
+    "updated_at": "2019-08-24T14:15:22Z",
     "verifiable_addresses": [
       {
+        "created_at": "2014-01-01T23:28:56.782Z",
         "id": "string",
         "status": "string",
+        "updated_at": "2014-01-01T23:28:56.782Z",
         "value": "string",
         "verified": true,
         "verified_at": "2019-08-24T14:15:22Z",
@@ -5654,10 +5718,13 @@ application (e.g. `/registration?flow=abcde`).
     "expires_at": "2019-08-24T14:15:22Z",
     "id": "string",
     "identity": {
+      "created_at": "2019-08-24T14:15:22Z",
       "id": "string",
       "recovery_addresses": [
         {
+          "created_at": "2019-08-24T14:15:22Z",
           "id": "string",
+          "updated_at": "2019-08-24T14:15:22Z",
           "value": "string",
           "via": "string"
         }
@@ -5665,10 +5732,13 @@ application (e.g. `/registration?flow=abcde`).
       "schema_id": "string",
       "schema_url": "string",
       "traits": {},
+      "updated_at": "2019-08-24T14:15:22Z",
       "verifiable_addresses": [
         {
+          "created_at": "2014-01-01T23:28:56.782Z",
           "id": "string",
           "status": "string",
+          "updated_at": "2014-01-01T23:28:56.782Z",
           "value": "string",
           "verified": true,
           "verified_at": "2019-08-24T14:15:22Z",
@@ -5815,9 +5885,9 @@ p JSON.parse(result)
 </TabItem>
 </Tabs>
 
-<a id="opIdinitializeSelfServiceRegistrationViaAPIFlow"></a>
+<a id="opIdinitializeSelfServiceRegistrationForNativeApps"></a>
 
-### Initialize Registration Flow for API clients
+### Initialize Registration Flow for Native Apps and API clients
 
 ```
 GET /self-service/registration/api HTTP/1.1
@@ -5852,15 +5922,15 @@ More information can be found at
 
 #### Responses
 
-<a id="initialize-registration-flow-for-api-clients-responses"></a>
+<a id="initialize-registration-flow-for-native-apps-and-api-clients-responses"></a>
 
 ##### Overview
 
 | Status | Meaning                                                                    | Description      | Schema                                      |
 | ------ | -------------------------------------------------------------------------- | ---------------- | ------------------------------------------- |
 | 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | registrationFlow | [registrationFlow](#schemaregistrationflow) |
-| 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | genericError     | [genericError](#schemagenericerror)         |
-| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | genericError     | [genericError](#schemagenericerror)         |
+| 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | jsonError        | [jsonError](#schemajsonerror)               |
+| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | jsonError        | [jsonError](#schemajsonerror)               |
 
 ##### Examples
 
@@ -6038,7 +6108,7 @@ p JSON.parse(result)
 </TabItem>
 </Tabs>
 
-<a id="opIdinitializeSelfServiceRegistrationViaBrowserFlow"></a>
+<a id="opIdinitializeSelfServiceRegistrationForBrowsers"></a>
 
 ### Initialize Registration Flow for browsers
 
@@ -6071,10 +6141,10 @@ More information can be found at
 
 ##### Overview
 
-| Status | Meaning                                                                    | Description                                                                                                                   | Schema                              |
-| ------ | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
-| 302    | [Found](https://tools.ietf.org/html/rfc7231#section-6.4.3)                 | Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is typically 201. | None                                |
-| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | genericError                                                                                                                  | [genericError](#schemagenericerror) |
+| Status | Meaning                                                                    | Description                                                                                                                   | Schema                        |
+| ------ | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| 302    | [Found](https://tools.ietf.org/html/rfc7231#section-6.4.3)                 | Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is typically 201. | None                          |
+| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | jsonError                                                                                                                     | [jsonError](#schemajsonerror) |
 
 ##### Examples
 
@@ -6084,12 +6154,12 @@ More information can be found at
 {
   "error": {
     "code": 404,
-    "debug": "The database adapter was unable to find the element",
+    "debug": "SQL field \"foo\" is not a bool.",
     "details": {},
-    "message": "string",
-    "reason": "string",
-    "request": "string",
-    "status": "string"
+    "message": "The resource could not be found",
+    "reason": "User with ID 1234 does not exist.",
+    "request": "d7ef54b1-ec15-46e6-bccb-524b82c035e6",
+    "status": "Not Found"
   }
 }
 ```
@@ -6260,10 +6330,10 @@ application (e.g. `/registration?flow=abcde`).
 | Status | Meaning                                                                    | Description      | Schema                                      |
 | ------ | -------------------------------------------------------------------------- | ---------------- | ------------------------------------------- |
 | 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | registrationFlow | [registrationFlow](#schemaregistrationflow) |
-| 403    | [Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)             | genericError     | [genericError](#schemagenericerror)         |
-| 404    | [Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)             | genericError     | [genericError](#schemagenericerror)         |
-| 410    | [Gone](https://tools.ietf.org/html/rfc7231#section-6.5.9)                  | genericError     | [genericError](#schemagenericerror)         |
-| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | genericError     | [genericError](#schemagenericerror)         |
+| 403    | [Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)             | jsonError        | [jsonError](#schemajsonerror)               |
+| 404    | [Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)             | jsonError        | [jsonError](#schemajsonerror)               |
+| 410    | [Gone](https://tools.ietf.org/html/rfc7231#section-6.5.9)                  | jsonError        | [jsonError](#schemajsonerror)               |
+| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | jsonError        | [jsonError](#schemajsonerror)               |
 
 ##### Examples
 
@@ -6451,6 +6521,7 @@ p JSON.parse(result)
 POST /self-service/settings?flow=string HTTP/1.1
 Content-Type: application/json
 Accept: application/json
+X-Session-Token: string
 
 ```
 
@@ -6489,10 +6560,11 @@ More information can be found at
 
 #### Parameters
 
-| Parameter | In    | Type                                                                  | Required | Description          |
-| --------- | ----- | --------------------------------------------------------------------- | -------- | -------------------- |
-| flow      | query | string                                                                | true     | The Settings Flow ID |
-| body      | body  | [submitSelfServiceSettingsFlow](#schemasubmitselfservicesettingsflow) | false    | none                 |
+| Parameter       | In     | Type                                                                  | Required | Description                                                     |
+| --------------- | ------ | --------------------------------------------------------------------- | -------- | --------------------------------------------------------------- |
+| flow            | query  | string                                                                | true     | The Settings Flow ID                                            |
+| X-Session-Token | header | string                                                                | false    | The Session Token of the Identity performing the settings flow. |
+| body            | body   | [submitSelfServiceSettingsFlow](#schemasubmitselfservicesettingsflow) | false    | none                                                            |
 
 ##### Detailed descriptions
 
@@ -6512,9 +6584,9 @@ application (e.g. `/settings?flow=abcde`).
 | 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | settingsViaApiResponse                                                                                                        | [settingsViaApiResponse](#schemasettingsviaapiresponse) |
 | 302    | [Found](https://tools.ietf.org/html/rfc7231#section-6.4.3)                 | Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is typically 201. | None                                                    |
 | 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | settingsFlow                                                                                                                  | [settingsFlow](#schemasettingsflow)                     |
-| 401    | [Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)            | genericError                                                                                                                  | [genericError](#schemagenericerror)                     |
-| 403    | [Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)             | genericError                                                                                                                  | [genericError](#schemagenericerror)                     |
-| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | genericError                                                                                                                  | [genericError](#schemagenericerror)                     |
+| 401    | [Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)            | jsonError                                                                                                                     | [jsonError](#schemajsonerror)                           |
+| 403    | [Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)             | jsonError                                                                                                                     | [jsonError](#schemajsonerror)                           |
+| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | jsonError                                                                                                                     | [jsonError](#schemajsonerror)                           |
 
 ##### Examples
 
@@ -6527,10 +6599,13 @@ application (e.g. `/settings?flow=abcde`).
     "expires_at": "2019-08-24T14:15:22Z",
     "id": "string",
     "identity": {
+      "created_at": "2019-08-24T14:15:22Z",
       "id": "string",
       "recovery_addresses": [
         {
+          "created_at": "2019-08-24T14:15:22Z",
           "id": "string",
+          "updated_at": "2019-08-24T14:15:22Z",
           "value": "string",
           "via": "string"
         }
@@ -6538,10 +6613,13 @@ application (e.g. `/settings?flow=abcde`).
       "schema_id": "string",
       "schema_url": "string",
       "traits": {},
+      "updated_at": "2019-08-24T14:15:22Z",
       "verifiable_addresses": [
         {
+          "created_at": "2014-01-01T23:28:56.782Z",
           "id": "string",
           "status": "string",
+          "updated_at": "2014-01-01T23:28:56.782Z",
           "value": "string",
           "verified": true,
           "verified_at": "2019-08-24T14:15:22Z",
@@ -6590,10 +6668,13 @@ application (e.g. `/settings?flow=abcde`).
     }
   },
   "identity": {
+    "created_at": "2019-08-24T14:15:22Z",
     "id": "string",
     "recovery_addresses": [
       {
+        "created_at": "2019-08-24T14:15:22Z",
         "id": "string",
+        "updated_at": "2019-08-24T14:15:22Z",
         "value": "string",
         "via": "string"
       }
@@ -6601,10 +6682,13 @@ application (e.g. `/settings?flow=abcde`).
     "schema_id": "string",
     "schema_url": "string",
     "traits": {},
+    "updated_at": "2019-08-24T14:15:22Z",
     "verifiable_addresses": [
       {
+        "created_at": "2014-01-01T23:28:56.782Z",
         "id": "string",
         "status": "string",
+        "updated_at": "2014-01-01T23:28:56.782Z",
         "value": "string",
         "verified": true,
         "verified_at": "2019-08-24T14:15:22Z",
@@ -6629,7 +6713,7 @@ application (e.g. `/settings?flow=abcde`).
 
 ```shell
 curl -X POST /self-service/settings?flow=string \
-  -H 'Content-Type: application/json' \  -H 'Accept: application/json' \  -H 'X-Session-Token: API_KEY'
+  -H 'Content-Type: application/json' \  -H 'Accept: application/json' \  -H 'X-Session-Token: string' \  -H 'X-Session-Token: API_KEY'
 ```
 
 </TabItem>
@@ -6647,6 +6731,7 @@ func main() {
     headers := map[string][]string{
         "Content-Type": []string{"application/json"},
         "Accept": []string{"application/json"},
+        "X-Session-Token": []string{"string"},
         "X-Session-Token": []string{"API_KEY"},
     }
 
@@ -6671,6 +6756,7 @@ const input = '{}'
 const headers = {
   'Content-Type': 'application/json',
   Accept: 'application/json',
+  'X-Session-Token': 'string',
   'X-Session-Token': 'API_KEY'
 }
 
@@ -6720,6 +6806,7 @@ import requests
 headers = {
   'Content-Type': 'application/json',
   'Accept': 'application/json',
+  'X-Session-Token': 'string',
   'X-Session-Token': 'API_KEY'
 }
 
@@ -6742,6 +6829,7 @@ require 'json'
 headers = {
   'Content-Type' => 'application/json',
   'Accept' => 'application/json',
+  'X-Session-Token' => 'string',
   'X-Session-Token' => 'API_KEY'
 }
 
@@ -6755,13 +6843,14 @@ p JSON.parse(result)
 </TabItem>
 </Tabs>
 
-<a id="opIdinitializeSelfServiceSettingsViaAPIFlow"></a>
+<a id="opIdinitializeSelfServiceSettingsForNativeApps"></a>
 
-### Initialize Settings Flow for API Clients
+### Initialize Settings Flow for Native Apps and API clients
 
 ```
 GET /self-service/settings/api HTTP/1.1
 Accept: application/json
+X-Session-Token: string
 
 ```
 
@@ -6787,17 +6876,25 @@ Native, Objective C, Swift, Java, ...).
 More information can be found at
 [Ory Kratos User Settings & Profile Management Documentation](../self-service/flows/user-settings).
 
+<a id="initialize-settings-flow-for-native-apps-and-api-clients-parameters"></a>
+
+#### Parameters
+
+| Parameter       | In     | Type   | Required | Description                                                     |
+| --------------- | ------ | ------ | -------- | --------------------------------------------------------------- |
+| X-Session-Token | header | string | false    | The Session Token of the Identity performing the settings flow. |
+
 #### Responses
 
-<a id="initialize-settings-flow-for-api-clients-responses"></a>
+<a id="initialize-settings-flow-for-native-apps-and-api-clients-responses"></a>
 
 ##### Overview
 
 | Status | Meaning                                                                    | Description  | Schema                              |
 | ------ | -------------------------------------------------------------------------- | ------------ | ----------------------------------- |
 | 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | settingsFlow | [settingsFlow](#schemasettingsflow) |
-| 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | genericError | [genericError](#schemagenericerror) |
-| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | genericError | [genericError](#schemagenericerror) |
+| 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | jsonError    | [jsonError](#schemajsonerror)       |
+| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | jsonError    | [jsonError](#schemajsonerror)       |
 
 ##### Examples
 
@@ -6809,10 +6906,13 @@ More information can be found at
   "expires_at": "2019-08-24T14:15:22Z",
   "id": "string",
   "identity": {
+    "created_at": "2019-08-24T14:15:22Z",
     "id": "string",
     "recovery_addresses": [
       {
+        "created_at": "2019-08-24T14:15:22Z",
         "id": "string",
+        "updated_at": "2019-08-24T14:15:22Z",
         "value": "string",
         "via": "string"
       }
@@ -6820,10 +6920,13 @@ More information can be found at
     "schema_id": "string",
     "schema_url": "string",
     "traits": {},
+    "updated_at": "2019-08-24T14:15:22Z",
     "verifiable_addresses": [
       {
+        "created_at": "2014-01-01T23:28:56.782Z",
         "id": "string",
         "status": "string",
+        "updated_at": "2014-01-01T23:28:56.782Z",
         "value": "string",
         "verified": true,
         "verified_at": "2019-08-24T14:15:22Z",
@@ -6887,7 +6990,7 @@ More information can be found at
 
 ```shell
 curl -X GET /self-service/settings/api \
-  -H 'Accept: application/json' \  -H 'X-Session-Token: API_KEY'
+  -H 'Accept: application/json' \  -H 'X-Session-Token: string' \  -H 'X-Session-Token: API_KEY'
 ```
 
 </TabItem>
@@ -6904,6 +7007,7 @@ import (
 func main() {
     headers := map[string][]string{
         "Accept": []string{"application/json"},
+        "X-Session-Token": []string{"string"},
         "X-Session-Token": []string{"API_KEY"},
     }
 
@@ -6927,6 +7031,7 @@ const fetch = require('node-fetch')
 
 const headers = {
   Accept: 'application/json',
+  'X-Session-Token': 'string',
   'X-Session-Token': 'API_KEY'
 }
 
@@ -6974,6 +7079,7 @@ import requests
 
 headers = {
   'Accept': 'application/json',
+  'X-Session-Token': 'string',
   'X-Session-Token': 'API_KEY'
 }
 
@@ -6994,6 +7100,7 @@ require 'json'
 
 headers = {
   'Accept' => 'application/json',
+  'X-Session-Token' => 'string',
   'X-Session-Token' => 'API_KEY'
 }
 
@@ -7006,7 +7113,7 @@ p JSON.parse(result)
 </TabItem>
 </Tabs>
 
-<a id="opIdinitializeSelfServiceSettingsViaBrowserFlow"></a>
+<a id="opIdinitializeSelfServiceSettingsForBrowsers"></a>
 
 ### Initialize Settings Flow for Browsers
 
@@ -7037,10 +7144,10 @@ More information can be found at
 
 ##### Overview
 
-| Status | Meaning                                                                    | Description                                                                                                                   | Schema                              |
-| ------ | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
-| 302    | [Found](https://tools.ietf.org/html/rfc7231#section-6.4.3)                 | Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is typically 201. | None                                |
-| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | genericError                                                                                                                  | [genericError](#schemagenericerror) |
+| Status | Meaning                                                                    | Description                                                                                                                   | Schema                        |
+| ------ | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| 302    | [Found](https://tools.ietf.org/html/rfc7231#section-6.4.3)                 | Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is typically 201. | None                          |
+| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | jsonError                                                                                                                     | [jsonError](#schemajsonerror) |
 
 ##### Examples
 
@@ -7050,12 +7157,12 @@ More information can be found at
 {
   "error": {
     "code": 404,
-    "debug": "The database adapter was unable to find the element",
+    "debug": "SQL field \"foo\" is not a bool.",
     "details": {},
-    "message": "string",
-    "reason": "string",
-    "request": "string",
-    "status": "string"
+    "message": "The resource could not be found",
+    "reason": "User with ID 1234 does not exist.",
+    "request": "d7ef54b1-ec15-46e6-bccb-524b82c035e6",
+    "status": "Not Found"
   }
 }
 ```
@@ -7200,6 +7307,7 @@ p JSON.parse(result)
 ```
 GET /self-service/settings/flows?id=string HTTP/1.1
 Accept: application/json
+X-Session-Token: string
 
 ```
 
@@ -7218,9 +7326,10 @@ More information can be found at
 
 #### Parameters
 
-| Parameter | In    | Type   | Required | Description                |
-| --------- | ----- | ------ | -------- | -------------------------- |
-| id        | query | string | true     | ID is the Settings Flow ID |
+| Parameter       | In     | Type   | Required | Description                                                     |
+| --------------- | ------ | ------ | -------- | --------------------------------------------------------------- |
+| id              | query  | string | true     | ID is the Settings Flow ID                                      |
+| X-Session-Token | header | string | false    | The Session Token of the Identity performing the settings flow. |
 
 ##### Detailed descriptions
 
@@ -7238,10 +7347,10 @@ application (e.g. `/settings?flow=abcde`).
 | Status | Meaning                                                                    | Description  | Schema                              |
 | ------ | -------------------------------------------------------------------------- | ------------ | ----------------------------------- |
 | 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | settingsFlow | [settingsFlow](#schemasettingsflow) |
-| 403    | [Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)             | genericError | [genericError](#schemagenericerror) |
-| 404    | [Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)             | genericError | [genericError](#schemagenericerror) |
-| 410    | [Gone](https://tools.ietf.org/html/rfc7231#section-6.5.9)                  | genericError | [genericError](#schemagenericerror) |
-| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | genericError | [genericError](#schemagenericerror) |
+| 403    | [Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)             | jsonError    | [jsonError](#schemajsonerror)       |
+| 404    | [Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)             | jsonError    | [jsonError](#schemajsonerror)       |
+| 410    | [Gone](https://tools.ietf.org/html/rfc7231#section-6.5.9)                  | jsonError    | [jsonError](#schemajsonerror)       |
+| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | jsonError    | [jsonError](#schemajsonerror)       |
 
 ##### Examples
 
@@ -7253,10 +7362,13 @@ application (e.g. `/settings?flow=abcde`).
   "expires_at": "2019-08-24T14:15:22Z",
   "id": "string",
   "identity": {
+    "created_at": "2019-08-24T14:15:22Z",
     "id": "string",
     "recovery_addresses": [
       {
+        "created_at": "2019-08-24T14:15:22Z",
         "id": "string",
+        "updated_at": "2019-08-24T14:15:22Z",
         "value": "string",
         "via": "string"
       }
@@ -7264,10 +7376,13 @@ application (e.g. `/settings?flow=abcde`).
     "schema_id": "string",
     "schema_url": "string",
     "traits": {},
+    "updated_at": "2019-08-24T14:15:22Z",
     "verifiable_addresses": [
       {
+        "created_at": "2014-01-01T23:28:56.782Z",
         "id": "string",
         "status": "string",
+        "updated_at": "2014-01-01T23:28:56.782Z",
         "value": "string",
         "verified": true,
         "verified_at": "2019-08-24T14:15:22Z",
@@ -7331,7 +7446,7 @@ application (e.g. `/settings?flow=abcde`).
 
 ```shell
 curl -X GET /self-service/settings/flows?id=string \
-  -H 'Accept: application/json' \  -H 'X-Session-Token: API_KEY'
+  -H 'Accept: application/json' \  -H 'X-Session-Token: string' \  -H 'X-Session-Token: API_KEY'
 ```
 
 </TabItem>
@@ -7348,6 +7463,7 @@ import (
 func main() {
     headers := map[string][]string{
         "Accept": []string{"application/json"},
+        "X-Session-Token": []string{"string"},
         "X-Session-Token": []string{"API_KEY"},
     }
 
@@ -7371,6 +7487,7 @@ const fetch = require('node-fetch')
 
 const headers = {
   Accept: 'application/json',
+  'X-Session-Token': 'string',
   'X-Session-Token': 'API_KEY'
 }
 
@@ -7418,6 +7535,7 @@ import requests
 
 headers = {
   'Accept': 'application/json',
+  'X-Session-Token': 'string',
   'X-Session-Token': 'API_KEY'
 }
 
@@ -7439,6 +7557,7 @@ require 'json'
 
 headers = {
   'Accept' => 'application/json',
+  'X-Session-Token' => 'string',
   'X-Session-Token' => 'API_KEY'
 }
 
@@ -7452,9 +7571,9 @@ p JSON.parse(result)
 </TabItem>
 </Tabs>
 
-<a id="opIdinitializeSelfServiceVerificationViaAPIFlow"></a>
+<a id="opIdinitializeSelfServiceVerificationForNativeApps"></a>
 
-### Initialize Verification Flow for API Clients
+### Initialize Verification Flow for Native Apps and API clients
 
 ```
 GET /self-service/verification/api HTTP/1.1
@@ -7485,15 +7604,15 @@ More information can be found at
 
 #### Responses
 
-<a id="initialize-verification-flow-for-api-clients-responses"></a>
+<a id="initialize-verification-flow-for-native-apps-and-api-clients-responses"></a>
 
 ##### Overview
 
 | Status | Meaning                                                                    | Description      | Schema                                      |
 | ------ | -------------------------------------------------------------------------- | ---------------- | ------------------------------------------- |
 | 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | verificationFlow | [verificationFlow](#schemaverificationflow) |
-| 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | genericError     | [genericError](#schemagenericerror)         |
-| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | genericError     | [genericError](#schemagenericerror)         |
+| 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | jsonError        | [jsonError](#schemajsonerror)               |
+| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | jsonError        | [jsonError](#schemajsonerror)               |
 
 ##### Examples
 
@@ -7672,7 +7791,7 @@ p JSON.parse(result)
 </TabItem>
 </Tabs>
 
-<a id="opIdinitializeSelfServiceVerificationViaBrowserFlow"></a>
+<a id="opIdinitializeSelfServiceVerificationForBrowsers"></a>
 
 ### Initialize Verification Flow for Browser Clients
 
@@ -7699,10 +7818,10 @@ More information can be found at
 
 ##### Overview
 
-| Status | Meaning                                                                    | Description                                                                                                                   | Schema                              |
-| ------ | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
-| 302    | [Found](https://tools.ietf.org/html/rfc7231#section-6.4.3)                 | Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is typically 201. | None                                |
-| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | genericError                                                                                                                  | [genericError](#schemagenericerror) |
+| Status | Meaning                                                                    | Description                                                                                                                   | Schema                        |
+| ------ | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| 302    | [Found](https://tools.ietf.org/html/rfc7231#section-6.4.3)                 | Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is typically 201. | None                          |
+| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | jsonError                                                                                                                     | [jsonError](#schemajsonerror) |
 
 ##### Examples
 
@@ -7712,12 +7831,12 @@ More information can be found at
 {
   "error": {
     "code": 404,
-    "debug": "The database adapter was unable to find the element",
+    "debug": "SQL field \"foo\" is not a bool.",
     "details": {},
-    "message": "string",
-    "reason": "string",
-    "request": "string",
-    "status": "string"
+    "message": "The resource could not be found",
+    "reason": "User with ID 1234 does not exist.",
+    "request": "d7ef54b1-ec15-46e6-bccb-524b82c035e6",
+    "status": "Not Found"
   }
 }
 ```
@@ -7888,9 +8007,9 @@ your application (e.g. `/verification?flow=abcde`).
 | Status | Meaning                                                                    | Description      | Schema                                      |
 | ------ | -------------------------------------------------------------------------- | ---------------- | ------------------------------------------- |
 | 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | verificationFlow | [verificationFlow](#schemaverificationflow) |
-| 403    | [Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)             | genericError     | [genericError](#schemagenericerror)         |
-| 404    | [Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)             | genericError     | [genericError](#schemagenericerror)         |
-| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | genericError     | [genericError](#schemagenericerror)         |
+| 403    | [Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)             | jsonError        | [jsonError](#schemajsonerror)               |
+| 404    | [Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)             | jsonError        | [jsonError](#schemajsonerror)               |
+| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | jsonError        | [jsonError](#schemajsonerror)               |
 
 ##### Examples
 
@@ -8141,7 +8260,7 @@ application (e.g. `/registration?flow=abcde`).
 | ------ | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
 | 302    | [Found](https://tools.ietf.org/html/rfc7231#section-6.4.3)                 | Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is typically 201. | None                                        |
 | 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | verificationFlow                                                                                                              | [verificationFlow](#schemaverificationflow) |
-| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | genericError                                                                                                                  | [genericError](#schemagenericerror)         |
+| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | jsonError                                                                                                                     | [jsonError](#schemajsonerror)               |
 
 ##### Examples
 
@@ -8367,11 +8486,11 @@ Self-Service Logout Flow instead.
 
 ##### Overview
 
-| Status | Meaning                                                                    | Description                                                                                                                   | Schema                              |
-| ------ | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
-| 204    | [No Content](https://tools.ietf.org/html/rfc7231#section-6.3.5)            | Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is typically 201. | None                                |
-| 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | genericError                                                                                                                  | [genericError](#schemagenericerror) |
-| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | genericError                                                                                                                  | [genericError](#schemagenericerror) |
+| Status | Meaning                                                                    | Description                                                                                                                   | Schema                        |
+| ------ | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| 204    | [No Content](https://tools.ietf.org/html/rfc7231#section-6.3.5)            | Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is typically 201. | None                          |
+| 400    | [Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)           | jsonError                                                                                                                     | [jsonError](#schemajsonerror) |
+| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | jsonError                                                                                                                     | [jsonError](#schemajsonerror) |
 
 ##### Examples
 
@@ -8381,12 +8500,12 @@ Self-Service Logout Flow instead.
 {
   "error": {
     "code": 404,
-    "debug": "The database adapter was unable to find the element",
+    "debug": "SQL field \"foo\" is not a bool.",
     "details": {},
-    "message": "string",
-    "reason": "string",
-    "request": "string",
-    "status": "string"
+    "message": "The resource could not be found",
+    "reason": "User with ID 1234 does not exist.",
+    "request": "d7ef54b1-ec15-46e6-bccb-524b82c035e6",
+    "status": "Not Found"
   }
 }
 ```
@@ -8523,15 +8642,14 @@ p JSON.parse(result)
 </TabItem>
 </Tabs>
 
-<a id="opIdwhoami"></a>
+<a id="opIdtoSession"></a>
 
 ### Check Who the Current HTTP Session Belongs To
 
 ```
 GET /sessions/whoami HTTP/1.1
 Accept: application/json
-Cookie: string
-Authorization: string
+X-Session-Token: string
 
 ```
 
@@ -8541,16 +8659,18 @@ if the credentials are invalid or no credentials were sent. Additionally when
 the request it successful it adds the user ID to the
 'X-Kratos-Authenticated-Identity-Id' header in the response.
 
-This endpoint is useful for reverse proxies and API Gateways.
+This endpoint is useful for:
+
+AJAX calls. Remember to send credentials and set up CORS correctly! Reverse
+proxies and API Gateways Server-side calls - use the `X-Session-Token` header!
 
 <a id="check-who-the-current-http-session-belongs-to-parameters"></a>
 
 #### Parameters
 
-| Parameter     | In     | Type   | Required | Description |
-| ------------- | ------ | ------ | -------- | ----------- |
-| Cookie        | header | string | false    | none        |
-| Authorization | header | string | false    | none        |
+| Parameter       | In     | Type   | Required | Description |
+| --------------- | ------ | ------ | -------- | ----------- |
+| X-Session-Token | header | string | false    | none        |
 
 #### Responses
 
@@ -8558,11 +8678,11 @@ This endpoint is useful for reverse proxies and API Gateways.
 
 ##### Overview
 
-| Status | Meaning                                                                    | Description  | Schema                              |
-| ------ | -------------------------------------------------------------------------- | ------------ | ----------------------------------- |
-| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | session      | [session](#schemasession)           |
-| 401    | [Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)            | genericError | [genericError](#schemagenericerror) |
-| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | genericError | [genericError](#schemagenericerror) |
+| Status | Meaning                                                                    | Description | Schema                        |
+| ------ | -------------------------------------------------------------------------- | ----------- | ----------------------------- |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)                    | session     | [session](#schemasession)     |
+| 401    | [Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)            | jsonError   | [jsonError](#schemajsonerror) |
+| 500    | [Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1) | jsonError   | [jsonError](#schemajsonerror) |
 
 ##### Examples
 
@@ -8575,10 +8695,13 @@ This endpoint is useful for reverse proxies and API Gateways.
   "expires_at": "2019-08-24T14:15:22Z",
   "id": "string",
   "identity": {
+    "created_at": "2019-08-24T14:15:22Z",
     "id": "string",
     "recovery_addresses": [
       {
+        "created_at": "2019-08-24T14:15:22Z",
         "id": "string",
+        "updated_at": "2019-08-24T14:15:22Z",
         "value": "string",
         "via": "string"
       }
@@ -8586,10 +8709,13 @@ This endpoint is useful for reverse proxies and API Gateways.
     "schema_id": "string",
     "schema_url": "string",
     "traits": {},
+    "updated_at": "2019-08-24T14:15:22Z",
     "verifiable_addresses": [
       {
+        "created_at": "2014-01-01T23:28:56.782Z",
         "id": "string",
         "status": "string",
+        "updated_at": "2014-01-01T23:28:56.782Z",
         "value": "string",
         "verified": true,
         "verified_at": "2019-08-24T14:15:22Z",
@@ -8603,7 +8729,7 @@ This endpoint is useful for reverse proxies and API Gateways.
 
 <aside class="warning">
   To perform this operation, you must be authenticated by means of one of the
-  following methods: sessionToken
+  following methods: sessionCookie
 </aside>
 
 #### Code samples
@@ -8615,7 +8741,7 @@ This endpoint is useful for reverse proxies and API Gateways.
 
 ```shell
 curl -X GET /sessions/whoami \
-  -H 'Accept: application/json' \  -H 'Cookie: string' \  -H 'Authorization: string' \  -H 'X-Session-Token: API_KEY'
+  -H 'Accept: application/json' \  -H 'X-Session-Token: string' \  -H 'Cookie: API_KEY'
 ```
 
 </TabItem>
@@ -8632,9 +8758,8 @@ import (
 func main() {
     headers := map[string][]string{
         "Accept": []string{"application/json"},
-        "Cookie": []string{"string"},
-        "Authorization": []string{"string"},
-        "X-Session-Token": []string{"API_KEY"},
+        "X-Session-Token": []string{"string"},
+        "Cookie": []string{"API_KEY"},
     }
 
     var body []byte
@@ -8657,9 +8782,8 @@ const fetch = require('node-fetch')
 
 const headers = {
   Accept: 'application/json',
-  Cookie: 'string',
-  Authorization: 'string',
-  'X-Session-Token': 'API_KEY'
+  'X-Session-Token': 'string',
+  Cookie: 'API_KEY'
 }
 
 fetch('/sessions/whoami', {
@@ -8706,9 +8830,8 @@ import requests
 
 headers = {
   'Accept': 'application/json',
-  'Cookie': 'string',
-  'Authorization': 'string',
-  'X-Session-Token': 'API_KEY'
+  'X-Session-Token': 'string',
+  'Cookie': 'API_KEY'
 }
 
 r = requests.get(
@@ -8728,9 +8851,8 @@ require 'json'
 
 headers = {
   'Accept' => 'application/json',
-  'Cookie' => 'string',
-  'Authorization' => 'string',
-  'X-Session-Token' => 'API_KEY'
+  'X-Session-Token' => 'string',
+  'Cookie' => 'API_KEY'
 }
 
 result = RestClient.get '/sessions/whoami',
@@ -8933,26 +9055,6 @@ _ContainerWaitOKBodyError container waiting error, if any_
 | ------- | ------ | -------- | ------------ | ------------------- |
 | Message | string | false    | none         | Details of an error |
 
-<a id="tocScreateidentity"></a>
-
-#### CreateIdentity
-
-<a id="schemacreateidentity"></a>
-
-```json
-{
-  "schema_id": "string",
-  "traits": {}
-}
-```
-
-#### Properties
-
-| Name      | Type   | Required | Restrictions | Description                                                                                                                                                                                                            |
-| --------- | ------ | -------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| schema_id | string | true     | none         | SchemaID is the ID of the JSON Schema to be used for validating the identity's traits.                                                                                                                                 |
-| traits    | object | true     | none         | Traits represent an identity's traits. The identity is able to create, modify, and delete traits<br/>in a self-service manner. The input will always be validated against the JSON Schema defined<br/>in `schema_url`. |
-
 <a id="tocScreaterecoverylink"></a>
 
 #### CreateRecoveryLink
@@ -9007,49 +9109,6 @@ credentials, passwordless credentials,_
 | Name        | Type           | Required | Restrictions | Description |
 | ----------- | -------------- | -------- | ------------ | ----------- |
 | _anonymous_ | integer(int64) | false    | none         | none        |
-
-<a id="tocSidentity"></a>
-
-#### Identity
-
-<a id="schemaidentity"></a>
-
-```json
-{
-  "id": "string",
-  "recovery_addresses": [
-    {
-      "id": "string",
-      "value": "string",
-      "via": "string"
-    }
-  ],
-  "schema_id": "string",
-  "schema_url": "string",
-  "traits": {},
-  "verifiable_addresses": [
-    {
-      "id": "string",
-      "status": "string",
-      "value": "string",
-      "verified": true,
-      "verified_at": "2019-08-24T14:15:22Z",
-      "via": "string"
-    }
-  ]
-}
-```
-
-#### Properties
-
-| Name                 | Type                                            | Required | Restrictions | Description                                                                                                       |
-| -------------------- | ----------------------------------------------- | -------- | ------------ | ----------------------------------------------------------------------------------------------------------------- |
-| id                   | [UUID](#schemauuid)                             | true     | none         | none                                                                                                              |
-| recovery_addresses   | [[RecoveryAddress](#schemarecoveryaddress)]     | false    | none         | RecoveryAddresses contains all the addresses that can be used to recover an identity.                             |
-| schema_id            | string                                          | true     | none         | SchemaID is the ID of the JSON Schema to be used for validating the identity's traits.                            |
-| schema_url           | string                                          | true     | none         | SchemaURL is the URL of the endpoint where the identity's traits schema can be fetched from.<br/><br/>format: url |
-| traits               | [Traits](#schematraits)                         | true     | none         | none                                                                                                              |
-| verifiable_addresses | [[VerifiableAddress](#schemaverifiableaddress)] | false    | none         | VerifiableAddresses contains all the addresses that can be verified by the user.                                  |
 
 <a id="tocSjsonrawmessage"></a>
 
@@ -9519,7 +9578,9 @@ _PluginSettings Settings that can be modified by users._
 
 ```json
 {
+  "created_at": "2019-08-24T14:15:22Z",
   "id": "string",
+  "updated_at": "2019-08-24T14:15:22Z",
   "value": "string",
   "via": "string"
 }
@@ -9527,11 +9588,13 @@ _PluginSettings Settings that can be modified by users._
 
 #### Properties
 
-| Name  | Type                                              | Required | Restrictions | Description |
-| ----- | ------------------------------------------------- | -------- | ------------ | ----------- |
-| id    | [UUID](#schemauuid)                               | true     | none         | none        |
-| value | string                                            | true     | none         | none        |
-| via   | [RecoveryAddressType](#schemarecoveryaddresstype) | true     | none         | none        |
+| Name       | Type                                              | Required | Restrictions | Description                                           |
+| ---------- | ------------------------------------------------- | -------- | ------------ | ----------------------------------------------------- |
+| created_at | string(date-time)                                 | false    | none         | CreatedAt is a helper struct field for gobuffalo.pop. |
+| id         | [UUID](#schemauuid)                               | true     | none         | none                                                  |
+| updated_at | string(date-time)                                 | false    | none         | UpdatedAt is a helper struct field for gobuffalo.pop. |
+| value      | string                                            | true     | none         | none                                                  |
+| via        | [RecoveryAddressType](#schemarecoveryaddresstype) | true     | none         | none                                                  |
 
 <a id="tocSrecoveryaddresstype"></a>
 
@@ -9564,20 +9627,6 @@ _PluginSettings Settings that can be modified by users._
 | Name        | Type   | Required | Restrictions | Description |
 | ----------- | ------ | -------- | ------------ | ----------- |
 | _anonymous_ | string | false    | none         | none        |
-
-<a id="tocStraits"></a>
-
-#### Traits
-
-<a id="schematraits"></a>
-
-```json
-{}
-```
-
-#### Properties
-
-_None_
 
 <a id="tocStype"></a>
 
@@ -9613,86 +9662,6 @@ _Type is the flow type._
 | ----------- | ------------- | -------- | ------------ | ----------- |
 | _anonymous_ | string(uuid4) | false    | none         | none        |
 
-<a id="tocSupdateidentity"></a>
-
-#### UpdateIdentity
-
-<a id="schemaupdateidentity"></a>
-
-```json
-{
-  "schema_id": "string",
-  "traits": {}
-}
-```
-
-#### Properties
-
-| Name      | Type   | Required | Restrictions | Description                                                                                                                                                                                                           |
-| --------- | ------ | -------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| schema_id | string | false    | none         | SchemaID is the ID of the JSON Schema to be used for validating the identity's traits. If set<br/>will update the Identity's SchemaID.                                                                                |
-| traits    | object | true     | none         | Traits represent an identity's traits. The identity is able to create, modify, and delete traits<br/>in a self-service manner. The input will always be validated against the JSON Schema defined<br/>in `schema_id`. |
-
-<a id="tocSverifiableaddress"></a>
-
-#### VerifiableAddress
-
-<a id="schemaverifiableaddress"></a>
-
-```json
-{
-  "id": "string",
-  "status": "string",
-  "value": "string",
-  "verified": true,
-  "verified_at": "2019-08-24T14:15:22Z",
-  "via": "string"
-}
-```
-
-#### Properties
-
-| Name        | Type                                                      | Required | Restrictions | Description |
-| ----------- | --------------------------------------------------------- | -------- | ------------ | ----------- |
-| id          | [UUID](#schemauuid)                                       | true     | none         | none        |
-| status      | [VerifiableAddressStatus](#schemaverifiableaddressstatus) | true     | none         | none        |
-| value       | string                                                    | true     | none         | none        |
-| verified    | boolean                                                   | true     | none         | none        |
-| verified_at | [NullTime](#schemanulltime)                               | false    | none         | none        |
-| via         | [VerifiableAddressType](#schemaverifiableaddresstype)     | true     | none         | none        |
-
-<a id="tocSverifiableaddressstatus"></a>
-
-#### VerifiableAddressStatus
-
-<a id="schemaverifiableaddressstatus"></a>
-
-```json
-"string"
-```
-
-#### Properties
-
-| Name        | Type   | Required | Restrictions | Description |
-| ----------- | ------ | -------- | ------------ | ----------- |
-| _anonymous_ | string | false    | none         | none        |
-
-<a id="tocSverifiableaddresstype"></a>
-
-#### VerifiableAddressType
-
-<a id="schemaverifiableaddresstype"></a>
-
-```json
-"string"
-```
-
-#### Properties
-
-| Name        | Type   | Required | Restrictions | Description |
-| ----------- | ------ | -------- | ------------ | ----------- |
-| _anonymous_ | string | false    | none         | none        |
-
 <a id="tocSvolumeusagedata"></a>
 
 #### VolumeUsageData
@@ -9716,25 +9685,25 @@ _VolumeUsageData Usage details about the volume. This information is used by the
 | RefCount | integer(int64) | true     | none         | The number of containers referencing this volume. This field<br/>is set to `-1` if the reference-count is not available.                                                                                                                            |
 | Size     | integer(int64) | true     | none         | Amount of disk space used by the volume (in bytes). This information<br/>is only available for volumes created with the `"local"` volume<br/>driver. For volumes created with other volume drivers, this field<br/>is set to `-1` ("not available") |
 
-<a id="tocSerrorcontainer"></a>
+<a id="tocScreateidentity"></a>
 
-#### errorContainer
+#### createIdentity
 
-<a id="schemaerrorcontainer"></a>
+<a id="schemacreateidentity"></a>
 
 ```json
 {
-  "errors": {},
-  "id": "string"
+  "schema_id": "string",
+  "traits": {}
 }
 ```
 
 #### Properties
 
-| Name   | Type                | Required | Restrictions | Description             |
-| ------ | ------------------- | -------- | ------------ | ----------------------- |
-| errors | object              | true     | none         | Errors in the container |
-| id     | [UUID](#schemauuid) | true     | none         | none                    |
+| Name      | Type   | Required | Restrictions | Description                                                                                                                                                                                                            |
+| --------- | ------ | -------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| schema_id | string | true     | none         | SchemaID is the ID of the JSON Schema to be used for validating the identity's traits.                                                                                                                                 |
+| traits    | object | true     | none         | Traits represent an identity's traits. The identity is able to create, modify, and delete traits<br/>in a self-service manner. The input will always be validated against the JSON Schema defined<br/>in `schema_url`. |
 
 <a id="tocSgenericerror"></a>
 
@@ -9744,55 +9713,27 @@ _VolumeUsageData Usage details about the volume. This information is used by the
 
 ```json
 {
-  "error": {
-    "code": 404,
-    "debug": "The database adapter was unable to find the element",
-    "details": {},
-    "message": "string",
-    "reason": "string",
-    "request": "string",
-    "status": "string"
-  }
-}
-```
-
-_Error response_
-
-#### Properties
-
-| Name  | Type                                              | Required | Restrictions | Description |
-| ----- | ------------------------------------------------- | -------- | ------------ | ----------- |
-| error | [genericErrorPayload](#schemagenericerrorpayload) | false    | none         | none        |
-
-<a id="tocSgenericerrorpayload"></a>
-
-#### genericErrorPayload
-
-<a id="schemagenericerrorpayload"></a>
-
-```json
-{
   "code": 404,
-  "debug": "The database adapter was unable to find the element",
+  "debug": "SQL field \"foo\" is not a bool.",
   "details": {},
-  "message": "string",
-  "reason": "string",
-  "request": "string",
-  "status": "string"
+  "message": "The resource could not be found",
+  "reason": "User with ID 1234 does not exist.",
+  "request": "d7ef54b1-ec15-46e6-bccb-524b82c035e6",
+  "status": "Not Found"
 }
 ```
 
 #### Properties
 
-| Name    | Type           | Required | Restrictions | Description                                                                            |
-| ------- | -------------- | -------- | ------------ | -------------------------------------------------------------------------------------- |
-| code    | integer(int64) | false    | none         | Code represents the error status code (404, 403, 401, ...).                            |
-| debug   | string         | false    | none         | Debug contains debug information. This is usually not available and has to be enabled. |
-| details | object         | false    | none         | none                                                                                   |
-| message | string         | false    | none         | none                                                                                   |
-| reason  | string         | false    | none         | none                                                                                   |
-| request | string         | false    | none         | none                                                                                   |
-| status  | string         | false    | none         | none                                                                                   |
+| Name    | Type           | Required | Restrictions | Description                                                                                                                                         |
+| ------- | -------------- | -------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| code    | integer(int64) | false    | none         | The status code                                                                                                                                     |
+| debug   | string         | false    | none         | Debug information<br/><br/>This field is often not exposed to protect against leaking<br/>sensitive information.                                    |
+| details | object         | false    | none         | Further error details                                                                                                                               |
+| message | string         | true     | none         | Error message<br/><br/>The error's message.                                                                                                         |
+| reason  | string         | false    | none         | A human-readable reason for the error                                                                                                               |
+| request | string         | false    | none         | The request ID<br/><br/>The request ID is often exposed internally in order to trace<br/>errors across service architectures. This is often a UUID. |
+| status  | string         | false    | none         | The status description                                                                                                                              |
 
 <a id="tocShealthnotreadystatus"></a>
 
@@ -9834,6 +9775,143 @@ _Error response_
 | ------ | ------ | -------- | ------------ | ---------------------------- |
 | status | string | false    | none         | Status always contains "ok". |
 
+<a id="tocSidentity"></a>
+
+#### identity
+
+<a id="schemaidentity"></a>
+
+```json
+{
+  "created_at": "2019-08-24T14:15:22Z",
+  "id": "string",
+  "recovery_addresses": [
+    {
+      "created_at": "2019-08-24T14:15:22Z",
+      "id": "string",
+      "updated_at": "2019-08-24T14:15:22Z",
+      "value": "string",
+      "via": "string"
+    }
+  ],
+  "schema_id": "string",
+  "schema_url": "string",
+  "traits": {},
+  "updated_at": "2019-08-24T14:15:22Z",
+  "verifiable_addresses": [
+    {
+      "created_at": "2014-01-01T23:28:56.782Z",
+      "id": "string",
+      "status": "string",
+      "updated_at": "2014-01-01T23:28:56.782Z",
+      "value": "string",
+      "verified": true,
+      "verified_at": "2019-08-24T14:15:22Z",
+      "via": "string"
+    }
+  ]
+}
+```
+
+_Identity represents an Ory Kratos identity_
+
+#### Properties
+
+| Name                 | Type                                                            | Required | Restrictions | Description                                                                                                                                                                                                            |
+| -------------------- | --------------------------------------------------------------- | -------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| created_at           | string(date-time)                                               | false    | none         | CreatedAt is a helper struct field for gobuffalo.pop.                                                                                                                                                                  |
+| id                   | [UUID](#schemauuid)                                             | true     | none         | none                                                                                                                                                                                                                   |
+| recovery_addresses   | [[RecoveryAddress](#schemarecoveryaddress)]                     | false    | none         | RecoveryAddresses contains all the addresses that can be used to recover an identity.                                                                                                                                  |
+| schema_id            | string                                                          | true     | none         | SchemaID is the ID of the JSON Schema to be used for validating the identity's traits.                                                                                                                                 |
+| schema_url           | string                                                          | true     | none         | SchemaURL is the URL of the endpoint where the identity's traits schema can be fetched from.<br/><br/>format: url                                                                                                      |
+| traits               | [identityTraits](#schemaidentitytraits)                         | true     | none         | Traits represent an identity's traits. The identity is able to create, modify, and delete traits<br/>in a self-service manner. The input will always be validated against the JSON Schema defined<br/>in `schema_url`. |
+| updated_at           | string(date-time)                                               | false    | none         | UpdatedAt is a helper struct field for gobuffalo.pop.                                                                                                                                                                  |
+| verifiable_addresses | [[verifiableIdentityAddress](#schemaverifiableidentityaddress)] | false    | none         | VerifiableAddresses contains all the addresses that can be verified by the user.                                                                                                                                       |
+
+<a id="tocSidentitytraits"></a>
+
+#### identityTraits
+
+<a id="schemaidentitytraits"></a>
+
+```json
+{}
+```
+
+_Traits represent an identity's traits. The identity is able to create, modify,
+and delete traits in a self-service manner. The input will always be validated
+against the JSON Schema defined in `schema_url`._
+
+#### Properties
+
+_None_
+
+<a id="tocSidentityverifiableaddressstatus"></a>
+
+#### identityVerifiableAddressStatus
+
+<a id="schemaidentityverifiableaddressstatus"></a>
+
+```json
+"string"
+```
+
+_VerifiableAddressStatus must not exceed 16 characters as that is the limitation
+in the SQL Schema_
+
+#### Properties
+
+| Name        | Type   | Required | Restrictions | Description                                                                                       |
+| ----------- | ------ | -------- | ------------ | ------------------------------------------------------------------------------------------------- |
+| _anonymous_ | string | false    | none         | VerifiableAddressStatus must not exceed 16 characters as that is the limitation in the SQL Schema |
+
+<a id="tocSidentityverifiableaddresstype"></a>
+
+#### identityVerifiableAddressType
+
+<a id="schemaidentityverifiableaddresstype"></a>
+
+```json
+"string"
+```
+
+_VerifiableAddressType must not exceed 16 characters as that is the limitation
+in the SQL Schema_
+
+#### Properties
+
+| Name        | Type   | Required | Restrictions | Description                                                                                     |
+| ----------- | ------ | -------- | ------------ | ----------------------------------------------------------------------------------------------- |
+| _anonymous_ | string | false    | none         | VerifiableAddressType must not exceed 16 characters as that is the limitation in the SQL Schema |
+
+<a id="tocSjsonerror"></a>
+
+#### jsonError
+
+<a id="schemajsonerror"></a>
+
+```json
+{
+  "error": {
+    "code": 404,
+    "debug": "SQL field \"foo\" is not a bool.",
+    "details": {},
+    "message": "The resource could not be found",
+    "reason": "User with ID 1234 does not exist.",
+    "request": "d7ef54b1-ec15-46e6-bccb-524b82c035e6",
+    "status": "Not Found"
+  }
+}
+```
+
+_JSON API Error Response_
+
+#### Properties
+
+| Name  | Type                                | Required | Restrictions | Description |
+| ----- | ----------------------------------- | -------- | ------------ | ----------- |
+| error | [genericError](#schemagenericerror) | true     | none         | none        |
+
 <a id="tocSjsonschema"></a>
 
 #### jsonSchema
@@ -9859,6 +9937,7 @@ _None_
 ```json
 {
   "active": "string",
+  "created_at": "2019-08-24T14:15:22Z",
   "expires_at": "2019-08-24T14:15:22Z",
   "forced": true,
   "id": "string",
@@ -9899,7 +9978,8 @@ _None_
         "type": "string"
       }
     ]
-  }
+  },
+  "updated_at": "2019-08-24T14:15:22Z"
 }
 ```
 
@@ -9910,6 +9990,7 @@ _Login Flow_
 | Name        | Type                                      | Required | Restrictions | Description                                                                                                                                                   |
 | ----------- | ----------------------------------------- | -------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | active      | [CredentialsType](#schemacredentialstype) | false    | none         | and so on.                                                                                                                                                    |
+| created_at  | string(date-time)                         | false    | none         | CreatedAt is a helper struct field for gobuffalo.pop.                                                                                                         |
 | expires_at  | string(date-time)                         | true     | none         | ExpiresAt is the time (UTC) when the flow expires. If the user still wishes to log in,<br/>a new flow has to be initiated.                                    |
 | forced      | boolean                                   | false    | none         | Forced stores whether this login flow should enforce re-authentication.                                                                                       |
 | id          | [UUID](#schemauuid)                       | true     | none         | none                                                                                                                                                          |
@@ -9917,6 +9998,7 @@ _Login Flow_
 | request_url | string                                    | true     | none         | RequestURL is the initial URL that was requested from Ory Kratos. It can be used<br/>to forward information contained in the URL's path or query for example. |
 | type        | [Type](#schematype)                       | true     | none         | The flow type can either be `api` or `browser`.                                                                                                               |
 | ui          | [uiContainer](#schemauicontainer)         | true     | none         | Container represents a HTML Form. The container can work with both HTTP Form and JSON requests                                                                |
+| updated_at  | string(date-time)                         | false    | none         | UpdatedAt is a helper struct field for gobuffalo.pop.                                                                                                         |
 
 <a id="tocSloginviaapiresponse"></a>
 
@@ -9932,10 +10014,13 @@ _Login Flow_
     "expires_at": "2019-08-24T14:15:22Z",
     "id": "string",
     "identity": {
+      "created_at": "2019-08-24T14:15:22Z",
       "id": "string",
       "recovery_addresses": [
         {
+          "created_at": "2019-08-24T14:15:22Z",
           "id": "string",
+          "updated_at": "2019-08-24T14:15:22Z",
           "value": "string",
           "via": "string"
         }
@@ -9943,10 +10028,13 @@ _Login Flow_
       "schema_id": "string",
       "schema_url": "string",
       "traits": {},
+      "updated_at": "2019-08-24T14:15:22Z",
       "verifiable_addresses": [
         {
+          "created_at": "2014-01-01T23:28:56.782Z",
           "id": "string",
           "status": "string",
+          "updated_at": "2014-01-01T23:28:56.782Z",
           "value": "string",
           "verified": true,
           "verified_at": "2019-08-24T14:15:22Z",
@@ -10130,10 +10218,13 @@ _A Recovery Flow_
 ```json
 {
   "identity": {
+    "created_at": "2019-08-24T14:15:22Z",
     "id": "string",
     "recovery_addresses": [
       {
+        "created_at": "2019-08-24T14:15:22Z",
         "id": "string",
+        "updated_at": "2019-08-24T14:15:22Z",
         "value": "string",
         "via": "string"
       }
@@ -10141,10 +10232,13 @@ _A Recovery Flow_
     "schema_id": "string",
     "schema_url": "string",
     "traits": {},
+    "updated_at": "2019-08-24T14:15:22Z",
     "verifiable_addresses": [
       {
+        "created_at": "2014-01-01T23:28:56.782Z",
         "id": "string",
         "status": "string",
+        "updated_at": "2014-01-01T23:28:56.782Z",
         "value": "string",
         "verified": true,
         "verified_at": "2019-08-24T14:15:22Z",
@@ -10158,10 +10252,13 @@ _A Recovery Flow_
     "expires_at": "2019-08-24T14:15:22Z",
     "id": "string",
     "identity": {
+      "created_at": "2019-08-24T14:15:22Z",
       "id": "string",
       "recovery_addresses": [
         {
+          "created_at": "2019-08-24T14:15:22Z",
           "id": "string",
+          "updated_at": "2019-08-24T14:15:22Z",
           "value": "string",
           "via": "string"
         }
@@ -10169,10 +10266,13 @@ _A Recovery Flow_
       "schema_id": "string",
       "schema_url": "string",
       "traits": {},
+      "updated_at": "2019-08-24T14:15:22Z",
       "verifiable_addresses": [
         {
+          "created_at": "2014-01-01T23:28:56.782Z",
           "id": "string",
           "status": "string",
+          "updated_at": "2014-01-01T23:28:56.782Z",
           "value": "string",
           "verified": true,
           "verified_at": "2019-08-24T14:15:22Z",
@@ -10192,7 +10292,7 @@ _The Response for Registration Flows via API_
 
 | Name          | Type                        | Required | Restrictions | Description                                                                                                                                                                                                                                                                                                                                                             |
 | ------------- | --------------------------- | -------- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| identity      | [Identity](#schemaidentity) | true     | none         | none                                                                                                                                                                                                                                                                                                                                                                    |
+| identity      | [identity](#schemaidentity) | true     | none         | An identity can be a real human, a service, an IoT device - everything that<br/>can be described as an "actor" in a system.                                                                                                                                                                                                                                             |
 | session       | [session](#schemasession)   | false    | none         | none                                                                                                                                                                                                                                                                                                                                                                    |
 | session_token | string                      | true     | none         | The Session Token<br/><br/>This field is only set when the session hook is configured as a post-registration hook.<br/><br/>A session token is equivalent to a session cookie, but it can be sent in the HTTP Authorization<br/>Header:<br/><br/>Authorization: bearer ${session-token}<br/><br/>The session token is only issued for API flows, not for Browser flows! |
 
@@ -10214,6 +10314,30 @@ _The Response for Registration Flows via API_
 | ------------- | ------ | -------- | ------------ | --------------------------------------------------------- |
 | session_token | string | true     | none         | The Session Token<br/><br/>Invalidate this session token. |
 
+<a id="tocSselfserviceerrorcontainer"></a>
+
+#### selfServiceErrorContainer
+
+<a id="schemaselfserviceerrorcontainer"></a>
+
+```json
+{
+  "created_at": "2019-08-24T14:15:22Z",
+  "errors": {},
+  "id": "string",
+  "updated_at": "2019-08-24T14:15:22Z"
+}
+```
+
+#### Properties
+
+| Name       | Type                | Required | Restrictions | Description                                           |
+| ---------- | ------------------- | -------- | ------------ | ----------------------------------------------------- |
+| created_at | string(date-time)   | false    | none         | CreatedAt is a helper struct field for gobuffalo.pop. |
+| errors     | object              | true     | none         | Errors in the container                               |
+| id         | [UUID](#schemauuid) | true     | none         | none                                                  |
+| updated_at | string(date-time)   | false    | none         | UpdatedAt is a helper struct field for gobuffalo.pop. |
+
 <a id="tocSsession"></a>
 
 #### session
@@ -10227,10 +10351,13 @@ _The Response for Registration Flows via API_
   "expires_at": "2019-08-24T14:15:22Z",
   "id": "string",
   "identity": {
+    "created_at": "2019-08-24T14:15:22Z",
     "id": "string",
     "recovery_addresses": [
       {
+        "created_at": "2019-08-24T14:15:22Z",
         "id": "string",
+        "updated_at": "2019-08-24T14:15:22Z",
         "value": "string",
         "via": "string"
       }
@@ -10238,10 +10365,13 @@ _The Response for Registration Flows via API_
     "schema_id": "string",
     "schema_url": "string",
     "traits": {},
+    "updated_at": "2019-08-24T14:15:22Z",
     "verifiable_addresses": [
       {
+        "created_at": "2014-01-01T23:28:56.782Z",
         "id": "string",
         "status": "string",
+        "updated_at": "2014-01-01T23:28:56.782Z",
         "value": "string",
         "verified": true,
         "verified_at": "2019-08-24T14:15:22Z",
@@ -10255,14 +10385,14 @@ _The Response for Registration Flows via API_
 
 #### Properties
 
-| Name             | Type                        | Required | Restrictions | Description |
-| ---------------- | --------------------------- | -------- | ------------ | ----------- |
-| active           | boolean                     | false    | none         | none        |
-| authenticated_at | string(date-time)           | true     | none         | none        |
-| expires_at       | string(date-time)           | true     | none         | none        |
-| id               | [UUID](#schemauuid)         | true     | none         | none        |
-| identity         | [Identity](#schemaidentity) | true     | none         | none        |
-| issued_at        | string(date-time)           | true     | none         | none        |
+| Name             | Type                        | Required | Restrictions | Description                                                                                                                 |
+| ---------------- | --------------------------- | -------- | ------------ | --------------------------------------------------------------------------------------------------------------------------- |
+| active           | boolean                     | false    | none         | none                                                                                                                        |
+| authenticated_at | string(date-time)           | true     | none         | none                                                                                                                        |
+| expires_at       | string(date-time)           | true     | none         | none                                                                                                                        |
+| id               | [UUID](#schemauuid)         | true     | none         | none                                                                                                                        |
+| identity         | [identity](#schemaidentity) | true     | none         | An identity can be a real human, a service, an IoT device - everything that<br/>can be described as an "actor" in a system. |
+| issued_at        | string(date-time)           | true     | none         | none                                                                                                                        |
 
 <a id="tocSsettingsflow"></a>
 
@@ -10276,10 +10406,13 @@ _The Response for Registration Flows via API_
   "expires_at": "2019-08-24T14:15:22Z",
   "id": "string",
   "identity": {
+    "created_at": "2019-08-24T14:15:22Z",
     "id": "string",
     "recovery_addresses": [
       {
+        "created_at": "2019-08-24T14:15:22Z",
         "id": "string",
+        "updated_at": "2019-08-24T14:15:22Z",
         "value": "string",
         "via": "string"
       }
@@ -10287,10 +10420,13 @@ _The Response for Registration Flows via API_
     "schema_id": "string",
     "schema_url": "string",
     "traits": {},
+    "updated_at": "2019-08-24T14:15:22Z",
     "verifiable_addresses": [
       {
+        "created_at": "2014-01-01T23:28:56.782Z",
         "id": "string",
         "status": "string",
+        "updated_at": "2014-01-01T23:28:56.782Z",
         "value": "string",
         "verified": true,
         "verified_at": "2019-08-24T14:15:22Z",
@@ -10349,7 +10485,7 @@ _Flow represents a Settings Flow_
 | active      | string                            | false    | none         | Active, if set, contains the registration method that is being used. It is initially<br/>not set.                                                             |
 | expires_at  | string(date-time)                 | true     | none         | ExpiresAt is the time (UTC) when the flow expires. If the user still wishes to update the setting,<br/>a new flow has to be initiated.                        |
 | id          | [UUID](#schemauuid)               | true     | none         | none                                                                                                                                                          |
-| identity    | [Identity](#schemaidentity)       | true     | none         | none                                                                                                                                                          |
+| identity    | [identity](#schemaidentity)       | true     | none         | An identity can be a real human, a service, an IoT device - everything that<br/>can be described as an "actor" in a system.                                   |
 | issued_at   | string(date-time)                 | true     | none         | IssuedAt is the time (UTC) when the flow occurred.                                                                                                            |
 | request_url | string                            | true     | none         | RequestURL is the initial URL that was requested from Ory Kratos. It can be used<br/>to forward information contained in the URL's path or query for example. |
 | state       | [State](#schemastate)             | true     | none         | none                                                                                                                                                          |
@@ -10369,10 +10505,13 @@ _Flow represents a Settings Flow_
     "expires_at": "2019-08-24T14:15:22Z",
     "id": "string",
     "identity": {
+      "created_at": "2019-08-24T14:15:22Z",
       "id": "string",
       "recovery_addresses": [
         {
+          "created_at": "2019-08-24T14:15:22Z",
           "id": "string",
+          "updated_at": "2019-08-24T14:15:22Z",
           "value": "string",
           "via": "string"
         }
@@ -10380,10 +10519,13 @@ _Flow represents a Settings Flow_
       "schema_id": "string",
       "schema_url": "string",
       "traits": {},
+      "updated_at": "2019-08-24T14:15:22Z",
       "verifiable_addresses": [
         {
+          "created_at": "2014-01-01T23:28:56.782Z",
           "id": "string",
           "status": "string",
+          "updated_at": "2014-01-01T23:28:56.782Z",
           "value": "string",
           "verified": true,
           "verified_at": "2019-08-24T14:15:22Z",
@@ -10432,10 +10574,13 @@ _Flow represents a Settings Flow_
     }
   },
   "identity": {
+    "created_at": "2019-08-24T14:15:22Z",
     "id": "string",
     "recovery_addresses": [
       {
+        "created_at": "2019-08-24T14:15:22Z",
         "id": "string",
+        "updated_at": "2019-08-24T14:15:22Z",
         "value": "string",
         "via": "string"
       }
@@ -10443,10 +10588,13 @@ _Flow represents a Settings Flow_
     "schema_id": "string",
     "schema_url": "string",
     "traits": {},
+    "updated_at": "2019-08-24T14:15:22Z",
     "verifiable_addresses": [
       {
+        "created_at": "2014-01-01T23:28:56.782Z",
         "id": "string",
         "status": "string",
+        "updated_at": "2014-01-01T23:28:56.782Z",
         "value": "string",
         "verified": true,
         "verified_at": "2019-08-24T14:15:22Z",
@@ -10464,7 +10612,7 @@ _The Response for Settings Flows via API_
 | Name     | Type                                | Required | Restrictions | Description                                                                                                                                                                                                                       |
 | -------- | ----------------------------------- | -------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | flow     | [settingsFlow](#schemasettingsflow) | true     | none         | This flow is used when an identity wants to update settings<br/>(e.g. profile data, passwords, ...) in a selfservice manner.<br/><br/>We recommend reading the [User Settings Documentation](../self-service/flows/user-settings) |
-| identity | [Identity](#schemaidentity)         | true     | none         | none                                                                                                                                                                                                                              |
+| identity | [identity](#schemaidentity)         | true     | none         | An identity can be a real human, a service, an IoT device - everything that<br/>can be described as an "actor" in a system.                                                                                                       |
 
 <a id="tocSsubmitselfserviceloginflow"></a>
 
@@ -10804,6 +10952,60 @@ _None_
 | Name        | Type                      | Required | Restrictions | Description |
 | ----------- | ------------------------- | -------- | ------------ | ----------- |
 | _anonymous_ | [[uiText](#schemauitext)] | false    | none         | none        |
+
+<a id="tocSupdateidentity"></a>
+
+#### updateIdentity
+
+<a id="schemaupdateidentity"></a>
+
+```json
+{
+  "schema_id": "string",
+  "traits": {}
+}
+```
+
+#### Properties
+
+| Name      | Type   | Required | Restrictions | Description                                                                                                                                                                                                           |
+| --------- | ------ | -------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| schema_id | string | false    | none         | SchemaID is the ID of the JSON Schema to be used for validating the identity's traits. If set<br/>will update the Identity's SchemaID.                                                                                |
+| traits    | object | true     | none         | Traits represent an identity's traits. The identity is able to create, modify, and delete traits<br/>in a self-service manner. The input will always be validated against the JSON Schema defined<br/>in `schema_id`. |
+
+<a id="tocSverifiableidentityaddress"></a>
+
+#### verifiableIdentityAddress
+
+<a id="schemaverifiableidentityaddress"></a>
+
+```json
+{
+  "created_at": "2014-01-01T23:28:56.782Z",
+  "id": "string",
+  "status": "string",
+  "updated_at": "2014-01-01T23:28:56.782Z",
+  "value": "string",
+  "verified": true,
+  "verified_at": "2019-08-24T14:15:22Z",
+  "via": "string"
+}
+```
+
+_VerifiableAddress is an identity's verifiable address_
+
+#### Properties
+
+| Name        | Type                                                                      | Required | Restrictions | Description                                                                                       |
+| ----------- | ------------------------------------------------------------------------- | -------- | ------------ | ------------------------------------------------------------------------------------------------- |
+| created_at  | string(date-time)                                                         | false    | none         | When this entry was created                                                                       |
+| id          | [UUID](#schemauuid)                                                       | true     | none         | none                                                                                              |
+| status      | [identityVerifiableAddressStatus](#schemaidentityverifiableaddressstatus) | true     | none         | VerifiableAddressStatus must not exceed 16 characters as that is the limitation in the SQL Schema |
+| updated_at  | string(date-time)                                                         | false    | none         | When this entry was last updated                                                                  |
+| value       | string                                                                    | true     | none         | The address value<br/><br/>example foo@user.com                                                   |
+| verified    | boolean                                                                   | true     | none         | Indicates if the address has already been verified                                                |
+| verified_at | [NullTime](#schemanulltime)                                               | false    | none         | none                                                                                              |
+| via         | [identityVerifiableAddressType](#schemaidentityverifiableaddresstype)     | true     | none         | VerifiableAddressType must not exceed 16 characters as that is the limitation in the SQL Schema   |
 
 <a id="tocSverificationflow"></a>
 
