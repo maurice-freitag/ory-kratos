@@ -175,12 +175,14 @@ module.exports = {
     [
       "@docusaurus/plugin-content-docs",
       {
-        path: config.projectSlug === "docusaurus-template" ? "contrib/docs" : "docs",
-        sidebarPath: require.resolve("./contrib/sidebar.js"),
-        editUrl:
-          `https://github.com/ory/${config.projectSlug}/edit/master/docs`,
-        routeBasePath: "",
-        homePageId: "index",
+        path:
+          config.projectSlug === 'docusaurus-template'
+            ? 'contrib/docs'
+            : 'docs',
+        sidebarPath: require.resolve('./contrib/sidebar.js'),
+        editUrl: ({ docPath }) =>
+          `https://github.com/ory/${githubRepoName}/edit/master/docs/docs/${docPath}`,
+        routeBasePath: '/',
         showLastUpdateAuthor: true,
         showLastUpdateTime: true,
         remarkPlugins: [admonitions]
