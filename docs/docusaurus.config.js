@@ -12,28 +12,7 @@ let links = [
     to: 'https://www.ory.sh/',
     label: `Home`,
     position: 'left'
-  }
-]
-
-if (config.openApiSpec) {
-  links = [
-    ...links,
-    {
-      to: baseUrl,
-      label: `Docs`,
-      position: 'left',
-      activeBaseRegex: 'docs/(?!http-api/).*'
-    },
-    {
-      to: baseUrl + 'http-api/',
-      label: `HTTP API`,
-      position: 'left'
-    }
-  ]
-}
-
-links = [
-  ...links,
+  },
   {
     href: "https://www.ory.sh/blog", label: "Blog",
     position: "left"
@@ -215,21 +194,7 @@ module.exports = {
         customCss: config.projectSlug === "docusaurus-template" ? require.resolve("./contrib/theme.css") : require.resolve("./src/css/theme.css")
       }
     ],
-    '@docusaurus/theme-search-algolia'
-  ],
-  presets: [
-    [
-      'redocusaurus',
-      {
-        specs: config.openApiSpec
-          ? [
-              {
-                routePath: '/http-api/',
-                specUrl: config.openApiSpec
-              }
-            ]
-          : []
-      }
-    ]
+    '@docusaurus/theme-search-algolia',
+    'docusaurus-theme-redoc'
   ]
 };
