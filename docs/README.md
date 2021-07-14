@@ -24,4 +24,15 @@ This command starts a local development server and open up a browser window. Mos
 $ npm build
 ```
 
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
+This command generates static content into the `build` directory and can be
+served using any static contents hosting service.
+
+### Format
+
+```
+npm run format
+```
+
+This command formats all files configured in the `prettierTarget` inside the
+`package.json`. This command is recommended to run before committing any
+documentation changes.
