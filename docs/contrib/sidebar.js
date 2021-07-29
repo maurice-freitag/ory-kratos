@@ -50,6 +50,8 @@ projects.forEach((item) => {
   ]
 })
 
+const docs = [...resolveRefs({ $slug: 'docs' }), ...result]
+
 module.exports = {
-  docs: sidebar
+  docs
 }
