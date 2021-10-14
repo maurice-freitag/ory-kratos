@@ -113,7 +113,7 @@ module.exports = {
     prism: {
       theme: prismThemeLight,
       darkTheme: require('prism-react-renderer/themes/dracula'),
-      additionalLanguages: ['pug', 'shell-session']
+      additionalLanguages: ['json5', 'pug', 'shell-session']
     },
     announcementBar: {
       id: 'supportus',
