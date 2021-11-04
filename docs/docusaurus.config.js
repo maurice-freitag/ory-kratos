@@ -123,10 +123,12 @@ module.exports = {
           : `Sign up for <a href="${config.newsletter}">important security announcements</a> and if you like ${config.projectName} give it a ⭐️ on <a target="_blank" rel="noopener noreferrer" href="https://github.com/ory/${githubRepoName}">GitHub</a>!`
     },
     algolia: {
-      apiKey: "8463c6ece843b377565726bb4ed325b0",
-      indexName: "ory",
-      algoliaOptions: {
-        facetFilters: [`tags:${config.projectSlug}`, `version:${version[0]}`]
+      appId: 'V2EFIWEJ25',
+      apiKey: 'dc6b220f7d2bcd12da60b9cce431d8c5',
+      indexName: 'ory',
+      contextualSearch: true,
+      searchParameters: {
+        facetFilters: [[`tags:${config.projectSlug}`, `tags:docs`]]
       }
     },
     navbar: {
