@@ -1,16 +1,21 @@
 FROM alpine:3.15
 
 RUN addgroup -S ory; \
-    adduser -S ory -G ory -D -H -s /bin/nologin
+    adduser -S ory -G ory -D -u 10000 -h /home/ory -s /bin/nologin; \
+    chown -R ory:ory /home/ory
+
 RUN apk add -U --no-cache ca-certificates
 
-COPY hydra /usr/bin/hydra
+COPY kratos /usr/bin/kratos
 
-# set up nsswitch.conf for Go's "netgo" implementation
-# - https://github.com/golang/go/blob/go1.9.1/src/net/conf.go#L194-L275
-RUN [ ! -e /etc/nsswitch.conf ] && echo 'hosts: files dns' > /etc/nsswitch.conf
+# Exposing the ory home directory to simplify passing in Kratos configuration (e.g. if the file $HOME/.kratos.yaml
+# exists, it will be automatically used as the configuration file).
+VOLUME /home/ory
 
-USER ory
+# Declare the standard ports used by Kratos (4433 for public service endpoint, 4434 for admin service endpoint)
+EXPOSE 4433 4434
 
-ENTRYPOINT ["hydra"]
-CMD ["serve", "all"]
+USER 10000
+
+ENTRYPOINT ["kratos"]
+CMD ["serve"]
