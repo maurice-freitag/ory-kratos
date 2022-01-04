@@ -234,64 +234,7 @@ func (h *Handler) fetch(w http.ResponseWriter, r *http.Request, _ httprouter.Par
 	rid := x.ParseUUID(r.URL.Query().Get("id"))
 	req, err := h.d.VerificationFlowPersister().GetVerificationFlow(r.Context(), rid)
 	if err != nil {
-		return err
-	}
-
-	if mustVerify && !nosurf.VerifyToken(h.d.GenerateCSRFToken(r), ar.CSRFToken) {
-		return errors.WithStack(x.ErrInvalidCSRFToken.WithDebugf("Expected %s but got %s", h.d.GenerateCSRFToken(r), ar.CSRFToken))
-	}
-
-	h.d.Writer().Write(w, r, ar)
-	return nil
-}
-
-// nolint:deadcode,unused
-// swagger:parameters completeSelfServiceBrowserVerificationFlow
-type completeSelfServiceBrowserVerificationFlowParameters struct {
-	// Request is the Request ID
-	//
-	// The value for this parameter comes from `request` URL Query parameter sent to your
-	// application (e.g. `/verify?request=abcde`).
-	//
-	// required: true
-	// in: query
-	Request string `json:"request"`
-
-	// What to verify
-	//
-	// Currently only "email" is supported.
-	//
-	// required: true
-	// in: path
-	Via string `json:"via"`
-}
-
-// swagger:route POST /self-service/browser/flows/verification/{via}/complete public completeSelfServiceBrowserVerificationFlow
-//
-// Complete the Browser-Based Verification Flows
-//
-// This endpoint completes a browser-based verification flow. This is usually achieved by POSTing data to this
-// endpoint.
-//
-// If the provided data is valid against the Identity's Traits JSON Schema, the data will be updated and
-// the browser redirected to `url.settings_ui` for further steps.
-//
-// > This endpoint is NOT INTENDED for API clients and only works with browsers (Chrome, Firefox, ...) and HTML Forms.
-//
-// More information can be found at [ORY Kratos Email and Phone Verification Documentation](https://www.ory.sh/docs/kratos/selfservice/flows/verify-email-account-activation).
-//
-//     Consumes:
-//     - application/json
-//     - application/x-www-form-urlencoded
-//
-//     Schemes: http, https
-//
-//     Responses:
-//       302: emptyResponse
-//       500: genericError
-func (h *Handler) complete(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	if _, err := h.toVia(ps); err != nil {
-		h.handleError(w, r, nil, err)
+		h.d.Writer().WriteError(w, r, err)
 		return
 	}
 
